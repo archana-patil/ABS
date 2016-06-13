@@ -1,0 +1,94 @@
+﻿@model  Mbpros.Models.PatientModel
+@{
+    ViewBag.Title = "JqgridPatient";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>JqgridPatient</h2>
+
+        <div class="custom-seach-wrap">
+            <div class="row">
+                <div class="col-sm-3 big-3">
+                    <div class="form-group">
+                        <label for="inputEmail3" class="col-sm-5 control-label">Office Name</label>
+                        <div class="col-sm-7">
+                            @Html.TextBoxFor(model => model.OfficeName, new { @class = "form-control input-sm", @maxlength = "50" , id= "OfficeName"})
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-3 big-3">
+                    <div class="form-group">
+                        <label for="inputEmail3" class="col-sm-5 control-label">Patient Name</label>
+                        <div class="col-sm-7">
+                            @Html.TextBoxFor(model => model.PatientName, new { @class = "form-control input-sm", @maxlength = "100" , id="PatientName"})
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-3 big-3">
+                    <div class="form-group">
+                        <label for="inputEmail3" class="col-sm-5 control-label">Form ID</label>
+                        <div class="col-sm-7">
+                            @Html.TextBoxFor(model => model.FormId, new { @class = "form-control input-sm", @id = "FormId", @maxlength = "8" })
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-3 sm-3">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-3 big-3">
+                    <div class="form-group date-row">
+                        <label for="inputEmail3" class="col-sm-5 control-label">Submission date</label>
+                        <div class="col-xs-3 dash">
+                            @Html.TextBoxFor(model => model.SubFrom, new { @class = "form-control input-sm datetimepicker", onkeydown = "return false", @placeholder = "from" })
+                        </div>
+                        <div class="col-xs-3">
+                            @Html.TextBoxFor(model => model.SubTo, new { @class = "form-control input-sm datetimepicker", onkeydown = "return false", @placeholder = "to" })
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-3 big-3">
+                    <div class="form-group">
+                        <label for="inputEmail3" class="col-sm-5 control-label">SSN</label>
+                        <div class="col-sm-7">
+                            @Html.TextBoxFor(model => model.SSN, new { @class = "form-control input-sm", @id = "SSN", maxlength = "11" })
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-3 big-3">
+                    <div class="form-group">
+                        <label for="inputEmail3" class="col-sm-5 control-label">Policy ID#</label>
+                        <div class="col-sm-7">
+                            @Html.TextBoxFor(model => model.PolicyID, new { @class = "form-control input-sm", @maxlength = "20" })
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-3 sm-3">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-3 big-3">
+                    <div class="form-group">
+                        <label for="inputEmail3" class="col-sm-5 control-label">Form Type</label>
+                        <div class="col-sm-7">
+                            @Html.DropDownListFor(model => model.ArchiveOption, Model.OptionList, new { id = "ddlOption", @class = "form-control input-sm" })
+
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-3 big-3">
+                    <button class="btn btn-primary btn-sm" id="btnSearchPatient"><i class="fa fa-search"></i></button>
+                    <button class="btn btn-primary btn-sm" id="btnReset" type="reset" onclick ="location.href='@Url.Action("PatientSearchForAdmin", "Search")'"><i class="fa fa-refresh"></i></button>
+                </div>
+            </div>
+        </div>
+
+
+        <table id="list" class="scroll" ></table>
+        <div id="pager" class="scroll" style="text-align: center;"></div>
+@section Scripts{
+<script lang="javascript">
+
+</script>
+
+    }

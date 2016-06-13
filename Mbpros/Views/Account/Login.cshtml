@@ -1,0 +1,36 @@
+﻿@model  Mbpros.Models.LoginModel
+@{
+    ViewBag.Title = "Login";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<div class="empty_height">
+    <div class="form_wrap">
+
+        @using (Html.BeginForm("Login", "Account", FormMethod.Post, new { name = "loginForm", id = "loginForm", @class = "form-horizontal customIzeFormELement" }))
+        {
+            @Html.ValidationSummary(true) 
+                      
+            <div class="form-group">
+                <label for="inputEmail" class="control-label col-sm-3">Username</label>
+                <div class="col-sm-9">
+                    @Html.TextBoxFor(model => model.LoginUserName, new { @id = "txtLoginUserName", @placeholder = "User Name", @maxlength = "50", @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.LoginUserName)
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="inputPassword" class="control-label col-sm-3">Password</label>
+                <div class="col-sm-9">
+                    @Html.TextBoxFor(model => model.LoginUserPassword, new { @id = "txtLoginUserPassword",@type="password", @placeholder="Password", @maxlength = "50", @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.LoginUserPassword)
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-offset-3 col-sm-10">
+                    <button type="submit" class="btn btn-primary">Login</button>
+                </div>
+            </div>
+        }
+    </div>
+</div>

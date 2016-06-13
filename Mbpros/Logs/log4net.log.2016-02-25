@@ -1,0 +1,6 @@
+2016-02-25 14:38:48,422 ERROR Mbpros.Controllers.AccountController - System.Web.Security.MembershipCreateUserException: The username is already in use.
+   at WebMatrix.WebData.SimpleMembershipProvider.CreateUserRow(IDatabase db, String userName, IDictionary`2 values)
+   at WebMatrix.WebData.SimpleMembershipProvider.CreateUserAndAccount(String userName, String password, Boolean requireConfirmation, IDictionary`2 values)
+   at WebMatrix.WebData.WebSecurity.CreateUserAndAccount(String userName, String password, Object propertyValues, Boolean requireConfirmationToken)
+   at Mbpros.Controllers.AccountController.Home() in d:\archana\MBPROS\Code\Mbpros\Mbpros\Controllers\AccountController.cs:line 61
+2016-02-25 14:38:49,462 INFO Mbpros.Controllers.AccountController - Action Index has been fired.

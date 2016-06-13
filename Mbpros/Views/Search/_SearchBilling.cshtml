@@ -1,0 +1,52 @@
+﻿@model  Mbpros.Models.BillingModel
+<table id="divBillingSearch" class="table table-striped table-bordered" cellspacing="0" width="100%">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Pdf</th>
+            <th>Edit</th>
+            <th>Date Submit</th>
+            <th>Office Name</th>
+            <th>Patient1</th>
+            <th>Dates of Services</th>
+            <th>PCodes</th>
+            <th>DX Codes</th>
+            <th>Special Note</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model != null)
+        {
+            if (Model.BillingList != null)
+            {
+                foreach (var item in Model.BillingList)
+                {
+                    var trId = "B" + item.PatientBillingID;
+                    <tr id=@trId>
+
+                        <td>
+                            @item.PatientBillingID
+                        </td>
+                        <td>
+                            <a href="@Url.Action("PDFForPatientBilling", "Billing", new { BillingID = item.PatientBillingID })" target="_blank">
+                                <img src="~/images/pdf.gif">
+                            </a>
+                        </td>
+                        <td>
+                            <a href="@Url.Action("BillingLog", "Billing", new { BillingID = item.PatientBillingID, callFrom = "BillingSearch" })">
+                                <img src="~/images/edit.png" />
+                            </a>
+                        </td>
+                        <td>@Convert.ToDateTime(item.CreatedDate).ToString("MM/dd/yyyy")</td>
+                        <td>@item.OfficeName</td>
+                        <td>@item.PatientName</td>
+                        <td>@Convert.ToDateTime(item.ServiceDate).ToString("MM/dd/yyyy")</td>
+                        <td>@item.ProcedureCodes</td>
+                        <td>@item.DXCode</td>
+                        <td>@item.Note</td>
+                    </tr>
+                }
+            }
+        }
+    </tbody>
+</table>

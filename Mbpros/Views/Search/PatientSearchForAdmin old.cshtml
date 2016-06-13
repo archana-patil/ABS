@@ -1,0 +1,313 @@
+﻿@model  Mbpros.Models.PatientModel
+@{
+    ViewBag.Title = "PatientSearchForAdmin";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+
+@Html.Hidden("hdnPID")
+<div class="form_border">
+    <form class="form-horizontal customIzeFormELement normal_label" id="PatientSearchForAdmin">
+        <h2>Search Patient Forms</h2>
+        @{
+            if (ViewBag.EditMessage != "" && ViewBag.EditMessage != null)
+            {
+            <div class="alert alert-success">
+                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                <strong>Success!</strong> @ViewBag.EditMessage.
+            </div>
+            }
+        }
+
+        <div class="custom-seach-wrap">
+            <div class="row">
+                <div class="col-sm-3 big-3">
+                    <div class="form-group">
+                        <label for="inputEmail3" class="col-sm-5 control-label">Office Name</label>
+                        <div class="col-sm-7">
+                            @Html.TextBoxFor(model => model.OfficeName, new { @class = "form-control input-sm", @maxlength = "50" })
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-3 big-3">
+                    <div class="form-group">
+                        <label for="inputEmail3" class="col-sm-5 control-label">Patient Name</label>
+                        <div class="col-sm-7">
+                            @Html.TextBoxFor(model => model.PatientName, new { @class = "form-control input-sm", @maxlength = "100" })
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-3 big-3">
+                    <div class="form-group">
+                        <label for="inputEmail3" class="col-sm-5 control-label">Form ID</label>
+                        <div class="col-sm-7">
+                            @Html.TextBoxFor(model => model.FormId, new { @class = "form-control input-sm", @id = "FormId", @maxlength = "8" })
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-3 sm-3">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-3 big-3">
+                    <div class="form-group date-row">
+                        <label for="inputEmail3" class="col-sm-5 control-label">Submission date</label>
+                        <div class="col-xs-3 dash">
+                            @Html.TextBoxFor(model => model.SubFrom, new { @class = "form-control input-sm datetimepicker", onkeydown = "return false", @placeholder = "from" })
+                        </div>
+                        <div class="col-xs-3">
+                            @Html.TextBoxFor(model => model.SubTo, new { @class = "form-control input-sm datetimepicker", onkeydown = "return false", @placeholder = "to" })
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-3 big-3">
+                    <div class="form-group">
+                        <label for="inputEmail3" class="col-sm-5 control-label">SSN</label>
+                        <div class="col-sm-7">
+                            @Html.TextBoxFor(model => model.SSN, new { @class = "form-control input-sm", @id = "SSN", maxlength = "11" })
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-3 big-3">
+                    <div class="form-group">
+                        <label for="inputEmail3" class="col-sm-5 control-label">Policy ID#</label>
+                        <div class="col-sm-7">
+                            @Html.TextBoxFor(model => model.PolicyID, new { @class = "form-control input-sm", @maxlength = "20" })
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-3 sm-3">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-3 big-3">
+                    <div class="form-group">
+                        <label for="inputEmail3" class="col-sm-5 control-label">Form Type</label>
+                        <div class="col-sm-7">
+                            @Html.DropDownListFor(model => model.ArchiveOption, Model.OptionList, new { id = "ddlOption", @class = "form-control input-sm" })
+
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-3 big-3">
+                    <button class="btn btn-primary btn-sm" id="btnSearchPatient"><i class="fa fa-search"></i></button>
+                    <button class="btn btn-primary btn-sm" id="btnReset" type="reset" onclick ="location.href='@Url.Action("PatientSearchForAdmin", "Search")'"><i class="fa fa-refresh"></i></button>
+                </div>
+            </div>
+        </div>
+
+                @Html.Partial("_SearchPatientForAdmin", Model)
+    </form>
+
+</div>
+
+
+@section Scripts{
+    <script src="~/Scripts/partialviewJS.js"></script>
+    <script lang="javascript">
+        $(function () {
+            var productListVM = {
+                dt: null,
+
+                init: function () {
+                    dt = $('#divPatientSearch').on('processing.dt', function (e, settings, processing) {
+                        $('#processingIndicator').css('display', processing ? 'block' : 'none');
+                    }).DataTable({
+                        aaSorting: [[0, 'desc']],
+                        bSortClasses: false,
+                        pageLength: 10,
+                        serverSide: true,
+                        filter: false,
+                        processing: true,
+                        stateSave: true,
+                        language: {
+                            lengthMenu: "Display _MENU_ records per page",
+                            info: "Showing page _PAGE_ of _PAGES_",
+                            //"infoEmpty": "No records available",
+                            infoFiltered: "(filtered from _MAX_ total records)",
+                            zeroRecords: "No results found",
+                            processing: "<div align='center'><img src='/images/ajax-loader.gif'></div>",
+                            //"loadingRecords": "<div align='center'><img src='/images/ajax-loader.gif'></div>"
+                        },
+                        ajax: {
+                            "url": "/Search/GetData",
+                            "type": "POST",
+                            "datatype": "JSON",
+                            "patientModel": $(this).serialize()
+
+                        },
+                        columns: [
+                           { "title": "ID", "data": "PatientID" },
+                           {
+                               "title": "Pdf", "data": "PatientID", "bSortable": false,
+                               "render": function (data) {
+                                   return '<a href="/Patient/PDFForPatient?patientID=' + data + '" target="_blank"><img src="/images/pdf.gif"></a>';
+                               }
+                           },
+                           {
+                               "title": "Edit", "data": "PatientID", "bSortable": false,
+                               "render": function (data) {
+                                   return '<a href="/Patient/AddPatient?patientID=' + data + '&callFrom=PatientSearchForAdmin"><img src="/images/edit.png"></a>';
+                               }
+                           },
+                           { "title": "Action", "data": "", "bSortable": false },
+                           { "title": "SSN", "data": "SSN" },
+                           { "title": "Patient Name", "data": "PatientName" },
+                           { "title": "Office Name", "data": "OfficeName" },
+                           { "title": "Date submit", "data": "CreatedDate" },
+                           { "title": "ID# - Claim#", "data": "PolicyID" },
+                           { "title": "Group Number", "data": "GroupNumber" },
+                           { "title": "Insurance Company", "data": "InsuranceCompanyName" },
+                           {
+                               "title": "Delete", "data": "PatientID",
+                               "render": function (data) {
+                                   return '<a href="#" class="confirmDelete" onclick="SetPatientID(' + data + ')"><img src="/images/delete.png" /></a>';
+                               }
+                           }
+                        ],
+                        // "order": [[2, "desc"]],
+                        "lengthMenu": [[10, 25, 50], [10, 25, 50]],
+
+                        "fnRowCallback": function (nRow, aData) {
+                            var imgTag;
+                            if (aData["IsArchived"]) {
+                                imgTag = '<a href="#"  class="confirmUnArchive" onclick="SetPatientID(' + aData["PatientID"] + '); return false;"><img src="/images/unarchive.png" title="Click here to un-archive"></a>'
+                            }
+                            else {
+                                imgTag = '<a href="#"  class="confirmArchive" onclick="SetPatientID(' + aData["PatientID"] + '); return false;"><img src="/images/archive.png" title="Click here to archive"></a>'
+                            }
+                            $('td:eq(3)', nRow).html(imgTag);
+
+                            return nRow;
+                        }
+                    });
+                },
+
+                refresh: function () {
+                    dt.ajax.reload();
+                }
+            }
+
+            $('#refresh-button').on("click", productListVM.refresh);
+            productListVM.init();
+        });
+
+        $(document).ready(function () {
+           // initializeStuff();
+            $('#results').html('<table id="divPatientSearch" class="display" cellspacing="0" width="100%"></table>');
+
+            var table_config = {
+                "language": {
+                    "zeroRecords": "No results found",
+                    "processing": "<div align='center'><img src='/static/ajax-loader.gif'></div>",
+                    "loadingRecords": "<div align='center'><img src='/static/ajax-loader.gif'></div>"
+                }
+            }
+
+            $('#btnSearchPatient').click(function (e) {
+                var formCollection = $("#PatientSearchForAdmin").serialize();
+                var sOut = jQuery.ajax({
+                    url: "/Search/GetData",
+                    type: 'post',
+                    data:formCollection ,
+                   // context: document.body,
+                    success: function (response) {
+                        $('#results').html('<table id="divPatientSearch" class="display" cellspacing="0" width="100%"></table>');
+
+                        table_config.columns = response.columns;
+
+                        var table = $('#divPatientSearch').DataTable(table_config);
+                        table.clear();
+                        table.rows.add(response.data);
+                        table.draw();
+
+                    }
+                });
+                return false;
+            });
+            
+       // });
+
+   // var initializeStuff = function () {
+        $(".confirmDelete").confirm({
+            text: "Are you sure you want to delete the patient?",
+            title: "Confirmation required",
+            confirm: function (button) {
+                $.ajax({
+                    type: "GET",
+                    url: '@Url.Action("DeletePatient", "Search")',
+                        data: { patientID: $("#hdnPID").val() },
+                        dataType: "json",
+                        success: function () {
+                            window.location = 'PatientSearchForAdmin?editMessage=Patient has been deleted successfully&IsBack=true';
+                        }
+                    });
+                },
+                cancel: function (button) {
+                    // nothing to do
+                },
+                confirmButton: "Yes",
+                cancelButton: "No",
+                post: true,
+                confirmButtonClass: "btn-default",
+                cancelButtonClass: "btn-default",
+                dialogClass: "modal-dialog modal-sm" // Bootstrap classes for large modal
+            });
+
+            $(".confirmArchive").confirm({
+                text: "Are you sure you want to archive the patient record?",
+                title: "Confirmation required",
+                confirm: function (button) {
+                    $.ajax({
+                        type: "GET",
+                        url: '@Url.Action("ArchivePatientRecord", "Search")',
+                        data: { patientID: $("#hdnPID").val() },
+                        dataType: "json",
+                        success: function () {
+                            window.location = 'PatientSearchForAdmin?editMessage=Patient has been archived successfully&IsBack=true';
+                        }
+                    });
+                },
+                cancel: function (button) {
+                    // nothing to do
+                },
+                confirmButton: "Yes",
+                cancelButton: "No",
+                post: true,
+                confirmButtonClass: "btn-default",
+                cancelButtonClass: "btn-default",
+                dialogClass: "modal-dialog modal-sm" // Bootstrap classes for large modal
+            });
+
+        $(".confirmUnArchive").confirm({
+            text: "Are you sure you want to un-archive the patient?",
+            title: "Confirmation required",
+            confirm: function (button) {
+                $.ajax({
+                    type: "GET",
+                    url: '@Url.Action("UnarchivePatientRecord", "Search")',
+                    data: { patientID: $("#hdnPID").val() },
+                    dataType: "json",
+                    success: function () {
+                        window.location = 'PatientSearchForAdmin?editMessage=Patient has been unarchived successfully&IsBack=true';
+                    }
+                });
+            },
+            cancel: function (button) {
+                // nothing to do
+            },
+            confirmButton: "Yes",
+            cancelButton: "No",
+            post: true,
+            confirmButtonClass: "btn-default",
+            cancelButtonClass: "btn-default",
+            dialogClass: "modal-dialog modal-sm" // Bootstrap classes for large modal
+        });
+        //}
+        });
+        function SetPatientID(PatientID) {
+            $("#hdnPID").val(PatientID);
+        }
+    </script>
+}

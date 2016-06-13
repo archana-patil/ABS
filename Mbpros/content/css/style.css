@@ -1,0 +1,238 @@
+﻿
+ .input-validation-errorfree {
+       border: 1px solid #ccc!important; 
+    }
+
+ .input-validation-error {
+        border: 1px solid #ff0000;
+    }
+  .select-validation-error {
+        border: 1px solid #ff0000;
+    }
+ .field-validation-error
+{
+    color: #ff0000;
+}
+  .validation-summary-errors
+{
+    color: #ff0000;
+}
+  .validation-summary-errors ul { 
+        list-style: none;
+        margin-left:62px
+    }
+.hide {
+    display: none;
+}
+
+.form-control.DOB {
+    float: left;
+    width: 100px;
+}
+
+span.reqvalidation {
+    color:red;
+}
+input.reqvalidation {
+    border: 1px solid #ff0000;
+}
+
+.pad_group {
+    padding-left:15px!important;
+    padding-right:15px!important;
+}
+.login-dialog .modal-dialog {
+                width: 300px;
+            }
+.center-th {
+text-align:center;
+}
+
+.dataTables_filter
+{
+display:none;
+}
+
+    .validation-summary-valid {
+    display: none; 
+}
+
+.form-group.required .control-label:after { 
+    color: #d00;
+    content: "*";
+    margin-left: 2px;
+    top:5px;
+    font-size: 19px;
+}
+
+@media(max-width:767px) {
+    .form-group.required .control-label:after { 
+        top:-2px;
+    }
+
+}
+
+.red {
+    color: #d00;
+    font-size: 19px;
+    margin-top:5px;
+}
+
+.dataTables_wrapper {
+    width:100%;
+    overflow-y:auto;
+}
+
+.custom-seach-wrap {
+    margin-bottom:20px;
+}
+.custom-seach-wrap .form-group{
+    margin-left:0;
+    margin-right:0;
+}
+.custom-seach-wrap .big-3 {
+    padding-left:5px;
+    padding-right:5px;
+    width: 30%;
+}
+
+.custom-seach-wrap label {
+    text-align:right!important;
+    font-size:13px;
+}
+
+.custom-seach-wrap .form-group .col-sm-5, .custom-seach-wrap .form-group .col-sm-7 {
+    padding-left:5px;
+     padding-right:5px;
+}
+
+.date-row .col-xs-3{
+    padding-left:5px;
+    padding-right:5px;
+    width: 29%;
+    position:relative;
+}
+
+@media(max-width:1200px) and (min-width:768px) {
+    .date-row .col-xs-3{
+        width:58%;
+    }
+    .date-row .col-xs-3 + .col-xs-3{
+        margin-top:5px;
+    }
+}
+
+    .date-row .col-xs-3.dash:after {
+        content: "-";
+        display: block;
+        position: absolute;
+        top: 14%;
+        right: -3px;
+          
+    }
+.custom-seach-wrap .sm-3 {
+    padding-left:10px;
+    padding-right:10px;
+    width: 10%;
+}
+
+@media(min-width:768px){
+    .custom-seach-wrap .big-3:nth-child(3n+3) + .big-3 {
+        clear:left;
+    }
+}
+
+@media(max-width:767px) {
+    .custom-seach-wrap .big-3 ,.custom-seach-wrap .sm-3{
+        width:100%;
+        float:none;
+        padding-left:15px;
+        padding-right:15px;
+     }
+
+
+
+
+.date-row label {
+    display:block;
+    text-align:left!important;
+}
+.date-row .col-xs-3 {
+    width:50%;
+}                                                
+}
+
+.right-label-pad-16 .control-label {
+    padding-right:16px!important;
+}
+
+@media(min-width:768px){
+    .inline-btn {
+        padding:0;
+    }
+.inline-btn .btn {
+    padding:5px 7px;
+}
+}
+
+
+     .dataTables_processing {
+         background-color:#337ab7!important;
+         top:55%!important;
+        
+     }
+
+.ui-pg-input {
+    height: 17px!important;
+}
+
+.ui-dialog-titlebar-close span {
+    margin: -8px!important;
+}
+
+.ui-jqgrid .ui-pg-selbox {
+    font-size: 12px!important;
+    height: 19px!important;
+    width: 50px!important;
+    margin-top: -1px!important;
+}
+.ui-state-default, .ui-widget-content .ui-state-default {
+    font-family: "Trebuchet MS",Arial,Helvetica,sans-serif!important;
+}
+
+.ui-jqgrid {
+    font-size: 12px!important;
+}
+.ui-widget{
+    font-family: "Trebuchet MS",Arial,Helvetica,sans-serif!important;
+}
+
+.ui-state-active, .ui-widget-content .ui-state-active {
+    color: #087fca!important;
+}
+
+.clear-margin {
+    margin:0 !important;
+}
+
+
+td#next_pager {
+    border: 1px solid transparent;
+}
+td#last_pager {
+    border: 1px solid transparent;
+}
+
+td#first_pager {
+    border: 1px solid transparent;
+}
+
+td#prev_pager {
+    border: 1px solid transparent;
+}
+
+
+.ui-jqgrid.col-xs-12{
+    padding-left:0;
+    padding-right:0;
+}

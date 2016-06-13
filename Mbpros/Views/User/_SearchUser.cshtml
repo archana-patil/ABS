@@ -1,0 +1,65 @@
+﻿@model  Mbpros.Models.UserModels
+<table id="divUser" class="table table-striped table-bordered" cellspacing="0" width="98%">
+    <thead>
+        <tr>
+            <th style="display: none;">ID</th>
+            <th>Edit</th>
+            <th>Username</th>
+            <th>Password</th>
+            <th>Office Name</th>
+            <th>Email</th>
+            @*  <th>Account Type</th>*@
+            <th>Delete</th>
+        </tr>
+    </thead>
+    <tbody>
+
+        @if (Model != null)
+        {
+            if (Model.UserList != null)
+            {
+                foreach (var item in Model.UserList)
+                {
+                    var trId = "U" + item.UserId;
+                    <tr id=@trId>
+
+                        <td style="display: none;">
+                            <input type="hidden" name="UID" id="@item.UserId" value="true" />@item.UserId
+                        </td>
+
+                        <td>
+                            <a href="@Url.Action("AddUser", "User", new { userID = item.UserId, message = "" })" >
+                                <img src="~/images/edit.png" alt="Click here to add user">
+                            </a>
+                        </td>
+
+                        <td>@item.UserName</td>
+
+                        <td>@item.Password</td>
+
+                        <td>@item.OfficeName</td>
+
+                        <td>@item.EmailID</td>
+
+                        @*    @{
+                                if (item.IsAdmin)
+                                {  <td>Admin</td>}
+                                else
+                                {  <td>User</td>}
+                            }*@
+
+                        <td>
+                            @if (!item.IsAdmin)
+                            {
+                                <a href="#" class="confirm" onclick="DeleteUser(@item.UserId); return false;">
+                                    <img src="~/images/delete.png" />
+                                </a>
+                            }
+                        </td>
+                    </tr>
+                }
+            }
+        }
+    </tbody>
+</table>
+

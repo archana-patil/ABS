@@ -1,0 +1,141 @@
+﻿@model IEnumerable<Mbpros.DAL.PatientBilling>
+@{
+    Layout = null;
+}
+<html xmlns="https://www.w3.org/1999/xhtml">
+<head>
+    <title></title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width">
+
+    <link href="~/pdf-html/css/style.css" rel="stylesheet" type="text/css">
+        <style>
+            body {
+                text-align: center;
+            }
+            span#SpecialNotes {
+                border: 1px solid #000;
+                border-radius: 3px;
+                display: inline-block;
+                line-height: 25px;
+                min-height: 28px;
+                width: 87.2%;
+            }
+            .Space {
+                    height:0px!important;
+            }
+        </style>
+</head>
+<body>
+    <div class="container PDFBilling">
+        <div class="header">
+            <div class="col-sm-4-Logo">
+                <div class="logoArea">
+                    <img src="~/pdf-html/images/nbpros-logo.png" />
+                </div>
+            </div>
+            <div class="col-sm-4 topLoginForm">
+                <form class="form-inline" role="form">
+                    <div class="form-group">
+                        <label for="email">Office Name:</label>
+                        <span>@Model.FirstOrDefault().OfficeName</span>
+                    </div>
+                    <div class="form-group">
+                        <label for="pwd">Today's Date:</label>
+                        <span>@DateTime.Now.ToShortDateString()</span>
+                    </div>
+
+                </form>
+            </div>
+            <div class="col-sm-4">
+                <div class="PageTitle"><h1>Billing Log Form</h1></div>
+            </div>
+        </div>
+        <hr />
+        <div class="clearfix"></div>
+        <div class="contentSection">
+            <form class="form-horizontal" role="form">
+                @{
+                    <div class="row CustomRow">
+                        <div class="col-sm-5 padd-0">Patient Name</div>
+                        <div class="col-sm-1Heading-1 padd-0">Date(s) of Service</div>
+                        <div class="col-sm-5 padd-0">Procedure Codes</div>
+                        <div class="col-sm-5 padd-0">New DX Codes</div>
+                        <div class="col-sm-1Heading-2 padd-0">CP Type</div>
+                        <div class="col-sm-1Heading-2 col-sm-Amount padd-0">Amount</div>
+                    </div>
+                    foreach (var data in Model)
+                    {
+
+                        <div class="clearfix Space"></div>
+                        <div class="row CustomRow">
+                            <div class="col-sm-5">
+                                <div class="form-group BorderQrap">
+                                    <span>@data.PatientName</span>
+                                </div>
+                            </div>
+                            <div class="servdate">
+                                <div class="form-group BorderQrap">
+                                    @if (data.ServiceDate != null)
+                                    {
+                                        <span>@Convert.ToDateTime(data.ServiceDate).ToString("MM/dd/yyyy") </span>
+                                    }
+                                </div>
+                            </div>
+
+                            <div class="col-sm-5">
+                                <div class="form-group BorderQrap">
+                                    <span>@data.ProcedureCodes</span>
+                                </div>
+                            </div>
+                            <div class="col-sm-5">
+                                <div class="form-group BorderQrap" style="min-height:18px;word-wrap: break-word;">
+                                    <span>@data.DXCode</span>
+                                </div>
+                            </div>
+                            <div class="col-sm-1">
+                                <div class="form-group BorderQrap" style="min-height:18px;word-wrap: break-word;">
+                                   
+                                        @if (data.CoPayType.ToLower() == "cheque")
+                                        { <span>Check @data.ChequeNo </span>}
+                                        else if (data.CoPayType.ToLower() == "cash")
+                                        {<span>Cash</span>}
+                                        else if (data.CoPayType.ToLower() == "creditcard")
+                                        {<span>Credit Card</span>}
+                               
+                            </div>
+                        </div>
+                        <div class="col-sm-1 col-sm-Amount" >
+                            <div class="form-group BorderQrap" style="min-height:18px;word-wrap: break-word;">
+                                @if (data.CopayPaid != null && data.CopayPaid != 0)
+                                { 
+                                <span>$@data.CopayPaid</span>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                    <div class="clearfix"></div>
+                    }
+                }
+
+            </form>
+            <div class="clearfix"></div>
+            <form class="form-inline SpecialNote" role="form">
+                <div class="col-sm-10">
+                    <div class="form-group">
+                        <label for="SpecialNotes"><strong>Special Notes:</strong> </label>
+                        <span id="SpecialNotes">@Model.FirstOrDefault().Note </span>
+                    </div>
+                </div>
+                <!--<div class="col-sm-Button">
+                    <button type="submit" class="btn Dark">Submit</button>
+                    <button type="submit" class="btn Dark">Print Form</button>
+                    <button type="submit" class="btn Dark">Clear Form</button>
+                </div>-->
+            </form>
+        </div>
+        <div class="clearfix"></div>
+        <div class="Footer"></div>
+    </div>
+</body>
+</html>

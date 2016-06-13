@@ -1,0 +1,158 @@
+﻿@model  Mbpros.Models.BillingModel
+@{
+    ViewBag.Title = "BillingSearchArchive";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@Html.Hidden("hdnBID")
+
+<div class="form_border">
+    <form class="form-horizontal customIzeFormELement normal_label">
+        <h2>Archived BLFs </h2>
+         @{
+            if (ViewBag.EditMessage != "" && ViewBag.EditMessage != null)
+            {
+                    <div class="alert alert-success">
+                        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                        <strong>Success!</strong> @ViewBag.EditMessage.
+                    </div>
+            }
+        }
+        <div class="table-responsive">
+            <table id="divArchiveBillingSearch" class="table table-striped table-bordered" cellspacing="0" width="100%">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Pdf</th>
+                        <th>Edit</th>
+                        <th>UnArchive</th>
+                        <th>Date Submit</th>
+                        <th>Office Name</th>
+                        <th>Patient1 Name</th>
+                        <th>Dates of Services</th>
+                        <th>PCodes</th>
+                        <th>DX Codes</th>
+                        <th>Delete</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model != null)
+                    {
+                        if (Model.BillingList != null)
+                        {
+                            foreach (var item in Model.BillingList)
+                            {
+                                var trId = "B" + item.PatientBillingID;
+                        <tr id=@trId>
+
+                            <td>
+                                @item.PatientBillingID
+                            </td>
+                            <td>
+                                <a href="@Url.Action("PDFForPatientBilling", "Billing", new { BillingID = item.PatientBillingID })" target ="_blank">
+                                    <img src="~/images/pdf.gif"></a>
+                            </td>
+                            <td>
+                                <a href="@Url.Action("BillingLog", "Billing", new { BillingID = item.PatientBillingID, callFrom = "BillingSearchArchive" })">
+                                    <img src="~/images/edit.png">
+                                </a>
+                            </td>
+                            <td>
+                                <a href="javascript:void(0);"  class="confirmArchive" onclick="SetBillingID(@item.PatientBillingID);">
+                                    <img src="~/images/unarchive.png">
+                                </a>
+                            </td>
+                            <td>@Convert.ToDateTime(item.CreatedDate).ToString("MM/dd/yyyy")</td>
+                            <td>@item.OfficeName</td>
+                            <td>@item.PatientName</td>
+                            <td>@Convert.ToDateTime(item.ServiceDate).ToString("MM/dd/yyyy")</td>
+                            <td>@item.ProcedureCodes</td>
+                            <td>@item.DXCode</td>
+                            <td>
+                                <a href="javascript:void(0);"  class="confirmDelete" onclick="SetBillingID(@item.PatientBillingID);">
+                                    <img src="~/images/delete.png" />
+                                </a>
+                            </td>
+                        </tr>
+                            }
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+    </form>
+
+</div>
+
+@section Scripts{
+
+
+    <script lang="javascript">
+        $(document).ready(function () {
+            $('#divArchiveBillingSearch').DataTable({
+                aaSorting: [[1, 'desc']]
+            });
+
+            noBack();
+            window.onload = noBack;
+            window.onpageshow = function (evt) { if (evt.persisted) noBack() }
+            window.onunload = function () { void (0) }
+        });
+
+        $(".confirmDelete").confirm({
+            text: "Are you sure you want to delete the billing detail?",
+            title: "Confirmation required",
+            confirm: function (button) {
+                $.ajax({
+                    type: "GET",
+                    url: '@Url.Action("DeleteBillingRecord", "Search")',
+                    data: { patientBillingID: $("#hdnBID").val() },
+                    dataType: "json",
+                    success: function () {
+                        //alert('Billing details has been deleted successfully');
+                        window.location.href = '@Url.Action("BillingSearchArchive", "Search", new { editMessage = "Billing details has been deleted successfully" })';
+                        }
+                });
+            },
+            cancel: function (button) {
+                // nothing to do
+            },
+            confirmButton: "Yes",
+            cancelButton: "No",
+            post: true,
+            confirmButtonClass: "btn-default",
+            cancelButtonClass: "btn-default",
+            dialogClass: "modal-dialog modal-sm" // Bootstrap classes for large modal
+        });
+
+            $(".confirmArchive").confirm({
+                text: "Are you sure you want to un-archive the billing detail?",
+                title: "Confirmation required",
+                confirm: function (button) {
+                    $.ajax({
+                        type: "GET",
+                        url: '@Url.Action("UnarchiveBillingRecord", "Search")',
+                    data: { patientBillingID: $("#hdnBID").val() },
+                    dataType: "json",
+                    success: function () {
+                        //alert('Billing details has been unarchive successfully');
+                        window.location.href = '@Url.Action("BillingSearchArchive", "Search", new { editMessage = "Billing details has been unarchive successfully" })';
+                    }
+                });
+            },
+            cancel: function (button) {
+                // nothing to do
+            },
+            confirmButton: "Yes",
+            cancelButton: "No",
+            post: true,
+            confirmButtonClass: "btn-default",
+            cancelButtonClass: "btn-default",
+            dialogClass: "modal-dialog modal-sm" // Bootstrap classes for large modal
+        });
+
+        function SetBillingID(PatientBillingID) {
+            $("#hdnBID").val(PatientBillingID);
+        }
+    </script>
+}

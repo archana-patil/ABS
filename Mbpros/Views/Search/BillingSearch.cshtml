@@ -1,0 +1,202 @@
+﻿@model  Mbpros.Models.BillingModel
+@{
+    ViewBag.Title = "BillingSearch";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<div class="form_border">
+    <form class="form-horizontal customIzeFormELement normal_label" id="BillingSearch">
+        <h2>Billing Log Form Manager </h2>
+        @{
+            if (ViewBag.EditMessage != "" && ViewBag.EditMessage != null)
+            {
+                <div class="alert alert-success">
+                    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                    <strong>Success!</strong> @ViewBag.EditMessage.
+                </div>
+            }
+        }
+
+
+        <div class="custom-seach-wrap">
+            <div class="row">
+                <div class="col-sm-3 big-3">
+                    <div class="form-group">
+                        <label for="inputEmail3" class="col-sm-5 control-label">Patient Name</label>
+                        <div class="col-sm-7">
+
+                            @Html.TextBoxFor(model => model.PatientName, new { @class = "form-control input-sm", @maxlength = "100", id="PatientName"  })
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-3 big-3">
+                    <div class="form-group">
+                        <label for="inputEmail3" class="col-sm-5 control-label">Form ID</label>
+                        <div class="col-sm-7">
+
+                            @Html.TextBoxFor(model => model.FormId, new { @class = "form-control input-sm" , @id="FormId", @maxlength = "8"})                        
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-3 big-3">
+                    <div class="form-group">
+                        <label for="inputEmail3" class="col-sm-5 control-label">Service Date</label>
+                        <div class="col-sm-7">
+
+                            @Html.TextBoxFor(model => model.ServiceDate, new { @class = "form-control input-sm datetimepicker", onkeydown = "return false", id="ServiceDate" })
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-3 big-3">
+                    <div class="form-group date-row">
+                        <label for="inputEmail3" class="col-sm-5 control-label">Submission date</label>
+                        <div class="col-xs-3 dash">
+                            @Html.TextBoxFor(model => model.SubFrom, new { @class = "form-control input-sm datetimepicker", @placeholder = "from", onkeydown = "return false", id="SubFrom" })
+                           
+                        </div>
+                        <div class="col-xs-3">
+                            @Html.TextBoxFor(model => model.SubTo, new { @class = "form-control input-sm datetimepicker", @placeholder = "to", onkeydown = "return false" , id="SubTo"})
+                        
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-3 big-3">
+                    <div class="form-group">
+                        <label for="inputEmail3" class="col-sm-5 control-label">Form Type</label>
+                        <div class="col-sm-7">
+                            @Html.DropDownListFor(model => model.ArchiveOption, Model.OptionList, new { id = "ddlOption", @class = "form-control input-sm" })
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-1 inline-btn">
+                    <button class="btn btn-primary btn-sm" id="btnSearchBilling"><i class="fa fa-search"></i></button>
+                    <button class="btn btn-primary btn-sm" id="btnReset" ><i class="fa fa-refresh"></i></button>
+                </div>
+            </div>
+        </div>
+    </form>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="jqGrid">
+                <table id="divBillingSearch" class="scroll"></table>
+                <div id="pager" class="scroll" style="text-align: center;"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+
+    <script src="~/Scripts/partialviewJS.js"></script>
+    <script lang="javascript">
+        var gridUrl = '@Url.Action("DynamicGridData4", "Search")';
+        var rowCount = 10;
+        var filters = new Array();
+        var pageNumber = 1;
+
+        $(document).ready(function () {
+            isLoggedIn();
+            $('#btnSearchBilling').click(function (e) {
+                SearchData();
+                return false;
+            });
+
+            $('#btnReset').click(function (e) {
+                $("#PatientName").val('');
+                $("#FormId").val('');
+                $("#ServiceDate").val('');
+                $("#SubFrom").val('');
+                $("#SubTo").val('');
+                $("#ddlOption").val(0);
+                SearchData();
+                return false;
+            });
+
+            $("#divBillingSearch").jqGrid({
+                url: gridUrl,
+                datatype: 'json',
+                mtype: 'POST',
+                postData: { page: "pageIndex", rows: "pageSize", sidx: "sortIndex", sord: "sortDirection", "filters": filters, "firstLoading": false },
+            //'Edit',                
+            //{
+            //    name: "PatientBillingID", index: "PatientBillingID", width: 70, align: 'center', formatter: function (data) {
+            //        return '<a href="/Billing/BillingLog?BillingID=' + data + '&callFrom=BillingSearch"><img src="/images/edit.png"></a>'
+            //    }
+            //},
+                colNames: ['ID', 'Pdf','Status', 'Submit Date', 'Office Name', 'Patient1 Name', 'Dates of Services', 'PCodes', 'DX Codes', 'Special Note'],
+                colModel: [
+                        { name: "PatientBillingID", index: "PatientBillingID", width: 40 },
+                       {
+                           name: "PatientBillingID", index: "PatientBillingID", width: 40, align: 'center', formatter: function (data) {
+                               return '<a href="/Billing/PDFForPatientBilling?BillingID=' + data + '" target="_blank"><img src="/images/pdf.gif"></a>'
+                           }
+                       },
+                       { name: "IsArchived", index: "IsArchived", width: 90, formatter: function (data) { return data == true ? "Archived" : "Un-Archived" } },
+                       { name: "CreatedDate", index: "CreatedDate", width: 80 },
+                       { name: "OfficeName", index: "OfficeName", width: 90 },
+                       { name: "PatientName", index: "PatientName", width: 145 },
+                       { name: "ServiceDate", index: "ServiceDate", width: 80 },
+                       { name: "ProcedureCodes", index: "ProcedureCodes", width: 200 },
+                       { name: "DXCode", index: "DXCode", width: 180 },
+                       { name: "Note", index: "Note", width: 150 }
+                ],
+                gridComplete: function () {                   
+                    $('.ui-jqgrid-titlebar-close', '#divBillingSearch').remove();
+                    rowCount = $('#divBillingSearch').jqGrid('getGridParam', 'rowNum');
+
+                    var totalRecords = parseInt($("#divBillingSearch").getGridParam("records"));
+                    var miniumValue = parseInt($('#pager_center select option:first-child').val());
+                    if (totalRecords <= miniumValue) {
+                        $('#pager_center input').attr("disabled", true);
+                        $('#pager_center select').attr("disabled", true);
+                    }
+                    else if (totalRecords <= rowCount) {
+                        $('#pager_center input').attr("disabled", true);
+                        $('#pager_center select').attr("disabled", false);
+                    }
+                    else {
+                        $('#pager_center input').attr("disabled", false);
+                        $('#pager_center select').attr("disabled", false);
+                    }
+                    pageNumber = $("#divBillingSearch").jqGrid('getGridParam', 'page');
+                    $('#pager_center select').val(rowCount);
+
+                },
+                //scrollOffset: 0,
+                //grouping: true,
+                pager: jQuery('#pager'),
+                rowNum: rowCount,
+                height: 'auto',
+                //autowidth: true,
+                rowList: [10, 20, 50, 100],
+                //sortname: 'PatientBillingID',
+                //sortorder: "asc",
+                viewrecords: true,
+                resizable: false,
+                //shrinkToFit: true,
+                beforeRequest: function () {
+                    responsive_jqgrid($(".jqGrid"));
+                },
+                cmTemplate: { sortable: false }
+            });
+        });
+
+        function SearchData() {
+            isLoggedIn();
+            var PatientName = $("#PatientName").val();
+            var FormId = $("#FormId").val();
+            var SubFrom = $("#SubFrom").val();
+            var SubTo = $("#SubTo").val();
+            var ServiceDate = $("#ServiceDate").val();
+            var ArchiveOption = $("#ddlOption").val();
+            var IsBack = false;
+            filters = {
+                PatientName: PatientName, FormId: FormId, SubFrom: SubFrom, SubTo: SubTo, ServiceDate: ServiceDate, ArchiveOption: ArchiveOption, IsBack: false
+            };
+            pageNumber = 1;
+            $("#divBillingSearch").jqGrid('setGridParam', { search: true, postData: { "filters": filters, "firstLoading": false } }).trigger("reloadGrid", [{ page: pageNumber }]);
+        }
+    </script>
+}
+

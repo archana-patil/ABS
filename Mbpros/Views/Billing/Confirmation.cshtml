@@ -1,0 +1,35 @@
+﻿@{
+    ViewBag.Title = "Confirmation";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<div class="ContentArea customIzeFormELement">
+
+    <h3>Thank you!</h3>
+    <p>Thank you! Your Billing Log Form has been submitted.</p>
+    <p>Click <a href="@Url.Action("BillingLog", "Billing")">here</a> if you would like to submit another billing form.</p>
+    <p></p>
+    <p></p>
+    <p><a style="font-size: 10pt;" href="@Url.Action("PDFForPatientBilling", "Billing", new { billingID = @ViewBag.BillingFormID }) " target="_blank">View and Print PDF Form</a></p>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+</div>
+@section Scripts{
+    <script lang="javascript">
+        //$(document).ready(function () {
+        //    noBack();
+        //    window.onload = noBack;
+        //    window.onpageshow = function (evt) { if (evt.persisted) noBack() }
+        //    window.onunload = function () { void (0) }
+        //});
+    </script>
+}

@@ -1,0 +1,222 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="MbprosModel.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2008" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityContainer Name="MbprosModelStoreContainer">
+    <EntitySet Name="Config" EntityType="MbprosModel.Store.Config" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Feature_User" EntityType="MbprosModel.Store.Feature_User" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="FeatureMaster" EntityType="MbprosModel.Store.FeatureMaster" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="PatientBilling" EntityType="MbprosModel.Store.PatientBilling" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="PatientMaster" EntityType="MbprosModel.Store.PatientMaster" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="States" EntityType="MbprosModel.Store.States" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="UserProfile" EntityType="MbprosModel.Store.UserProfile" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Users" EntityType="MbprosModel.Store.Users" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="webpages_Membership" EntityType="MbprosModel.Store.webpages_Membership" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="webpages_OAuthMembership" EntityType="MbprosModel.Store.webpages_OAuthMembership" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="webpages_Roles" EntityType="MbprosModel.Store.webpages_Roles" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="webpages_UsersInRoles" EntityType="MbprosModel.Store.webpages_UsersInRoles" store:Type="Tables" Schema="dbo" />
+    <AssociationSet Name="fk_RoleId" Association="MbprosModel.Store.fk_RoleId">
+      <End Role="webpages_Roles" EntitySet="webpages_Roles" />
+      <End Role="webpages_UsersInRoles" EntitySet="webpages_UsersInRoles" />
+    </AssociationSet>
+    <AssociationSet Name="fk_UserId" Association="MbprosModel.Store.fk_UserId">
+      <End Role="UserProfile" EntitySet="UserProfile" />
+      <End Role="webpages_UsersInRoles" EntitySet="webpages_UsersInRoles" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="Config">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="key" Type="varchar" MaxLength="50" />
+    <Property Name="value" Type="varchar" MaxLength="50" />
+    <Property Name="shortDesc" Type="varchar" MaxLength="50" />
+    <Property Name="longDesc" Type="varchar" MaxLength="50" />
+    <Property Name="ExtraLongDEsc" Type="varchar" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="Feature_User">
+    <Key>
+      <PropertyRef Name="FeatureUserID" />
+    </Key>
+    <Property Name="FeatureUserID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="FeatureID" Type="int" Nullable="false" />
+    <Property Name="UserID" Type="int" Nullable="false" />
+    <Property Name="CanView" Type="bit" Nullable="false" />
+  </EntityType>
+  <EntityType Name="FeatureMaster">
+    <Key>
+      <PropertyRef Name="FeatureID" />
+    </Key>
+    <Property Name="FeatureID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="FeatureName" Type="varchar" Nullable="false" MaxLength="25" />
+    <Property Name="IsAdminForm" Type="bit" Nullable="false" />
+  </EntityType>
+  <EntityType Name="PatientBilling">
+    <Key>
+      <PropertyRef Name="BillingFormID" />
+    </Key>
+    <Property Name="BillingFormID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="PatientBillingID" Type="int" Nullable="false" />
+    <Property Name="OfficeName" Type="varchar" Nullable="false" MaxLength="100" />
+    <Property Name="PatientName" Type="varchar" Nullable="false" MaxLength="100" />
+    <Property Name="ServiceDate" Type="datetime" Nullable="false" />
+    <Property Name="CoPayType" Type="varchar" MaxLength="10" />
+    <Property Name="ChequeNo" Type="varchar" MaxLength="15" />
+    <Property Name="CopayPaid" Type="decimal" Scale="2" />
+    <Property Name="ProcedureCodes" Type="varchar" Nullable="false" MaxLength="50" />
+    <Property Name="DXCode" Type="varchar" Nullable="false" MaxLength="50" />
+    <Property Name="Note" Type="varchar" MaxLength="1000" />
+    <Property Name="SrNo" Type="int" Nullable="false" />
+    <Property Name="Active" Type="bit" Nullable="false" />
+    <Property Name="IsArchived" Type="bit" Nullable="false" />
+    <Property Name="CreatedBy" Type="int" Nullable="false" />
+    <Property Name="CreatedDate" Type="datetime" Nullable="false" />
+    <Property Name="UpdatedBy" Type="int" />
+    <Property Name="UpdatedDate" Type="datetime" />
+  </EntityType>
+  <EntityType Name="PatientMaster">
+    <Key>
+      <PropertyRef Name="PatientID" />
+    </Key>
+    <Property Name="PatientID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="OfficeName" Type="varchar" Nullable="false" MaxLength="50" />
+    <Property Name="PatientName" Type="varchar" Nullable="false" MaxLength="50" />
+    <Property Name="StreetAddress" Type="varchar" Nullable="false" MaxLength="200" />
+    <Property Name="City" Type="varchar" Nullable="false" MaxLength="200" />
+    <Property Name="StateCode" Type="char" Nullable="false" MaxLength="2" />
+    <Property Name="ZipCode" Type="varchar" Nullable="false" MaxLength="10" />
+    <Property Name="DateofBirth" Type="datetime" />
+    <Property Name="SSN" Type="varchar" MaxLength="11" />
+    <Property Name="Sex" Type="char" Nullable="false" MaxLength="1" />
+    <Property Name="InsuranceCompanyName" Type="varchar" Nullable="false" MaxLength="50" />
+    <Property Name="InsuranceCompanyAddress" Type="varchar" MaxLength="200" />
+    <Property Name="InsuranceCompanyPhone" Type="varchar" MaxLength="12" />
+    <Property Name="EDIPayerNumber" Type="varchar" MaxLength="20" />
+    <Property Name="PolicyID" Type="varchar" Nullable="false" MaxLength="20" />
+    <Property Name="GroupNumber" Type="varchar" MaxLength="20" />
+    <Property Name="IsInsured" Type="bit" />
+    <Property Name="PrimaryInsuredName" Type="varchar" MaxLength="50" />
+    <Property Name="PrimaryInsuredDOB" Type="datetime" />
+    <Property Name="ConditionRelatedTo" Type="char" MaxLength="1" />
+    <Property Name="DateofAccident" Type="datetime" />
+    <Property Name="InsuranceFax" Type="varchar" MaxLength="12" />
+    <Property Name="AdjusterName" Type="varchar" MaxLength="50" />
+    <Property Name="IsSecondaryInsurance" Type="bit" />
+    <Property Name="SecondaryInsuranceCompanyName" Type="varchar" MaxLength="50" />
+    <Property Name="SecondaryInsuranceCompanyAddr" Type="varchar" MaxLength="200" />
+    <Property Name="SecondaryInsuranceCompanyPhone" Type="varchar" MaxLength="12" />
+    <Property Name="SecondaryInsuranceID" Type="varchar" MaxLength="20" />
+    <Property Name="SecondaryInsuranceGroupID" Type="varchar" MaxLength="20" />
+    <Property Name="SecondaryInsuredName" Type="varchar" MaxLength="50" />
+    <Property Name="SecondaryInsuredDOB" Type="datetime" />
+    <Property Name="FacilityName" Type="varchar" MaxLength="50" />
+    <Property Name="AdmissionDate" Type="datetime" />
+    <Property Name="LastSeenByRefProvider" Type="datetime" />
+    <Property Name="ReferringProviderName" Type="varchar" MaxLength="50" />
+    <Property Name="ReferringProviderNPI" Type="varchar" MaxLength="20" />
+    <Property Name="InitialTreatmentDate" Type="datetime" />
+    <Property Name="LastXRayDateORPARTCodes" Type="varchar" MaxLength="100" />
+    <Property Name="DiagnosisCodes" Type="varchar" MaxLength="100" />
+    <Property Name="AdditionalInfo" Type="varchar" MaxLength="200" />
+    <Property Name="Active" Type="bit" Nullable="false" />
+    <Property Name="IsArchived" Type="bit" Nullable="false" />
+    <Property Name="CreatedBy" Type="int" Nullable="false" />
+    <Property Name="CreatedDate" Type="datetime" Nullable="false" />
+    <Property Name="UpdatedBy" Type="int" />
+    <Property Name="UpdatedDate" Type="datetime" />
+  </EntityType>
+  <EntityType Name="States">
+    <Key>
+      <PropertyRef Name="StateID" />
+    </Key>
+    <Property Name="StateID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="StateName" Type="varchar" Nullable="false" MaxLength="50" />
+    <Property Name="StateCode" Type="char" Nullable="false" MaxLength="2" />
+  </EntityType>
+  <EntityType Name="UserProfile">
+    <Key>
+      <PropertyRef Name="UserId" />
+    </Key>
+    <Property Name="UserId" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="UserName" Type="nvarchar" Nullable="false" MaxLength="56" />
+  </EntityType>
+  <EntityType Name="Users">
+    <Key>
+      <PropertyRef Name="UserId" />
+    </Key>
+    <Property Name="UserId" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="UserName" Type="varchar" Nullable="false" MaxLength="50" />
+    <Property Name="Password" Type="varchar" Nullable="false" MaxLength="50" />
+    <Property Name="OfficeName" Type="varchar" Nullable="false" MaxLength="100" />
+    <Property Name="EmailID" Type="varchar" Nullable="false" MaxLength="100" />
+    <Property Name="Status" Type="bit" Nullable="false" />
+    <Property Name="IsAdmin" Type="bit" Nullable="false" />
+    <Property Name="CreatedDate" Type="datetime" Nullable="false" />
+    <Property Name="CreatedBy" Type="int" Nullable="false" />
+    <Property Name="UpdatedDate" Type="datetime" />
+    <Property Name="UpdatedBy" Type="int" />
+  </EntityType>
+  <EntityType Name="webpages_Membership">
+    <Key>
+      <PropertyRef Name="UserId" />
+    </Key>
+    <Property Name="UserId" Type="int" Nullable="false" />
+    <Property Name="CreateDate" Type="datetime" />
+    <Property Name="ConfirmationToken" Type="nvarchar" MaxLength="128" />
+    <Property Name="IsConfirmed" Type="bit" />
+    <Property Name="LastPasswordFailureDate" Type="datetime" />
+    <Property Name="PasswordFailuresSinceLastSuccess" Type="int" Nullable="false" />
+    <Property Name="Password" Type="nvarchar" Nullable="false" MaxLength="128" />
+    <Property Name="PasswordChangedDate" Type="datetime" />
+    <Property Name="PasswordSalt" Type="nvarchar" Nullable="false" MaxLength="128" />
+    <Property Name="PasswordVerificationToken" Type="nvarchar" MaxLength="128" />
+    <Property Name="PasswordVerificationTokenExpirationDate" Type="datetime" />
+  </EntityType>
+  <EntityType Name="webpages_OAuthMembership">
+    <Key>
+      <PropertyRef Name="Provider" />
+      <PropertyRef Name="ProviderUserId" />
+    </Key>
+    <Property Name="Provider" Type="nvarchar" Nullable="false" MaxLength="30" />
+    <Property Name="ProviderUserId" Type="nvarchar" Nullable="false" MaxLength="100" />
+    <Property Name="UserId" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="webpages_Roles">
+    <Key>
+      <PropertyRef Name="RoleId" />
+    </Key>
+    <Property Name="RoleId" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="RoleName" Type="nvarchar" Nullable="false" MaxLength="256" />
+  </EntityType>
+  <EntityType Name="webpages_UsersInRoles">
+    <Key>
+      <PropertyRef Name="UserId" />
+      <PropertyRef Name="RoleId" />
+    </Key>
+    <Property Name="UserId" Type="int" Nullable="false" />
+    <Property Name="RoleId" Type="int" Nullable="false" />
+  </EntityType>
+  <Association Name="fk_RoleId">
+    <End Role="webpages_Roles" Type="MbprosModel.Store.webpages_Roles" Multiplicity="1" />
+    <End Role="webpages_UsersInRoles" Type="MbprosModel.Store.webpages_UsersInRoles" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="webpages_Roles">
+        <PropertyRef Name="RoleId" />
+      </Principal>
+      <Dependent Role="webpages_UsersInRoles">
+        <PropertyRef Name="RoleId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="fk_UserId">
+    <End Role="UserProfile" Type="MbprosModel.Store.UserProfile" Multiplicity="1" />
+    <End Role="webpages_UsersInRoles" Type="MbprosModel.Store.webpages_UsersInRoles" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="UserProfile">
+        <PropertyRef Name="UserId" />
+      </Principal>
+      <Dependent Role="webpages_UsersInRoles">
+        <PropertyRef Name="UserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+</Schema>

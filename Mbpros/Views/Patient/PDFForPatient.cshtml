@@ -1,0 +1,555 @@
+﻿@model  Mbpros.DAL.PatientMaster
+@{
+    Layout = null;
+}
+<html xmlns="https://www.w3.org/1999/xhtml">
+<head>
+    <title></title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width">
+
+    <link href="~/pdf-html/css/style.css" rel="stylesheet" type="text/css">
+
+</head>
+<body>
+    <div class="container PatientInfo newStyles">
+        <div class="headerPatientinfo">
+            <div class="col-sm-4">
+                <div class="logoArea"><img src="~/pdf-html/images/nbpros-logo.png"></div>
+
+            </div>
+            <div class="col-sm-8 TitleRightAlign">
+                <div class="PageTitle"><h1>Patient Information Form</h1></div>
+
+            </div>
+        </div>
+        <hr />
+
+        <div class="clearfix"></div>
+        <div class="PatientContentSection">
+            <form class="form-horizontal" role="form">
+                <div class="row OfficeName">
+                    <div class="col-sm-9">
+                        <div class="form-group">
+                            <label class="control-label col-sm-2" for="OfficeName:">Office Name:</label>
+
+                            <div class="col-sm-9">
+                                <span class="dynamicLbl">@Model.OfficeName</span>
+
+
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="form-group">
+                            <label class="control-label" for="TodayDate">Today's Date:</label>
+
+                            <div class="col-sm-4" style="border:1px solid #ccc;min-height:18px;width: 83px!important; padding:5px 15px;">
+                                <span class="dynamicLbl">@DateTime.Now.ToString("MM/dd/yyyy")</span>
+
+
+
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row PatientName">
+                    <div class="col-sm-9 ">
+                        <div class="form-group">
+                            <label class="control-label col-sm-2" for="OfficeName:">Patient Name:</label>
+
+                            <div class="col-sm-9">
+
+                                <span class="dynamicLbl"> @Model.PatientName </span>
+
+
+
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row PatAddresswrap">
+                    <div class="col-sm-6 AddressSpace">
+                        <div class="form-group">
+                            <label class="control-label col-sm-3" for="OfficeName:" style="float:left; margin-right:5px;">Patient Address: </label>
+                            <div class="col-sm-8">
+                                <span class="dynamicLbl"> @Model.StreetAddress</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-2 StateSpace">
+                        <div class="form-group">
+                            <label class="control-label" for="OfficeName:" style="float:left; margin-right:5px;">City:</label>
+                            <div class="col-sm-6">
+                                <span class="dynamicLbl"> @Model.City</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-2 CitySpace">
+                        <div class="form-group">
+                            <label class="control-label" for="OfficeName:" style="float:left; margin-right:5px;">State:</label>
+                            <div class="col-sm-8">
+                                <span class="dynamicLbl"> @Model.StateCode</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-2 ZipSpace">
+                        <div class="form-group">
+                            <label class="control-label" for="OfficeName:" style="float:left; margin-right:5px;">Zip:</label>
+                            <div class="col-sm-8">
+                                <span class="dynamicLbl">@Model.ZipCode</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="clearfix"></div>
+
+                </div>
+                <div class="clearfix"></div>
+                <div class="row PatentDetail">
+                    <div class="col-sm-3 PatentDob">
+                        <div class="form-group">
+                            <label class="control-label col-sm-3" for="OfficeName:">Patient DOB:</label>
+                            <div class="col-sm-9">
+                                @if (Model.DateofBirth != null)
+                                {
+                                    <span class="dynamicLbl">@Convert.ToDateTime(Model.DateofBirth).ToString("MM/dd/yyyy") </span>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-4" style="width:300px;">
+                        <div class="form-group PatentSex">
+                            <label class="control-label col-sm-3" for="OfficeName:">Patient Sex:</label>
+                            <div>
+                                <span class="dynamicLbl"> @Model.Sex </span>
+
+
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="form-group">
+                            <label class="control-label col-sm-3" for="OfficeName:">Patient SSN #:</label>
+                            <div class="col-sm-9" style="border:1px solid #ccc; padding:5px; line-height:22px;">
+                                <span class="dynamicLbl">  @Model.SSN</span>
+
+
+
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row GroupInfo">
+                    <div class="col-sm-6 GroupF">
+                        <div class="form-group">
+                            <label class="control-label col-sm-3" for="OfficeName:">ID #/Claim #:</label>
+                            <div class="col-sm-8">
+                                <span class="dynamicLbl">@Model.PolicyID </span>
+
+
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-5">
+                        <div class="form-group">
+                            <label class="control-label col-sm-3" for="OfficeName:">Group #:</label>
+                            <div class="col-sm-9">
+                                <span class="dynamicLbl">@Model.GroupNumber </span>
+
+
+
+
+
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="row InsuranceInfo">
+                    <div class="col-sm-9">
+                        <div class="form-group">
+                            <label class="control-label col-sm-3" for="OfficeName:" style="float:left; margin-right:5px;">Insurance Co.:</label>
+                            <div class="col-sm-8" style="float:left;">
+                                <span class="dynamicLbl"> @Model.InsuranceCompanyName </span>
+
+
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-5">
+                        <div class="form-group">
+                            <label class="control-label col-sm-3" for="OfficeName:" style="float:left; margin-right:5px;">EDI Payer #:</label>
+                            <div class="col-sm-9" style="float:left;">
+                                <span class="dynamicLbl"> @Model.EDIPayerNumber </span>
+
+
+
+
+
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="row ">
+                    <div class="col-sm-9">
+                        <div class="form-group">
+                            <label class="control-label col-sm-2" for="OfficeName:">Insurance Address:</label>
+                            <div class="col-sm-9" style="border:1px solid #ccc;line-height:22px;min-height:22px; padding:5px; width:820px;">
+                                <span class="dynamicLbl">@Model.InsuranceCompanyAddress  </span>
+
+
+
+
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row InsuranceAddress">
+                    <div class="col-sm-9">
+                        <div class="form-group">
+                            <label class="control-label col-sm-2" for="OfficeName:">Insurance Phone:</label>
+                            <div class="col-sm-9" style="width:300px;">
+                                <span class="dynamicLbl">@Model.InsuranceCompanyPhone  </span>
+
+
+
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row InsurerDetail">
+                    <div class="col-sm-6 InsuredName">
+                        <div class="form-group">
+                            <label class="control-label col-sm-3" for="OfficeName:">Insured Name:</label>
+                            <div class="col-sm-8">
+                                <span class="dynamicLbl"> @Model.PrimaryInsuredName  </span>
+
+
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-5">
+                        <div class="form-group">
+                            <label class="control-label col-sm-3" for="OfficeName:">Insured DOB:</label>
+                            <div class="col-sm-9">
+                                @if (Model.PrimaryInsuredDOB != null)
+                                {
+                                    <span class="dynamicLbl">@Convert.ToDateTime(Model.PrimaryInsuredDOB).ToString("MM/dd/yyyy") </span>
+                                }
+
+
+
+
+
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="row ConditionRE">
+                    <div class="col-sm-7">
+                        <div class="form-group">
+                            <label class="control-label col-sm-3" for="OfficeName:">Condition Related To:</label>
+                            <div class="col-sm-9">
+                                <span class="checkButton" style="padding:5px 0; display:inline-block;">
+
+                                    @if (Model.ConditionRelatedTo == "N")
+                                    {
+                                        <input type="checkbox" style="margin: 3px 3px 3px 4px;" name="" value="None" checked="checked" /><span>None</span>
+                                        <input type="checkbox" style="margin: 3px 3px 3px 4px;" name="" /><span>Employment</span>
+                                        <input type="checkbox" style="margin: 3px 3px 3px 4px;" name="" value="Auto" /><span>Auto</span>
+                                        <input type="checkbox" style="margin: 3px 3px 3px 4px;" name="" value="Other" /><span>Other</span>
+                                    }
+                                    else if (Model.ConditionRelatedTo == "E")
+                                    {
+                                        <input type="checkbox" style="margin: 3px 3px 3px 4px;" name="" value="None" /><span>None</span>
+                                        <input type="checkbox" style="margin: 3px 3px 3px 4px;" name="" checked="checked" /><span>Employment</span>
+                                        <input type="checkbox" style="margin: 3px 3px 3px 4px;" name="" value="Auto" /><span>Auto</span>
+                                        <input type="checkbox" style="margin: 3px 3px 3px 4px;" name="" value="Other" /><span>Other</span>
+                                    }
+                                    else if (Model.ConditionRelatedTo == "A")
+                                    {
+                                        <input type="checkbox" style="margin: 3px 3px 3px 4px;" name="" value="None" /><span>None</span>
+                                        <input type="checkbox" style="margin: 3px 3px 3px 4px;" name="" /><span>Employment</span>
+                                        <input type="checkbox" style="margin: 3px 3px 3px 4px;" name="" value="Auto" checked="checked" /><span>Auto</span>
+                                        <input type="checkbox" style="margin: 3px 3px 3px 4px;" name="" value="Other" /><span>Other</span>
+                                    }
+                                    else if (Model.ConditionRelatedTo == "O")
+                                    {
+                                        <input type="checkbox" style="margin: 3px 3px 3px 4px;" name="" value="None" /><span>None</span>
+                                        <input type="checkbox" style="margin: 3px 3px 3px 4px;" name="" /><span>Employment</span>
+                                        <input type="checkbox" style="margin: 3px 3px 3px 4px;" name="" value="Auto" /><span>Auto</span>
+                                        <input type="checkbox" style="margin: 3px 3px 3px 4px;" name="" value="Other" checked="checked" /><span>Other</span>
+                                    }
+                                    else
+                                    {
+                                        <input type="checkbox" style="margin: 3px 3px 3px 4px;" name="" value="None" /><span>None</span>
+                                        <input type="checkbox" style="margin: 3px 3px 3px 4px;" name="" /><span>Employment</span>
+                                        <input type="checkbox" style="margin: 3px 3px 3px 4px;" name="" value="Auto" /><span>Auto</span>
+                                        <input type="checkbox" style="margin: 3px 3px 3px 4px;" name="" value="Other" /><span>Other</span>
+                                    }
+
+
+
+
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="form-group">
+                            <label class="control-label col-sm-3" for="OfficeName:">Injury Date:</label>
+                            <div class="col-sm-9" style="width: 83px!important;">
+
+                                @if (Model.DateofAccident != null)
+                                {
+                                    <span class="dynamicLbl">@Convert.ToDateTime(Model.DateofAccident).ToString("MM/dd/yyyy") </span>
+                                }
+
+
+
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="row SecondoryInsu">
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label class="control-label col-sm-4" for="OfficeName:">Adjuster Name:</label>
+                            <div class="col-sm-8">
+                                <span class="dynamicLbl"> @Model.AdjusterName </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-5">
+                        <div class="form-group">
+                            <label class="control-label col-sm-5" for="OfficeName:">Insurance Fax #:</label>
+                            <div class="col-sm-4">
+                                <span class="dynamicLbl">@Model.InsuranceFax </span>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="row SecondoryInsu">
+
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label class="control-label col-sm-4" for="OfficeName:">Secondary Insurance Co.:</label>
+                            <div class="col-sm-8">
+                                <span class="dynamicLbl">@Model.SecondaryInsuranceCompanyName</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-5">
+                        <div class="form-group">
+                            <label class="control-label col-sm-5" for="OfficeName:">Secondary Insurance Phone:</label>
+                            <div class="col-sm-4">
+                                <span class="dynamicLbl"> @Model.SecondaryInsuranceCompanyPhone </span>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="row SecondoryInsuDetail">
+                    <div class="col-sm-6 GroupF">
+                        <div class="form-group">
+                            <label class="control-label col-sm-4" for="OfficeName:">Secondary Insurance ID #:</label>
+                            <div class="col-sm-8">
+                                <span class="dynamicLbl"> @Model.SecondaryInsuranceID </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-5">
+                        <div class="form-group">
+                            <label class="control-label" for="OfficeName:">Secondary Insurance Group #:</label>
+                            <div class="col-sm-4">
+                                <span class="dynamicLbl"> @Model.SecondaryInsuranceGroupID </span>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="row SecondoryInsuName">
+                    <div class="col-sm-6 GroupF">
+                        <div class="form-group">
+                            <label class="control-label col-sm-4" for="OfficeName:">Secondary Insured Name:</label>
+                            <div class="col-sm-8">
+                                <span class="dynamicLbl"> @Model.SecondaryInsuredName </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-5">
+                        <div class="form-group">
+                            <label class="control-label col-sm-4" for="OfficeName:">Secondary Insured DOB:</label>
+                            <div class="col-sm-4" style="border:1px solid #ccc; padding:5px; line-height:22px;min-height:22px; width: 83px!important;">
+                                @if (Model.SecondaryInsuredDOB != null)
+                                {
+                                    <span class="dynamicLbl">@Convert.ToDateTime(Model.SecondaryInsuredDOB).ToString("MM/dd/yyyy") </span>
+                                }
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="row MedicareWrap ">
+                    <div class="col-sm-6 GroupF">
+                        <div class="form-group">
+                            <label class="control-label col-sm-7" for="OfficeName:"><strong> For Chiropractice Medicare Claims: </strong></label>
+                        </div>
+                    </div>
+                </div>
+                <div class="row MedicareWrap ">
+                    <div class="col-sm-6 GroupF">
+                        <div class="form-group">
+                            <label class="control-label col-sm-5" for="OfficeName:">Initial Txt Date:</label>
+                            <div class="col-sm-9" style="border:1px solid #ccc;line-height:22px;min-height:22px; padding:5px;width: 83px!important;">
+                                @if (Model.InitialTreatmentDate != null)
+                                {
+                                    <span class="dynamicLbl">@Convert.ToDateTime(Model.InitialTreatmentDate).ToString("MM/dd/yyyy") </span>
+                                }
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="col-sm-5" style="width:450px;">
+                        <div class="form-group">
+                            <label class="control-label col-sm-5" for="OfficeName:">X-Ray Date or PART Codes:</label>
+                            <div class="col-sm-4" style="border:1px solid #ccc; width:200px; line-height:22px;min-height:22px; padding:5px;">
+                                <span class="dynamicLbl">@Model.LastXRayDateORPARTCodes</span>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="row NursingHome">
+                    <div class="col-sm-6 GroupF">
+                        <div class="form-group">
+                            <label class="control-label col-sm-5" for="OfficeName:"><strong> Referring Provider Information: </strong></label>
+                            <div class="col-sm-5"></div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label class="control-label col-sm-6" for="OfficeName:">Date Last Seen by Referring Provider:</label>
+                            <div class="col-sm-4" style="border:1px solid #ccc;line-height:22px;min-height:22px;width: 83px!important; padding:5px;">
+                                @if (Model.LastSeenByRefProvider != null)
+                                {
+                                    <span class="dynamicLbl">@Convert.ToDateTime(Model.LastSeenByRefProvider).ToString("MM/dd/yyyy")</span>
+                                }
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="row ReferringProvider">
+                    <div class="col-sm-6 GroupF">
+                        <div class="form-group">
+                            <label class="control-label col-sm-5" for="OfficeName:">Referring Provider Name:</label>
+                            <div class="col-sm-5" style="border:1px solid #ccc; line-height:22px;min-height:22px; padding:5px; width:60%">
+                                <span class="dynamicLbl">@Model.ReferringProviderName</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label class="control-label col-sm-6" for="OfficeName:">Referring Provider NPI:</label>
+                            <div class="col-sm-4" style="border:1px solid #ccc; line-height:22px;min-height:22px; width:250px; padding:5px;">
+                                <span class="dynamicLbl">@Model.ReferringProviderNPI</span>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="row HospitalWrap">
+                    <div class="col-sm-6 GroupF">
+                        <div class="form-group">
+                            <label class="control-label col-sm-6" for="OfficeName:"><strong> If Seen in a Hospital or Nursing Home: </strong></label>
+                            <div class="col-sm-5"></div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label class="control-label col-sm-6" for="OfficeName:">Date of Admission to Facility:</label>
+                            <div class="col-sm-4" style="border:1px solid #ccc; line-height:22px;min-height:22px; width: 100px!important; padding:5px;">
+                                @if (Model.AdmissionDate != null)
+                                {
+                                    <span class="dynamicLbl">@Convert.ToDateTime(Model.AdmissionDate).ToString("MM/dd/yyyy")</span>
+                                }
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="row">
+                    <div class="col-sm-9">
+                        <div class="form-group">
+                            <label class="control-label col-sm-3" for="OfficeName:">Name & Address of Facility:</label>
+                            <div class="col-sm-9" style="border: 1px solid #ccc; line-height: 22px; min-height: 22px; padding: 5px; width: 788px; ">
+                                <span class="dynamicLbl"> @Model.FacilityName </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-9">
+                        <div class="form-group">
+                            <label class="control-label col-sm-3" for="OfficeName:">Diagnosis Codes (max. 4):</label>
+                            <div class="col-sm-9" style="border: 1px solid #ccc; line-height: 22px; min-height: 22px; padding: 5px; width: 800px; ">
+                                <span class="dynamicLbl">@Model.DiagnosisCodes  </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-9">
+                        <div class="form-group">
+                            <label class="control-label col-sm-3" for="OfficeName:">Do you want MBPros to verify eligibility and benefits <b>($9.95 fee applies)?:</b></label>
+                            <div class="col-sm-9" style="line-height:22px; min-height:22px; padding:5px 0;">
+                                @{ if (Model.IsVerifyEligibility == true)
+                                 {
+                                    <span class="dynamicLbl"> Yes </span>
+                                 }
+                                 else
+                                 {<span class="dynamicLbl"> No </span>}
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-9">
+                        <div class="form-group">
+                            <label class="control-label col-sm-3" for="OfficeName:">Additional Information:</label>
+                                <div class="col-sm-9" style="border:1px solid #ccc;line-height:22px;min-height:22px; padding:5px; width:820px;">
+                                    <span class="dynamicLbl">@Model.AdditionalInfo </span>
+                                </div>
+                        </div>
+                    </div>
+                </div>
+
+            </form>
+        </div>
+        <div class="Footer"></div>
+    </div>
+
+
+	
+</body>
+</html>

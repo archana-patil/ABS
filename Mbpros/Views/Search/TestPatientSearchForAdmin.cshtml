@@ -1,0 +1,123 @@
+﻿@model  Mbpros.Models.PatientModel
+@{
+    ViewBag.Title = "PatientSearchForAdmin";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@Html.Hidden("hdnPID")
+<div class="form_border">
+    <form class="form-horizontal customIzeFormELement normal_label">
+        <h2>Search Patient Forms:</h2>
+         @{
+            if (ViewBag.EditMessage != "" && ViewBag.EditMessage != null)
+            {
+                <div class="alert alert-success">
+                    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                    <strong>Success!</strong> @ViewBag.EditMessage.
+                </div>
+            }
+        }
+        <div class="form-group">
+            <label for="inputEmail3" class="col-sm-2 col-md-1 control-label">Search</label>
+            <div class="col-sm-4 col-md-2">
+                @Html.DropDownListFor(model => model.Option, Model.OptionList, new { id = "ddlOption", @class = "form-control" })
+            </div>
+        </div>
+      @Html.Partial("_PatientSearchForAdmin", Model)
+    </form>
+
+</div>
+
+
+@section Scripts{
+
+    <script lang="javascript">
+        $(document).ready(function () {
+            $('#divPatientSearch').DataTable({
+                aaSorting: [[1, 'desc']]
+            });
+
+            $("#ddlOption").change(function () {
+                window.location = 'PatientSearchForAdmin?editMessage=&archiveOption=' + $("#ddlOption").val();
+            });
+        });
+        $(".confirmDelete").confirm({
+            text: "Are you sure you want to delete the patient?",
+            title: "Confirmation required",
+            confirm: function (button) {
+                $.ajax({
+                    type: "GET",
+                    url: '@Url.Action("DeletePatient", "Search")',
+                    data: { patientID: $("#hdnPID").val() },
+                    dataType: "json",
+                    success: function () {
+                        window.location = 'PatientSearchForAdmin?editMessage=Patient has been deleted successfully&archiveOption=' + $("#ddlOption").val();
+                    }
+                });
+            },
+                cancel: function (button) {
+                    // nothing to do
+                },
+                confirmButton: "Yes",
+                cancelButton: "No",
+                post: true,
+                confirmButtonClass: "btn-default",
+                cancelButtonClass: "btn-default",
+                dialogClass: "modal-dialog modal-sm" // Bootstrap classes for large modal
+            });
+
+        $(".confirmArchive").confirm({
+            text: "Are you sure you want to archive the patient record?",
+            title: "Confirmation required",
+            confirm: function (button) {
+                $.ajax({
+                    type: "GET",
+                    url: '@Url.Action("ArchivePatientRecord", "Search")',
+                    data: { patientID: $("#hdnPID").val() },
+                    dataType: "json",
+                    success: function () {
+                        window.location = 'PatientSearchForAdmin?editMessage=Patient has been archived successfully&archiveOption=' + $("#ddlOption").val();
+                    }
+                });
+            },
+            cancel: function (button) {
+                // nothing to do
+            },
+            confirmButton: "Yes",
+            cancelButton: "No",
+            post: true,
+            confirmButtonClass: "btn-default",
+            cancelButtonClass: "btn-default",
+            dialogClass: "modal-dialog modal-sm" // Bootstrap classes for large modal
+        });
+
+        $(".confirmUnArchive").confirm({
+            text: "Are you sure you want to un-archive the patient?",
+            title: "Confirmation required",
+            confirm: function (button) {
+                $.ajax({
+                    type: "GET",
+                    url: '@Url.Action("UnarchivePatientRecord", "Search")',
+                    data: { patientID: $("#hdnPID").val() },
+                    dataType: "json",
+                    success: function () {
+                        window.location = 'PatientSearchForAdmin?editMessage=Patient has been deleted successfully&archiveOption=' + $("#ddlOption").val();
+                    }
+                });
+            },
+            cancel: function (button) {
+                // nothing to do
+            },
+            confirmButton: "Yes",
+            cancelButton: "No",
+            post: true,
+            confirmButtonClass: "btn-default",
+            cancelButtonClass: "btn-default",
+            dialogClass: "modal-dialog modal-sm" // Bootstrap classes for large modal
+        });
+
+        function SetPatientID(PatientID) {
+            $("#hdnPID").val(PatientID);
+        }
+    </script>
+}

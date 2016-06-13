@@ -1,0 +1,59 @@
+﻿@model System.Web.Mvc.HandleErrorInfo
+
+@{
+    ViewBag.Title = "Error"; Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@*<hgroup class="title">
+    <h1 class="error">Error.</h1>
+    <h2 class="error">An error occurred while processing your request.</h2>
+</hgroup>*@
+<style type="text/css">
+    .header {
+        background-color: #286090;
+        border-top-left-radius: 5px;
+        border-top-right-radius: 5px;
+        height: 40px;
+        width: 66.5%;
+        color: white;
+        font-size: 20px;
+        margin: 25px auto 0;
+    }
+    .Contains {
+    margin-left: 40px;
+    color:red;text-align:left;font-size:17px;
+    min-height:156px;
+}
+</style>
+
+<div style="clear:both"></div>
+<div class="header"><div style="padding:8px; padding-top:7px">System Error</div></div>
+<div style=" border:solid 1px #AFABAA; width:66.5%; margin: auto; margin-bottom:25px">
+    <div class="Contains">
+
+        <div style="width:100%;">
+            @*<span style="font:bold 42px Arial, Helvetica, sans-serif;color:#049DCF;background-color:#EBEBEB;width:100%;">404 Error</span>*@
+            <p style="font:bold 16px/60px Arial, Helvetica, sans-serif;color:red;">Sorry.This page no longer exists.</p>
+            <span style="font:14px  Arial, Helvetica, sans-serif;color:black;">Not to worry, try heading home. </span><br />
+            <span style="font:14px  Arial, Helvetica, sans-serif;color:black;">  <a href="~/Account/Home">Go to Home </a> .</span>
+            <br />
+            <br />
+            <span style="font:14px  Arial, Helvetica, sans-serif;color:black;">
+                @* @ViewBag.statusCode*@
+            </span>
+            @*<hgroup class="title">
+                    <h5 class="error">Error.</h5>
+                    <h6 class="error">An error occurred while processing your request.</h6>
+                    <p class="error"> We apologise for your inconvenience. immediate report to admin. </p>
+                </hgroup>*@
+
+
+        </div>
+
+        <div class="row">
+            <div class="Title100" style="width:96%;text-align:center;">
+
+            </div>
+        </div>
+    </div>
+</div>

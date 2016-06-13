@@ -1,0 +1,521 @@
+﻿@model  Mbpros.Models.PatientModel
+
+@{
+    ViewBag.Title = "AddPatient";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style>
+    
+    /*.validation-summary-errors ul { display: none; }*/
+
+</style>
+@if (Model.PatientID != 0)
+{
+    <h1 style="padding-bottom: 0px; margin-bottom: 0px;">Edit Patient Form</h1>
+}
+else
+{
+    <h1 style="padding-bottom: 0px; margin-bottom: 0px;">Patient Form</h1>
+}
+<p style="margin-top: 0px; padding-top: 0px;" ><i>(please do not use special characters like <b>&amp;</b> or <b>'</b> or <b>:</b>)</i>
+    <br />
+(<i class="red">*</i> Indicates required field)</p>
+
+<div class="form_border">
+  @*  @Html.ValidationSummary("Please enter the required fileds.", new { @class="alert alert-danger"})*@
+
+    @using (Html.BeginForm("AddPatient", "Patient", FormMethod.Post, new { enctype = "multipart/form-data", name = "patient_form", id = "patient_form", @class = "form-horizontal right-label-pad-16 customIzeFormELement normal_label leftaligntext" }))
+    {
+        if (ViewBag.CaptchaMessage != "" && ViewBag.CaptchaMessage != null)
+        {
+            <div class="alert alert-danger">
+               <strong>Warning! </strong> @ViewBag.CaptchaMessage.
+            </div>
+        }
+        @Html.HiddenFor(model => model.PatientID, new { @id = "hdnPatientID" })
+        @Html.HiddenFor(model => model.CallFrom, new { @id = "hdnCallFrom" })
+        
+        @Html.Hidden("CaptchaSitekeychallenge")
+        @Html.Hidden("CaptchaSitekeynoscript")
+        @Html.Hidden("CaptchaSecretkey") 
+        if (Model.PatientID != 0)
+        {
+        <div class="form-group">
+            <label for="inputEmail3" class="col-sm-3 col-md-3 control-label">Form Id:</label>
+            <div class="col-sm-6 col-md-4">
+                @Html.TextBoxFor(model => model.PatientID, new { @maxlength = "100", @class = "form-control", @readonly = "readonly" })
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="inputEmail3" class="col-sm-3 col-md-3 control-label">Submit Date:</label>
+            <div class="col-sm-6 col-md-4">
+                @Html.TextBoxFor(model => model.CreatedDate, new { @maxlength = "100", @class = "form-control", @readonly = "readonly" })
+            </div>
+        </div>
+        }
+        <h3>General Information</h3>
+        <div class="form-group required">
+            <label for="inputEmail3" class="col-sm-3 col-md-3 control-label">Office Name</label>
+            <div class="col-sm-6 col-md-4">
+                @Html.TextBoxFor(model => model.OfficeName, new { @id = "txtOfficeName", @maxlength = "50", @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.OfficeName)
+            </div>
+        </div>
+        <div class="form-group required">
+            <label for="inputEmail3" class="col-sm-3 col-md-3 control-label">Patient Name</label>
+            <div class="col-sm-6 col-md-4">
+                @Html.TextBoxFor(model => model.PatientName, new { @id = "txtPatientName", @maxlength = "50", @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.PatientName)
+            </div>
+        </div>
+        <div class="form-group required">
+            <label for="inputEmail3" class="col-sm-3 col-md-3 control-label">Patient Street Address</label>
+            <div class="col-sm-6 col-md-4">
+                @Html.TextBoxFor(model => model.StreetAddress, new { @id = "txtPatStreetAddress", @maxlength = "200", @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.StreetAddress)
+            </div>
+        </div>
+        <div class="form-group required">
+            <label for="inputEmail3" class="col-sm-3 col-md-3 control-label">Patient City</label>
+            <div class="col-sm-6 col-md-4">
+                @Html.TextBoxFor(model => model.City, new { @id = "txtCity", @maxlength = "200", @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.City)
+            </div>
+        </div>
+        <div class="form-group required">
+            <label for="inputEmail3" class="col-sm-3 col-md-3 control-label">Patient State</label>
+            <div class="col-sm-6 col-md-4">
+                @Html.DropDownListFor(model => model.StateCode, Model.StateList, "Select State", new { id = "ddlState", @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.StateCode)
+            </div>
+        </div>
+        <div class="form-group required">
+            <label for="inputEmail3" class="col-sm-3 col-md-3 control-label">Patient Zip Code</label>
+            <div class="col-sm-6 col-md-4">
+                @Html.TextBoxFor(model => model.ZipCode, new { @id = "txtZipCode", @maxlength = "10", @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.ZipCode)
+            </div>
+        </div>
+        <div class="form-group required">
+            <label for="inputEmail3" class="col-sm-3 col-md-3 control-label">Patient Date of Birth</label>
+            <div class="  col-sm-5 col-md-2">
+
+                @*<div class="col-sm-6 col-md-4">*@
+                    @Html.TextBoxFor(model => model.DateofBirth, new { @id = "txtPatDOB", @class = "form-control txtdatetimepicker", @maxlength = "10" })
+                @*</div>*@
+                @Html.ValidationMessageFor(model => model.DateofBirth)
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="inputEmail3" class="col-sm-3 col-md-3 control-label">Patient SSN</label>
+            <div class="col-sm-6 col-md-4">
+                @Html.TextBoxFor(model => model.SSN, new { @id = "txtPatSSN", maxlength = "11", @class = "form-control" })
+            </div>
+        </div>
+        <div class="form-group required">
+            <label for="inputEmail3" class="col-sm-3 col-md-3 control-label">Patient Sex</label>
+            <div class="col-sm-6 col-md-4">
+                @if (!string.IsNullOrEmpty(Model.Sex))
+                {
+                    if (Model.Sex == "F")
+                    {
+                    @Html.RadioButton("Sex", "Male", false, new { @id = "rbtnSexM", @class = "css-checkbox" })<label for="rbtnSexM" class="css-label-radio radGroup1">Male</label>
+                    @Html.RadioButton("Sex", "Female", true, new { @id = "rbtnSexF", @class = "css-checkbox" })<label for="rbtnSexF" class="css-label-radio radGroup1">Female</label>
+                    }
+                    else if (Model.Sex == "M")
+                    {
+                    @Html.RadioButton("Sex", "Male", true, new { @id = "rbtnSexM", @class = "css-checkbox" })<label for="rbtnSexM" class="css-label-radio radGroup1">Male</label>
+                    @Html.RadioButton("Sex", "Female", false, new { @id = "rbtnSexF", @class = "css-checkbox" })<label for="rbtnSexF" class="css-label-radio radGroup1">Female</label>
+                    }
+                }
+                else
+                {
+                    @Html.RadioButton("Sex", "Male", false, new { @id = "rbtnSexM", @class = "css-checkbox" })<label for="rbtnSexM" class="css-label-radio radGroup1">Male</label>
+                    @Html.RadioButton("Sex", "Female", false, new { @id = "rbtnSexF", @class = "css-checkbox" })<label for="rbtnSexF" class="css-label-radio radGroup1">Female</label>                 
+                        
+                
+@*  <input type="radio" id="rbtnSexM" name="Sex" class="css-checkbox" /><label for="rbtnSexM" class="css-label-radio radGroup1">Male</label>
+                    <input type="radio" id="rbtnSexF" name="Sex" class="css-checkbox" /><label for="rbtnSexF" class="css-label-radio radGroup1">Female</label>
+                *@
+                }
+
+                @Html.Hidden("hdnSex", Model.Sex)
+                <br />
+                @Html.ValidationMessageFor(model => model.Sex)
+            </div>
+        </div>
+@* Region for insurance *@
+        <h3>Primary Insurance Information</h3>
+        <div class="form-group required">
+            <label for="inputEmail3" class="col-sm-3 col-md-3 control-label">Insurance Company Name</label>
+            <div class="col-sm-6 col-md-4">
+                @Html.TextBoxFor(model => model.InsuranceCompanyName, new { @id = "txtInsuranceCompanyName", @maxlength = "50", @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.InsuranceCompanyName)
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="inputEmail3" class="col-sm-3 col-md-3 control-label">Insurance Company Address</label>
+            <div class="col-sm-6 col-md-4">
+                @Html.TextBoxFor(model => model.InsuranceCompanyAddress, new { @id = "txtInsuranceCompanyAddress", @maxlength = "200", @class = "form-control" })
+            </div>
+        </div>
+        <div class="form-group" id="starDivInsCompPhone">
+            <label for="inputEmail3" class="col-sm-3 col-md-3 control-label">Insurance Company Phone</label>
+            <div class="col-sm-6 col-md-4">
+                @Html.TextBoxFor(model => model.InsuranceCompanyPhone, new { @id = "txtInsuranceCompanyPhone", @maxlength = "12", @class = "form-control secdiv" })
+                @Html.ValidationMessageFor(model => model.InsuranceCompanyPhone)
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="inputEmail3" class="col-sm-3 col-md-3 control-label">EDI Payer Number</label>
+            <div class="col-sm-6 col-md-4">
+                @Html.TextBoxFor(model => model.EDIPayerNumber, new { @id = "txtEDIPayerNumber", @maxlength = "20", @class = "form-control" })
+            </div>
+        </div>
+        <div class="form-group required">
+            <label for="inputEmail3" class="col-sm-3 col-md-3 control-label">Policy ID #/Claim #</label>
+            <div class="col-sm-6 col-md-4">
+                @Html.TextBoxFor(model => model.PolicyID, new { @id = "txtPolicyID", @maxlength = "20", @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.PolicyID)
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="inputEmail3" class="col-sm-3 col-md-3 control-label">Group Number</label>
+            <div class="col-sm-6 col-md-4">
+                @Html.TextBoxFor(model => model.GroupNumber, new { @id = "txtGroupNumber", @maxlength = "20", @class = "form-control" })
+            </div>
+        </div>
+        <div class="form-group required">
+            <label for="inputEmail3" class="col-sm-3 col-md-3 control-label">Is the Patient Insured?</label>
+            <div class="col-sm-6 col-md-4">
+                <input type="radio" id="rbtnIsInsuredY" name="IsPatInsured" class="css-checkbox" /><label for="rbtnIsInsuredY" class="css-label-radio radGroup1">Yes</label>
+                <input type="radio" id="rbtnIsInsuredN" name="IsPatInsured" class="css-checkbox" /><label for="rbtnIsInsuredN" class="css-label-radio radGroup1">No</label>
+                @Html.Hidden("hdnIsInsured", Model.IsPatInsured)
+                @* @Html.HiddenFor(m => m.IsPatInsured, new { id = "hdnIsInsured" })*@
+                <br />
+                @Html.ValidationMessageFor(model => model.IsPatInsured)
+            </div>
+        </div>
+        <div id="PatNoInsured" style="display: none;">
+            <div class="form-group required">
+                <label for="inputEmail3" class="col-sm-3 col-md-3 control-label">Insured Name</label>
+                <div class="col-sm-6 col-md-4">
+                    @Html.TextBoxFor(model => model.PrimaryInsuredName, new { @id = "txtPrimaryInsuredName", @maxlength = "50", @class = "form-control secdiv" })
+                    @Html.ValidationMessageFor(model => model.PrimaryInsuredName)
+                </div>
+            </div>
+            <div class="form-group required">
+                <label for="inputEmail3" class="col-sm-3 col-md-3 control-label">Insured Date of Birth</label>
+                <div class="  col-sm-5 col-md-2">
+                    @*<div class="col-sm-6 col-md-4" id='datetimepicker2'>*@
+                        @Html.TextBoxFor(model => model.PrimaryInsuredDOB, new { @id = "txtPrimaryInsuredDOB", @class = "form-control secdiv txtdatetimepicker", @maxlength = "10" })
+@*                        <span class="input-group-addon">
+                            <span class="glyphicon glyphicon-calendar"></span>
+                        </span>*@
+                    @*</div>*@
+                    @Html.ValidationMessageFor(model => model.PrimaryInsuredDOB)
+                </div>
+            </div>
+        </div>
+        <div class="form-group required">
+            <label for="inputEmail3" class="col-sm-3 col-md-3 control-label">Is Condition Related To</label>
+            <div class="col-sm-6 col-md-5">
+                <input type="radio" id="rbtnIsCondRelatedToN" name="IsConditionRelatedTo" class="css-checkbox" /><label for="rbtnIsCondRelatedToN" class="css-label-radio radGroup1">None</label>
+                <input type="radio" id="rbtnIsCondRelatedToA" name="IsConditionRelatedTo" class="css-checkbox" /><label for="rbtnIsCondRelatedToA" class="css-label-radio radGroup1">Auto</label>
+                <input type="radio" id="rbtnIsCondRelatedToE" name="IsConditionRelatedTo" class="css-checkbox" /><label for="rbtnIsCondRelatedToE" class="css-label-radio radGroup1">Employment</label>
+                <input type="radio" id="rbtnIsCondRelatedToO" name="IsConditionRelatedTo" class="css-checkbox" /><label for="rbtnIsCondRelatedToO" class="css-label-radio radGroup1">Other</label>
+                @Html.Hidden("hdnIsConditionRelatedTo", Model.IsConditionRelatedTo)
+                @* @Html.HiddenFor(m=>m.IsConditionRelatedTo)*@
+                <br />
+                @Html.ValidationMessageFor(model => model.IsConditionRelatedTo)
+            </div>
+        </div>
+        <div class="form-group required" id="divAccidentDate" style="display: none;">
+            <label for="inputEmail3" class="col-sm-3 col-md-3 control-label">If Related to an Accident, Date of Accident</label>
+            <div class="  col-sm-5 col-md-2">
+                @*<div class="col-sm-6 col-md-4" id='datetimepicker3'>*@
+                    @Html.TextBoxFor(model => model.DateofAccident, new { @id = "txtDateofAccident", @class = "form-control txtdatetimepicker secdiv", @maxlength = "10" })
+                    @*<span class="input-group-addon">
+                        <span class="glyphicon glyphicon-calendar"></span>
+                    </span>*@
+                @*</div>*@
+            </div>
+        </div>
+        <div class="form-group required" id="divInsuranceFax" style="display: none;">
+            <label for="inputEmail3" class="col-sm-3 col-md-3 control-label">Insurance Fax #</label>
+            <div class="col-sm-6 col-md-4">
+                @Html.TextBoxFor(model => model.InsuranceFax, new { @id = "txtInsuranceFax", @maxlength = "12", @class = "form-control secdiv" })
+            </div>
+        </div>
+        <div class="form-group required" id="divAdjusterName" style="display: none;">
+            <label for="inputEmail3" class="col-sm-3 col-md-3 control-label">Adjuster Name</label>
+            <div class="col-sm-6 col-md-4">
+                @Html.TextBoxFor(model => model.AdjusterName, new { @id = "txtAdjusterName", @maxlength = "50", @class = "form-control secdiv" })
+            </div>
+        </div>
+
+                //Secondary insurance div
+        <h3>Secondary Insurance Information</h3>
+        <div class="form-group required">
+            <label for="inputEmail3" class="col-sm-3 col-md-3 control-label">Does the patient have secondary insurance?</label>
+            <div class="col-sm-6 col-md-4">
+                <input type="radio" id="rbtnIsSecInsuranceY" name="IsSecondaryInsurance" class="css-checkbox" /><label for="rbtnIsSecInsuranceY" class="css-label-radio radGroup1">Yes</label>
+                <input type="radio" id="rbtnIsSecInsuranceN" name="IsSecondaryInsurance" class="css-checkbox" /><label for="rbtnIsSecInsuranceN" class="css-label-radio radGroup1">No</label>
+                @Html.Hidden("hdnIsSecInsurance", Model.IsSecondaryInsurance)
+                @*@Html.TextBoxFor(model => model.IsSecondaryInsurance, new { @id = "hdnIsSecInsurance", style = "display:none" })*@
+                <br />
+                @Html.ValidationMessageFor(model => model.IsSecondaryInsurance)
+            </div>
+
+        </div>
+        <div id="divSecInsurance" style="display: none;">
+            <div class="form-group required">
+                <label for="inputEmail3" class="col-sm-3 col-md-3 control-label">Secondary Insurance Company Name</label>
+                <div class="col-sm-6 col-md-4">
+                    @Html.TextBoxFor(model => model.SecondaryInsuranceCompanyName, new { @id = "txtSecInsuranceCompanyName", @maxlength = "50", @class = "form-control secdiv" })
+                    @Html.ValidationMessageFor(model => model.SecondaryInsuranceCompanyName)
+                </div>
+            </div>
+
+            <div class="form-group  required">
+                <label for="inputEmail3" class="col-sm-3 col-md-3 control-label">Secondary Insurance Company Phone</label>
+                <div class="col-sm-6 col-md-4">
+                    @Html.TextBoxFor(model => model.SecondaryInsuranceCompanyPhone, new { @id = "txtSecInsuranceCompanyPhone", @maxlength = "10", @class = "form-control secdiv" })
+                    @Html.ValidationMessageFor(model => model.SecondaryInsuranceCompanyPhone)
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="inputEmail3" class="col-sm-3 col-md-3 control-label">Secondary Insurance Company Address</label>
+                <div class="col-sm-6 col-md-4">
+                    @Html.TextBoxFor(model => model.SecondaryCompanyAddr, new { @id = "txtSecondaryCompanyAddr", @maxlength = "200", @class = "form-control secdiv" })
+                </div>
+            </div>
+            <div class="form-group required">
+                <label for="inputEmail3 required" class="col-sm-3 col-md-3 control-label">Secondary Insurance ID #</label>
+                <div class="col-sm-6 col-md-4">
+                    @Html.TextBoxFor(model => model.SecondaryInsuranceID, new { @id = "txtSecondaryInsuranceID", @maxlength = "20", @class = "form-control secdiv" })
+                    @Html.ValidationMessageFor(model => model.SecondaryInsuranceID)
+                </div>
+            </div>
+
+
+            <div class="form-group">
+                <label for="inputEmail3" class="col-sm-3 col-md-3 control-label">Secondary Insurance Group #</label>
+                <div class="col-sm-6 col-md-4">
+                    @Html.TextBoxFor(model => model.SecondaryInsuranceGroupID, new { @id = "txtSecInsuranceGroupID", @maxlength = "20", @class = "form-control secdiv" })
+                </div>
+            </div>
+            <div class="form-group required">
+                <label for="inputEmail3" class="col-sm-3 col-md-3 control-label">Secondary Insured Name</label>
+                <div class="col-sm-6 col-md-4">
+                    @Html.TextBoxFor(model => model.SecondaryInsuredName, new { @id = "txtSecondaryInsuredName", @maxlength = "50", @class = "form-control secdiv" })
+                    @Html.ValidationMessageFor(model => model.SecondaryInsuredName)
+                </div>
+            </div>
+            <div class="form-group required">
+                <label for="inputEmail3" class="col-sm-3 col-md-3 control-label">Secondary Insured Date of Birth</label>
+                <div class="  col-sm-5 col-md-2">
+                    @*<div class="col-sm-6 col-md-4" id='datetimepicker4'>*@
+                        @Html.TextBoxFor(model => model.SecondaryInsuredDOB, new { @id = "txtSecondaryInsuredDOB", @class = "form-control secdiv txtdatetimepicker", @maxlength = "10" })
+                        @*<span class="input-group-addon">
+                            <span class="glyphicon glyphicon-calendar"></span>
+                        </span>*@
+                    @*</div>*@
+                    @Html.ValidationMessageFor(model => model.SecondaryInsuredDOB)
+                </div>
+            </div>
+        </div>
+        <h3>If Seen in a Hospital or Nursing Facility</h3>
+
+
+        <div class="form-group">
+            <label for="inputEmail3" class="col-sm-3 col-md-3 control-label">Name of Facility</label>
+            <div class="col-sm-6 col-md-4">
+                @Html.TextBoxFor(model => model.FacilityName, new { @id = "txtFacilityName", @maxlength = "50", @class = "form-control" })
+            </div>
+        </div>
+
+        <div class="form-group" id="starDivDtAddmission">
+            <label for="inputEmail3" class="col-sm-3 col-md-3 control-label">Date of Admission</label>
+            <div class="  col-sm-5 col-md-2">
+                @*<div class="col-sm-6 col-md-4" id='datetimepicker5'>*@
+                    @Html.TextBoxFor(model => model.AdmissionDate, new { @id = "txtAdmissionDate", @class = "form-control txtdatetimepicker secdiv", @maxlength = "10" })
+                    @*<span class="input-group-addon">
+                        <span class="glyphicon glyphicon-calendar"></span>
+                    </span>*@
+                @*</div>*@
+            </div>
+        </div>
+        <h3>Referring Provider Information</h3>
+
+
+
+        <div class="form-group">
+            <label for="inputEmail3" class="col-sm-3 col-md-3 control-label">Name of Referring Provider</label>
+            <div class="col-sm-6 col-md-4">
+                @Html.TextBoxFor(model => model.ReferringProviderName, new { @id = "txtReferringProviderName", @maxlength = "50", @class = "form-control" })
+            </div>
+        </div>
+
+        <div class="form-group" id="starDivNPI">
+            <label for="inputEmail3" class="col-sm-3 col-md-3 control-label">Referring Provider NPI</label>
+            <div class="col-sm-6 col-md-4">
+                @Html.TextBoxFor(model => model.ReferringProviderNPI, new { @id = "txtReferringProviderNPI", @maxlength = "10", @class = "form-control secdiv" })
+                @Html.ValidationMessageFor(model => model.ReferringProviderNPI)
+            </div>
+        </div>
+
+        <div class="form-group" id="starDateLastseen">
+            <label for="inputEmail3" class="col-sm-3 col-md-3 control-label">Date Last Seen by Referring Provider (if required)</label>
+            <div class="  col-sm-5 col-md-2">
+                @*<div class="col-sm-6 col-md-4" id='datetimepicker6'>*@
+                    @Html.TextBoxFor(model => model.LastSeenByRefProvider, new { @id = "txtLastSeenByRefProvider", @class = "form-control txtdatetimepicker secdiv", @maxlength = "10" })
+                    @*<span class="input-group-addon">
+                        <span class="glyphicon glyphicon-calendar"></span>
+                    </span>*@
+                @*</div>*@
+            </div>
+
+        </div>
+        <h3>For Chiropractic Medicare Patients</h3>
+
+
+
+
+        <div class="form-group">
+            <label for="inputEmail3" class="col-sm-3 col-md-3 control-label">Initial Treatment Date</label>
+            <div class="  col-sm-5 col-md-2">
+               @* <div class="col-sm-6 col-md-4" id='datetimepicker7'>*@
+                    @Html.TextBoxFor(model => model.InitialTreatmentDate, new { @id = "txtInitialTreatmentDate", @class = "form-control txtdatetimepicker secdiv", @maxlength = "10" })
+                    @*<span class="input-group-addon">
+                        <span class="glyphicon glyphicon-calendar"></span>
+                    </span>*@
+               @* </div>*@
+            </div>
+        </div>
+
+
+        <div class="form-group">
+            <label for="inputEmail3" class="col-sm-3 col-md-3 control-label">Date of Last X-Ray OR PART Codes</label>
+
+            <div class="col-sm-6 col-md-4">
+                @Html.TextBoxFor(model => model.LastXRayDateORPARTCodes, new { @id = "txtLastXRayDateORPARTCodes", @maxlength = "100", @class = "form-control" })
+            </div>
+        </div>
+        <h3>Diagnosis Codes</h3>
+        
+        <div class="form-group required">
+            <label for="inputEmail3" class="col-sm-3 col-md-3 control-label">Please enter a maximum of 4 diagnosis codes</label>
+            <div class="col-sm-6 col-md-4">
+                @Html.TextBoxFor(model => model.DiagnosisCodes, new { @id = "txtDiagnosisCodes", @class = "form-control", @maxlength = "100" })
+                @Html.ValidationMessageFor(model => model.DiagnosisCodes)
+
+            </div>
+        </div>
+        
+        <h3>Insurance Verification</h3>
+                            
+        <div class="form-group required">
+            <label for="inputEmail3" class="col-sm-3 col-md-3 control-label">Do you want MBPros to verify eligibility and benefits <b>($9.95 fee applies)?</b></label>
+            <div class="col-sm-6 col-md-4">
+                <input type="radio" id="rbtnIsVerifyY" name="IsVerifyEligibility" class="css-checkbox" /><label for="rbtnIsVerifyY" class="css-label-radio radGroup1">Yes</label>
+                <input type="radio" id="rbtnIsVerifyN" name="IsVerifyEligibility" class="css-checkbox" /><label for="rbtnIsVerifyN" class="css-label-radio radGroup1">No</label>
+                @Html.Hidden("hdnIsVerify", Model.IsVerifyEligibility)
+                <br />
+                @Html.ValidationMessageFor(model => model.IsVerifyEligibility)
+            </div>
+        </div>
+        
+        <div class="form-group limitChar" id="additionalfield_div">
+            <label for="inputEmail3" class="col-sm-3 col-md-3 control-label">Additional Information</label>
+            <div class="col-sm-6 col-md-4">
+                @Html.TextAreaFor(model => model.AdditionalInfo, new { @id = "txtAdditionalInfo", @maxlength = "200", cols = 10, rows = 4, @class = "form-control secdiv", @onkeyup = "update();", onkeydown = "onkd(event);" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="inputEmail3" class="col-sm-3 col-md-3 control-label"></label>
+            <div class="col-sm-6 col-md-4 charcterCount">
+                <script type="text/javascript">
+                    var limit = 200;
+
+                    function check() {
+
+                    }
+                    if (document.patient_form.AdditionalInfo.value.length > limit) {
+                        alert('Too much data!');
+                        document.patient_form.AdditionalInfo.focus();
+                        //return false;
+
+                    }
+                    else
+                        //return true;
+                        //}
+                        function update() {
+                            var old = document.patient_form.counter.value;
+                            document.patient_form.counter.value = document.patient_form.AdditionalInfo.value.length;
+                            if (document.patient_form.counter.value > limit && old <= limit) {
+                                alert('Too much data in the text box! Maximum number of characters is 200');
+                                if (document.styleSheets) {
+                                    document.patient_form.counter.style.fontWeight = 'bold';
+                                    document.patient_form.counter.style.color = '#ff0000';
+                                }
+                            }
+                            else if (document.patient_form.counter.value <= limit && old > limit
+                                && document.styleSheets) {
+                                document.patient_form.counter.style.fontWeight = 'normal';
+                                document.patient_form.counter.style.color = '#000000';
+                            }
+                        }
+                </script>
+
+
+                <script type="text/javascript">
+                    document.write('Characters typed: <input ' + 'type="text" size="3" name="counter" value=""' + 'readonly onfocus="this.form.AdditionalInfo.focus()" class="lmtchr"> (limit: ' + limit + ')');
+                </script>
+            </div>
+
+        </div>
+                
+        <div class="form-group">
+            <label for="inputEmail3" class="col-sm-3 col-md-3 control-label"></label>
+            @if (Session["USERNAME"] == "" || Session["USERNAME"] == null)
+            {
+
+                <div class="col-sm-6 col-md-4">
+                    <script type="text/javascript" src="@Model.CaptchaSitekeychallenge">
+                    </script>
+                    <noscript>
+
+
+                        <iframe src="@Model.CaptchaSitekeynoscript" height="300" width="300" frameborder="0"></iframe>
+                        <br>
+                        <textarea name="recaptcha_challenge_field" rows="4" cols="40"></textarea>
+                        <input type="hidden" name="recaptcha_response_field" value="manual_challenge">
+                    </noscript>
+                </div>
+            }
+        </div>
+        <div class="form-group">
+            <div class="col-sm-offset-3 col-md-offset-3 col-sm-6 col-md-4">
+                @if (Model.PatientID != 0)
+                {
+                    <button type="reset" class="btn btn-secondary btn-primary" id="btnResetPatient" onclick="location.href= '@Url.Action(Model.CallFrom, "Search", new { IsBack = true })'">Back</button>
+                    <button id="btnSave" class="btn btn-primary">Update</button>
+                }
+                else
+                {
+                    <button type="reset" class="btn btn-secondary btn-primary" id="btnResetPatient" onclick="location.href= '@Url.Action("AddPatient", "Patient")'">Reset</button>
+                    <button id="btnSave" class="btn btn-primary">Submit</button>
+
+                }
+            </div>
+
+        </div>
+
+    }
+</div> 
+@section Scripts{
+    <script src="~/Scripts/patient.js"></script>
+    @Scripts.Render("~/Bundle/Patient")
+}

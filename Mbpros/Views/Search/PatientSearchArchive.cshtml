@@ -1,0 +1,159 @@
+﻿@model  Mbpros.Models.PatientModel
+@{
+    ViewBag.Title = "PatientSearchArchive";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@Html.Hidden("hdnPID")
+<div class="form_border">
+    <form class="form-horizontal customIzeFormELement normal_label">
+        <h2>Archived PIFs:</h2>
+         @{
+            if (ViewBag.EditMessage != "" && ViewBag.EditMessage != null)
+            {
+                    <div class="alert alert-success">
+                        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                        <strong>Success!</strong> @ViewBag.EditMessage.
+                    </div>
+            }
+        }
+        <div  class="table-responsive">
+            <table id="divPatientSearch" class="table table-striped table-bordered" cellspacing="0" width="100%">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Pdf</th>
+                        <th>Edit</th>
+                        <th>UnArchive</th>
+                        <th>Patient SSN</th>
+                        <th>Patient Name</th>
+                        <th>Office Name</th>
+                        <th>Date submit</th>
+                        <th>ID# - Claim#</th>
+                        <th>Group Number</th>
+                        <th>Insurance Company</th>
+                        <th>Delete</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model != null)
+                    {
+                        if (Model.PatientList != null)
+                        {
+                            foreach (var item in Model.PatientList)
+                            {
+                                var trId = "P" + item.PatientID;
+                        <tr id=@trId>
+
+                            <td>
+                                @item.PatientID
+                            </td>
+                            <td>
+                                <a href="@Url.Action("PDFForPatient", "Patient",new {patientID=item.PatientID})" target="_blank">
+                                <img src="~/images/pdf.gif"></a>
+                            </td>
+                            <td>
+                                <a href="@Url.Action("AddPatient", "Patient", new { patientID = item.PatientID, callFrom = "PatientSearchArchive" })">
+                                    <img src="~/images/edit.png">
+                                </a>
+                            </td>               
+                            <td>
+                                <a href="javascript:void(0);"  class="confirmArchive" onclick="SetPatientID(@item.PatientID)">
+                                    <img src="~/images/unarchive.png">
+                                </a>
+                            </td>
+                            <td>@item.SSN</td>
+                            <td>@item.PatientName</td>
+                            <td>@item.OfficeName</td>
+                            <td>@Convert.ToDateTime(item.CreatedDate).ToString("MM/dd/yyyy")</td>
+                            <td>@item.PolicyID</td>
+                            <td>@item.GroupNumber</td>
+                            <td>@item.InsuranceCompanyName</td>   
+                            <td>
+                                <a href="javascript:void(0);"  class="confirmDelete" onclick="SetPatientID(@item.PatientID)">
+                                    <img src="~/images/delete.png" />
+                                </a>
+                            </td>                                                
+                        </tr>
+                            }
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+    </form>
+
+</div>
+
+
+@section Scripts{
+
+    <script lang="javascript">
+        $(document).ready(function () {
+            $('#divPatientSearch').DataTable({
+                aaSorting: [[1, 'desc']]
+            });
+
+            noBack();
+            window.onload = noBack;
+            window.onpageshow = function (evt) { if (evt.persisted) noBack() }
+            window.onunload = function () { void (0) }
+        });
+        $(".confirmDelete").confirm({
+            text: "Are you sure you want to delete the patient?",
+            title: "Confirmation required",
+            confirm: function (button) {
+                $.ajax({
+                    type: "GET",
+                    url: '@Url.Action("DeletePatient", "Search")',
+                    data: { patientID: $("#hdnPID").val() },
+                    dataType: "json",
+                    success: function () {
+                        //alert('Patient has been deleted successfully');
+                        window.location.href = '@Url.Action("PatientSearchArchive", "Search", new { editMessage = "Patient has been deleted successfully" })';
+                    }
+                });
+            },
+                cancel: function (button) {
+                    // nothing to do
+                },
+                confirmButton: "Yes",
+                cancelButton: "No",
+                post: true,
+                confirmButtonClass: "btn-default",
+                cancelButtonClass: "btn-default",
+                dialogClass: "modal-dialog modal-sm" // Bootstrap classes for large modal
+            });
+
+        $(".confirmArchive").confirm({
+            text: "Are you sure you want to un-archive the patient?",
+            title: "Confirmation required",
+            confirm: function (button) {
+                $.ajax({
+                    type: "GET",
+                    url: '@Url.Action("UnarchivePatientRecord", "Search")',
+                    data: { patientID: $("#hdnPID").val() },
+                    dataType: "json",
+                    success: function () {
+                        //alert('Patient has been archived successfully');
+                        window.location.href = '@Url.Action("PatientSearchArchive", "Search", new { editMessage = "Patient has been deleted successfully" })';
+                    }
+                });
+            },
+            cancel: function (button) {
+                // nothing to do
+            },
+            confirmButton: "Yes",
+            cancelButton: "No",
+            post: true,
+            confirmButtonClass: "btn-default",
+            cancelButtonClass: "btn-default",
+            dialogClass: "modal-dialog modal-sm" // Bootstrap classes for large modal
+        });
+
+        function SetPatientID(PatientID) {
+            $("#hdnPID").val(PatientID);
+        }
+    </script>
+}
+

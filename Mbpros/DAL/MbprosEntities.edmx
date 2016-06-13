@@ -1,0 +1,447 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="MbprosModel.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2008" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityContainer Name="MbprosModelStoreContainer">
+          <EntitySet Name="Config" EntityType="MbprosModel.Store.Config" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="Feature_User" EntityType="MbprosModel.Store.Feature_User" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="FeatureMaster" EntityType="MbprosModel.Store.FeatureMaster" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="PatientBilling" EntityType="MbprosModel.Store.PatientBilling" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="PatientMaster" EntityType="MbprosModel.Store.PatientMaster" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="States" EntityType="MbprosModel.Store.States" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="Users" EntityType="MbprosModel.Store.Users" store:Type="Tables" Schema="dbo" />
+        </EntityContainer>
+        <EntityType Name="Config">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="key" Type="varchar" MaxLength="50" />
+          <Property Name="value" Type="varchar" MaxLength="50" />
+          <Property Name="shortDesc" Type="varchar" MaxLength="50" />
+          <Property Name="longDesc" Type="varchar" MaxLength="50" />
+          <Property Name="ExtraLongDEsc" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="Feature_User">
+          <Key>
+            <PropertyRef Name="FeatureUserID" />
+          </Key>
+          <Property Name="FeatureUserID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="FeatureID" Type="int" Nullable="false" />
+          <Property Name="UserID" Type="int" Nullable="false" />
+          <Property Name="CanView" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="FeatureMaster">
+          <Key>
+            <PropertyRef Name="FeatureID" />
+          </Key>
+          <Property Name="FeatureID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="FeatureName" Type="varchar" Nullable="false" MaxLength="50" />
+          <Property Name="IsAdminForm" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="PatientBilling">
+          <Key>
+            <PropertyRef Name="BillingFormID" />
+          </Key>
+          <Property Name="BillingFormID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="PatientBillingID" Type="int" Nullable="false" />
+          <Property Name="OfficeName" Type="varchar" Nullable="false" MaxLength="100" />
+          <Property Name="PatientName" Type="varchar" Nullable="false" MaxLength="100" />
+          <Property Name="ServiceDate" Type="datetime" Nullable="false" />
+          <Property Name="CoPayType" Type="varchar" MaxLength="10" />
+          <Property Name="ChequeNo" Type="varchar" MaxLength="15" />
+          <Property Name="CopayPaid" Type="decimal" Scale="2" />
+          <Property Name="ProcedureCodes" Type="varchar" Nullable="false" MaxLength="50" />
+          <Property Name="DXCode" Type="varchar" Nullable="false" MaxLength="50" />
+          <Property Name="Note" Type="varchar" MaxLength="1000" />
+          <Property Name="SrNo" Type="int" Nullable="false" />
+          <Property Name="Active" Type="bit" Nullable="false" />
+          <Property Name="IsArchived" Type="bit" Nullable="false" />
+          <Property Name="CreatedBy" Type="int" Nullable="false" />
+          <Property Name="CreatedDate" Type="datetime" Nullable="false" />
+          <Property Name="UpdatedBy" Type="int" />
+          <Property Name="UpdatedDate" Type="datetime" />
+        </EntityType>
+        <EntityType Name="PatientMaster">
+          <Key>
+            <PropertyRef Name="PatientID" />
+          </Key>
+          <Property Name="PatientID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="OfficeName" Type="varchar" Nullable="false" MaxLength="50" />
+          <Property Name="PatientName" Type="varchar" Nullable="false" MaxLength="50" />
+          <Property Name="StreetAddress" Type="varchar" Nullable="false" MaxLength="200" />
+          <Property Name="City" Type="varchar" Nullable="false" MaxLength="200" />
+          <Property Name="StateCode" Type="char" Nullable="false" MaxLength="2" />
+          <Property Name="ZipCode" Type="varchar" Nullable="false" MaxLength="10" />
+          <Property Name="DateofBirth" Type="datetime" />
+          <Property Name="SSN" Type="varchar" MaxLength="11" />
+          <Property Name="Sex" Type="char" Nullable="false" MaxLength="1" />
+          <Property Name="InsuranceCompanyName" Type="varchar" Nullable="false" MaxLength="50" />
+          <Property Name="InsuranceCompanyAddress" Type="varchar" MaxLength="200" />
+          <Property Name="InsuranceCompanyPhone" Type="varchar" MaxLength="12" />
+          <Property Name="EDIPayerNumber" Type="varchar" MaxLength="20" />
+          <Property Name="PolicyID" Type="varchar" Nullable="false" MaxLength="20" />
+          <Property Name="GroupNumber" Type="varchar" MaxLength="20" />
+          <Property Name="IsInsured" Type="bit" />
+          <Property Name="PrimaryInsuredName" Type="varchar" MaxLength="50" />
+          <Property Name="PrimaryInsuredDOB" Type="datetime" />
+          <Property Name="ConditionRelatedTo" Type="char" MaxLength="1" />
+          <Property Name="DateofAccident" Type="datetime" />
+          <Property Name="InsuranceFax" Type="varchar" MaxLength="12" />
+          <Property Name="AdjusterName" Type="varchar" MaxLength="50" />
+          <Property Name="IsSecondaryInsurance" Type="bit" />
+          <Property Name="SecondaryInsuranceCompanyName" Type="varchar" MaxLength="50" />
+          <Property Name="SecondaryInsuranceCompanyAddr" Type="varchar" MaxLength="200" />
+          <Property Name="SecondaryInsuranceCompanyPhone" Type="varchar" MaxLength="12" />
+          <Property Name="SecondaryInsuranceID" Type="varchar" MaxLength="20" />
+          <Property Name="SecondaryInsuranceGroupID" Type="varchar" MaxLength="20" />
+          <Property Name="SecondaryInsuredName" Type="varchar" MaxLength="50" />
+          <Property Name="SecondaryInsuredDOB" Type="datetime" />
+          <Property Name="FacilityName" Type="varchar" MaxLength="50" />
+          <Property Name="AdmissionDate" Type="datetime" />
+          <Property Name="LastSeenByRefProvider" Type="datetime" />
+          <Property Name="ReferringProviderName" Type="varchar" MaxLength="50" />
+          <Property Name="ReferringProviderNPI" Type="varchar" MaxLength="20" />
+          <Property Name="InitialTreatmentDate" Type="datetime" />
+          <Property Name="LastXRayDateORPARTCodes" Type="varchar" MaxLength="100" />
+          <Property Name="DiagnosisCodes" Type="varchar" MaxLength="100" />
+          <Property Name="AdditionalInfo" Type="varchar" MaxLength="200" />
+          <Property Name="IsVerifyEligibility" Type="bit" />
+          <Property Name="Active" Type="bit" Nullable="false" />
+          <Property Name="IsArchived" Type="bit" Nullable="false" />
+          <Property Name="CreatedBy" Type="int" Nullable="false" />
+          <Property Name="CreatedDate" Type="datetime" Nullable="false" />
+          <Property Name="UpdatedBy" Type="int" />
+          <Property Name="UpdatedDate" Type="datetime" />
+        </EntityType>
+        <EntityType Name="States">
+          <Key>
+            <PropertyRef Name="StateID" />
+          </Key>
+          <Property Name="StateID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="StateName" Type="varchar" Nullable="false" MaxLength="50" />
+          <Property Name="StateCode" Type="char" Nullable="false" MaxLength="2" />
+        </EntityType>
+        <EntityType Name="Users">
+          <Key>
+            <PropertyRef Name="UserId" />
+          </Key>
+          <Property Name="UserId" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="UserName" Type="varchar" Nullable="false" MaxLength="50" />
+          <Property Name="Password" Type="varchar" Nullable="false" MaxLength="50" />
+          <Property Name="OfficeName" Type="varchar" Nullable="false" MaxLength="100" />
+          <Property Name="EmailID" Type="varchar" Nullable="false" MaxLength="100" />
+          <Property Name="Status" Type="bit" Nullable="false" />
+          <Property Name="IsAdmin" Type="bit" Nullable="false" />
+          <Property Name="CreatedDate" Type="datetime" Nullable="false" />
+          <Property Name="CreatedBy" Type="int" Nullable="false" />
+          <Property Name="UpdatedDate" Type="datetime" />
+          <Property Name="UpdatedBy" Type="int" />
+        </EntityType>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="MbprosModel" Alias="Self" p1:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:p1="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="MbprosEntities" p1:LazyLoadingEnabled="true">
+          <EntitySet Name="Configs" EntityType="MbprosModel.Config" />
+          <EntitySet Name="Feature_User" EntityType="MbprosModel.Feature_User" />
+          <EntitySet Name="FeatureMasters" EntityType="MbprosModel.FeatureMaster" />
+          <EntitySet Name="PatientBillings" EntityType="MbprosModel.PatientBilling" />
+          <EntitySet Name="PatientMasters" EntityType="MbprosModel.PatientMaster" />
+          <EntitySet Name="States" EntityType="MbprosModel.State" />
+          <EntitySet Name="Users" EntityType="MbprosModel.User" />
+        </EntityContainer>
+        <EntityType Name="Config">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+          <Property Name="key" Type="String" MaxLength="50" Unicode="false" FixedLength="false" />
+          <Property Name="value" Type="String" MaxLength="50" Unicode="false" FixedLength="false" />
+          <Property Name="shortDesc" Type="String" MaxLength="50" Unicode="false" FixedLength="false" />
+          <Property Name="longDesc" Type="String" MaxLength="50" Unicode="false" FixedLength="false" />
+          <Property Name="ExtraLongDEsc" Type="String" MaxLength="50" Unicode="false" FixedLength="false" />
+        </EntityType>
+        <EntityType Name="Feature_User">
+          <Key>
+            <PropertyRef Name="FeatureUserID" />
+          </Key>
+          <Property Name="FeatureUserID" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+          <Property Name="FeatureID" Type="Int32" Nullable="false" />
+          <Property Name="UserID" Type="Int32" Nullable="false" />
+          <Property Name="CanView" Type="Boolean" Nullable="false" />
+        </EntityType>
+        <EntityType Name="FeatureMaster">
+          <Key>
+            <PropertyRef Name="FeatureID" />
+          </Key>
+          <Property Name="FeatureID" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+          <Property Name="FeatureName" Type="String" Nullable="false" MaxLength="50" Unicode="false" FixedLength="false" />
+          <Property Name="IsAdminForm" Type="Boolean" Nullable="false" />
+        </EntityType>
+        <EntityType Name="PatientBilling">
+          <Key>
+            <PropertyRef Name="BillingFormID" />
+          </Key>
+          <Property Name="BillingFormID" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+          <Property Name="PatientBillingID" Type="Int32" Nullable="false" />
+          <Property Name="OfficeName" Type="String" Nullable="false" MaxLength="100" Unicode="false" FixedLength="false" />
+          <Property Name="PatientName" Type="String" Nullable="false" MaxLength="100" Unicode="false" FixedLength="false" />
+          <Property Name="ServiceDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="CoPayType" Type="String" MaxLength="10" Unicode="false" FixedLength="false" />
+          <Property Name="ChequeNo" Type="String" MaxLength="15" Unicode="false" FixedLength="false" />
+          <Property Name="CopayPaid" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="ProcedureCodes" Type="String" Nullable="false" MaxLength="50" Unicode="false" FixedLength="false" />
+          <Property Name="DXCode" Type="String" Nullable="false" MaxLength="50" Unicode="false" FixedLength="false" />
+          <Property Name="Note" Type="String" MaxLength="1000" Unicode="false" FixedLength="false" />
+          <Property Name="SrNo" Type="Int32" Nullable="false" />
+          <Property Name="Active" Type="Boolean" Nullable="false" />
+          <Property Name="IsArchived" Type="Boolean" Nullable="false" />
+          <Property Name="CreatedBy" Type="Int32" Nullable="false" />
+          <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="UpdatedBy" Type="Int32" />
+          <Property Name="UpdatedDate" Type="DateTime" Precision="3" />
+        </EntityType>
+        <EntityType Name="PatientMaster">
+          <Key>
+            <PropertyRef Name="PatientID" />
+          </Key>
+          <Property Name="PatientID" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+          <Property Name="OfficeName" Type="String" Nullable="false" MaxLength="50" Unicode="false" FixedLength="false" />
+          <Property Name="PatientName" Type="String" Nullable="false" MaxLength="50" Unicode="false" FixedLength="false" />
+          <Property Name="StreetAddress" Type="String" Nullable="false" MaxLength="200" Unicode="false" FixedLength="false" />
+          <Property Name="City" Type="String" Nullable="false" MaxLength="200" Unicode="false" FixedLength="false" />
+          <Property Name="StateCode" Type="String" Nullable="false" MaxLength="2" Unicode="false" FixedLength="true" />
+          <Property Name="ZipCode" Type="String" Nullable="false" MaxLength="10" Unicode="false" FixedLength="false" />
+          <Property Name="DateofBirth" Type="DateTime" Precision="3" />
+          <Property Name="SSN" Type="String" MaxLength="11" Unicode="false" FixedLength="false" />
+          <Property Name="Sex" Type="String" Nullable="false" MaxLength="1" Unicode="false" FixedLength="true" />
+          <Property Name="InsuranceCompanyName" Type="String" Nullable="false" MaxLength="50" Unicode="false" FixedLength="false" />
+          <Property Name="InsuranceCompanyAddress" Type="String" MaxLength="200" Unicode="false" FixedLength="false" />
+          <Property Name="InsuranceCompanyPhone" Type="String" MaxLength="12" Unicode="false" FixedLength="false" />
+          <Property Name="EDIPayerNumber" Type="String" MaxLength="20" Unicode="false" FixedLength="false" />
+          <Property Name="PolicyID" Type="String" Nullable="false" MaxLength="20" Unicode="false" FixedLength="false" />
+          <Property Name="GroupNumber" Type="String" MaxLength="20" Unicode="false" FixedLength="false" />
+          <Property Name="IsInsured" Type="Boolean" />
+          <Property Name="PrimaryInsuredName" Type="String" MaxLength="50" Unicode="false" FixedLength="false" />
+          <Property Name="PrimaryInsuredDOB" Type="DateTime" Precision="3" />
+          <Property Name="ConditionRelatedTo" Type="String" MaxLength="1" Unicode="false" FixedLength="true" />
+          <Property Name="DateofAccident" Type="DateTime" Precision="3" />
+          <Property Name="InsuranceFax" Type="String" MaxLength="12" Unicode="false" FixedLength="false" />
+          <Property Name="AdjusterName" Type="String" MaxLength="50" Unicode="false" FixedLength="false" />
+          <Property Name="IsSecondaryInsurance" Type="Boolean" />
+          <Property Name="SecondaryInsuranceCompanyName" Type="String" MaxLength="50" Unicode="false" FixedLength="false" />
+          <Property Name="SecondaryInsuranceCompanyAddr" Type="String" MaxLength="200" Unicode="false" FixedLength="false" />
+          <Property Name="SecondaryInsuranceCompanyPhone" Type="String" MaxLength="12" Unicode="false" FixedLength="false" />
+          <Property Name="SecondaryInsuranceID" Type="String" MaxLength="20" Unicode="false" FixedLength="false" />
+          <Property Name="SecondaryInsuranceGroupID" Type="String" MaxLength="20" Unicode="false" FixedLength="false" />
+          <Property Name="SecondaryInsuredName" Type="String" MaxLength="50" Unicode="false" FixedLength="false" />
+          <Property Name="SecondaryInsuredDOB" Type="DateTime" Precision="3" />
+          <Property Name="FacilityName" Type="String" MaxLength="50" Unicode="false" FixedLength="false" />
+          <Property Name="AdmissionDate" Type="DateTime" Precision="3" />
+          <Property Name="LastSeenByRefProvider" Type="DateTime" Precision="3" />
+          <Property Name="ReferringProviderName" Type="String" MaxLength="50" Unicode="false" FixedLength="false" />
+          <Property Name="ReferringProviderNPI" Type="String" MaxLength="20" Unicode="false" FixedLength="false" />
+          <Property Name="InitialTreatmentDate" Type="DateTime" Precision="3" />
+          <Property Name="LastXRayDateORPARTCodes" Type="String" MaxLength="100" Unicode="false" FixedLength="false" />
+          <Property Name="DiagnosisCodes" Type="String" MaxLength="100" Unicode="false" FixedLength="false" />
+          <Property Name="AdditionalInfo" Type="String" MaxLength="200" Unicode="false" FixedLength="false" />
+          <Property Name="IsVerifyEligibility" Type="Boolean" />
+          <Property Name="Active" Type="Boolean" Nullable="false" />
+          <Property Name="IsArchived" Type="Boolean" Nullable="false" />
+          <Property Name="CreatedBy" Type="Int32" Nullable="false" />
+          <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="UpdatedBy" Type="Int32" />
+          <Property Name="UpdatedDate" Type="DateTime" Precision="3" />
+        </EntityType>
+        <EntityType Name="State">
+          <Key>
+            <PropertyRef Name="StateID" />
+          </Key>
+          <Property Name="StateID" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+          <Property Name="StateName" Type="String" Nullable="false" MaxLength="50" Unicode="false" FixedLength="false" />
+          <Property Name="StateCode" Type="String" Nullable="false" MaxLength="2" Unicode="false" FixedLength="true" />
+        </EntityType>
+        <EntityType Name="User">
+          <Key>
+            <PropertyRef Name="UserId" />
+          </Key>
+          <Property Name="UserId" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+          <Property Name="UserName" Type="String" Nullable="false" MaxLength="50" Unicode="false" FixedLength="false" />
+          <Property Name="Password" Type="String" Nullable="false" MaxLength="50" Unicode="false" FixedLength="false" />
+          <Property Name="OfficeName" Type="String" Nullable="false" MaxLength="100" Unicode="false" FixedLength="false" />
+          <Property Name="EmailID" Type="String" Nullable="false" MaxLength="100" Unicode="false" FixedLength="false" />
+          <Property Name="Status" Type="Boolean" Nullable="false" />
+          <Property Name="IsAdmin" Type="Boolean" Nullable="false" />
+          <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="CreatedBy" Type="Int32" Nullable="false" />
+          <Property Name="UpdatedDate" Type="DateTime" Precision="3" />
+          <Property Name="UpdatedBy" Type="Int32" />
+        </EntityType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="MbprosModelStoreContainer" CdmEntityContainer="MbprosEntities">
+          <EntitySetMapping Name="Configs">
+            <EntityTypeMapping TypeName="MbprosModel.Config">
+              <MappingFragment StoreEntitySet="Config">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="key" ColumnName="key" />
+                <ScalarProperty Name="value" ColumnName="value" />
+                <ScalarProperty Name="shortDesc" ColumnName="shortDesc" />
+                <ScalarProperty Name="longDesc" ColumnName="longDesc" />
+                <ScalarProperty Name="ExtraLongDEsc" ColumnName="ExtraLongDEsc" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Feature_User">
+            <EntityTypeMapping TypeName="MbprosModel.Feature_User">
+              <MappingFragment StoreEntitySet="Feature_User">
+                <ScalarProperty Name="FeatureUserID" ColumnName="FeatureUserID" />
+                <ScalarProperty Name="FeatureID" ColumnName="FeatureID" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="CanView" ColumnName="CanView" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="FeatureMasters">
+            <EntityTypeMapping TypeName="MbprosModel.FeatureMaster">
+              <MappingFragment StoreEntitySet="FeatureMaster">
+                <ScalarProperty Name="FeatureID" ColumnName="FeatureID" />
+                <ScalarProperty Name="FeatureName" ColumnName="FeatureName" />
+                <ScalarProperty Name="IsAdminForm" ColumnName="IsAdminForm" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PatientBillings">
+            <EntityTypeMapping TypeName="MbprosModel.PatientBilling">
+              <MappingFragment StoreEntitySet="PatientBilling">
+                <ScalarProperty Name="BillingFormID" ColumnName="BillingFormID" />
+                <ScalarProperty Name="PatientBillingID" ColumnName="PatientBillingID" />
+                <ScalarProperty Name="OfficeName" ColumnName="OfficeName" />
+                <ScalarProperty Name="PatientName" ColumnName="PatientName" />
+                <ScalarProperty Name="ServiceDate" ColumnName="ServiceDate" />
+                <ScalarProperty Name="CoPayType" ColumnName="CoPayType" />
+                <ScalarProperty Name="ChequeNo" ColumnName="ChequeNo" />
+                <ScalarProperty Name="CopayPaid" ColumnName="CopayPaid" />
+                <ScalarProperty Name="ProcedureCodes" ColumnName="ProcedureCodes" />
+                <ScalarProperty Name="DXCode" ColumnName="DXCode" />
+                <ScalarProperty Name="Note" ColumnName="Note" />
+                <ScalarProperty Name="SrNo" ColumnName="SrNo" />
+                <ScalarProperty Name="Active" ColumnName="Active" />
+                <ScalarProperty Name="IsArchived" ColumnName="IsArchived" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="UpdatedBy" ColumnName="UpdatedBy" />
+                <ScalarProperty Name="UpdatedDate" ColumnName="UpdatedDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PatientMasters">
+            <EntityTypeMapping TypeName="MbprosModel.PatientMaster">
+              <MappingFragment StoreEntitySet="PatientMaster">
+                <ScalarProperty Name="PatientID" ColumnName="PatientID" />
+                <ScalarProperty Name="OfficeName" ColumnName="OfficeName" />
+                <ScalarProperty Name="PatientName" ColumnName="PatientName" />
+                <ScalarProperty Name="StreetAddress" ColumnName="StreetAddress" />
+                <ScalarProperty Name="City" ColumnName="City" />
+                <ScalarProperty Name="StateCode" ColumnName="StateCode" />
+                <ScalarProperty Name="ZipCode" ColumnName="ZipCode" />
+                <ScalarProperty Name="DateofBirth" ColumnName="DateofBirth" />
+                <ScalarProperty Name="SSN" ColumnName="SSN" />
+                <ScalarProperty Name="Sex" ColumnName="Sex" />
+                <ScalarProperty Name="InsuranceCompanyName" ColumnName="InsuranceCompanyName" />
+                <ScalarProperty Name="InsuranceCompanyAddress" ColumnName="InsuranceCompanyAddress" />
+                <ScalarProperty Name="InsuranceCompanyPhone" ColumnName="InsuranceCompanyPhone" />
+                <ScalarProperty Name="EDIPayerNumber" ColumnName="EDIPayerNumber" />
+                <ScalarProperty Name="PolicyID" ColumnName="PolicyID" />
+                <ScalarProperty Name="GroupNumber" ColumnName="GroupNumber" />
+                <ScalarProperty Name="IsInsured" ColumnName="IsInsured" />
+                <ScalarProperty Name="PrimaryInsuredName" ColumnName="PrimaryInsuredName" />
+                <ScalarProperty Name="PrimaryInsuredDOB" ColumnName="PrimaryInsuredDOB" />
+                <ScalarProperty Name="ConditionRelatedTo" ColumnName="ConditionRelatedTo" />
+                <ScalarProperty Name="DateofAccident" ColumnName="DateofAccident" />
+                <ScalarProperty Name="InsuranceFax" ColumnName="InsuranceFax" />
+                <ScalarProperty Name="AdjusterName" ColumnName="AdjusterName" />
+                <ScalarProperty Name="IsSecondaryInsurance" ColumnName="IsSecondaryInsurance" />
+                <ScalarProperty Name="SecondaryInsuranceCompanyName" ColumnName="SecondaryInsuranceCompanyName" />
+                <ScalarProperty Name="SecondaryInsuranceCompanyAddr" ColumnName="SecondaryInsuranceCompanyAddr" />
+                <ScalarProperty Name="SecondaryInsuranceCompanyPhone" ColumnName="SecondaryInsuranceCompanyPhone" />
+                <ScalarProperty Name="SecondaryInsuranceID" ColumnName="SecondaryInsuranceID" />
+                <ScalarProperty Name="SecondaryInsuranceGroupID" ColumnName="SecondaryInsuranceGroupID" />
+                <ScalarProperty Name="SecondaryInsuredName" ColumnName="SecondaryInsuredName" />
+                <ScalarProperty Name="SecondaryInsuredDOB" ColumnName="SecondaryInsuredDOB" />
+                <ScalarProperty Name="FacilityName" ColumnName="FacilityName" />
+                <ScalarProperty Name="AdmissionDate" ColumnName="AdmissionDate" />
+                <ScalarProperty Name="LastSeenByRefProvider" ColumnName="LastSeenByRefProvider" />
+                <ScalarProperty Name="ReferringProviderName" ColumnName="ReferringProviderName" />
+                <ScalarProperty Name="ReferringProviderNPI" ColumnName="ReferringProviderNPI" />
+                <ScalarProperty Name="InitialTreatmentDate" ColumnName="InitialTreatmentDate" />
+                <ScalarProperty Name="LastXRayDateORPARTCodes" ColumnName="LastXRayDateORPARTCodes" />
+                <ScalarProperty Name="DiagnosisCodes" ColumnName="DiagnosisCodes" />
+                <ScalarProperty Name="AdditionalInfo" ColumnName="AdditionalInfo" />
+                <ScalarProperty Name="IsVerifyEligibility" ColumnName="IsVerifyEligibility" />
+                <ScalarProperty Name="Active" ColumnName="Active" />
+                <ScalarProperty Name="IsArchived" ColumnName="IsArchived" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="UpdatedBy" ColumnName="UpdatedBy" />
+                <ScalarProperty Name="UpdatedDate" ColumnName="UpdatedDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="States">
+            <EntityTypeMapping TypeName="MbprosModel.State">
+              <MappingFragment StoreEntitySet="States">
+                <ScalarProperty Name="StateID" ColumnName="StateID" />
+                <ScalarProperty Name="StateName" ColumnName="StateName" />
+                <ScalarProperty Name="StateCode" ColumnName="StateCode" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Users">
+            <EntityTypeMapping TypeName="MbprosModel.User">
+              <MappingFragment StoreEntitySet="Users">
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="OfficeName" ColumnName="OfficeName" />
+                <ScalarProperty Name="EmailID" ColumnName="EmailID" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="IsAdmin" ColumnName="IsAdmin" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="UpdatedDate" ColumnName="UpdatedDate" />
+                <ScalarProperty Name="UpdatedBy" ColumnName="UpdatedBy" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="True" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="True" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

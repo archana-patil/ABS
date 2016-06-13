@@ -1,0 +1,350 @@
+﻿@model  Mbpros.Models.PatientModel
+@{
+    ViewBag.Title = "PatientSearchForAdmin";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@Html.Hidden("hdnPID")
+<div class="form_border">
+    <div class="message">
+    </div>
+    <form class="form-horizontal customIzeFormELement normal_label" id="PatientSearchForAdmin">
+        <h2>Search Patient Forms</h2>
+        @{
+            if (ViewBag.EditMessage != "" && ViewBag.EditMessage != null)
+            {
+            <div class="alert alert-success">
+                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                <strong>Success!</strong> @ViewBag.EditMessage.
+            </div>
+            }
+        }
+
+        <div class="custom-seach-wrap">
+            <div class="row">
+                <div class="col-sm-3 big-3">
+                    <div class="form-group">
+                        <label for="inputEmail3" class="col-sm-5 control-label">Office Name</label>
+                        <div class="col-sm-7">
+                            @Html.TextBoxFor(model => model.OfficeName, new { @class = "form-control input-sm", @maxlength = "50", id = "OfficeName" })
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-3 big-3">
+                    <div class="form-group">
+                        <label for="inputEmail3" class="col-sm-5 control-label">Patient Name</label>
+                        <div class="col-sm-7">
+                            @Html.TextBoxFor(model => model.PatientName, new { @class = "form-control input-sm", @maxlength = "100", id = "PatientName" })
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-3 big-3">
+                    <div class="form-group">
+                        <label for="inputEmail3" class="col-sm-5 control-label">Form ID</label>
+                        <div class="col-sm-7">
+                            @Html.TextBoxFor(model => model.FormId, new { @class = "form-control input-sm", @id = "FormId", @maxlength = "8" })
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-3 sm-3">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-3 big-3">
+                    <div class="form-group date-row">
+                        <label for="inputEmail3" class="col-sm-5 control-label">Submission date</label>
+                        <div class="col-xs-3 dash">
+                            @Html.TextBoxFor(model => model.SubFrom, new { id = "SubFrom", @class = "form-control input-sm datetimepicker", onkeydown = "return false", @placeholder = "from" })
+                        </div>
+                        <div class="col-xs-3">
+                            @Html.TextBoxFor(model => model.SubTo, new { id = "SubTo", @class = "form-control input-sm datetimepicker", onkeydown = "return false", @placeholder = "to" })
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-3 big-3">
+                    <div class="form-group">
+                        <label for="inputEmail3" class="col-sm-5 control-label">SSN</label>
+                        <div class="col-sm-7">
+                            @Html.TextBoxFor(model => model.SSN, new { @class = "form-control input-sm", @id = "SSN", maxlength = "11" })
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-3 big-3">
+                    <div class="form-group">
+                        <label for="inputEmail3" class="col-sm-5 control-label">Policy ID#</label>
+                        <div class="col-sm-7">
+                            @Html.TextBoxFor(model => model.PolicyID, new { id = "PolicyID", @class = "form-control input-sm", @maxlength = "20" })
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-3 sm-3">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-3 big-3">
+                    <div class="form-group">
+                        <label for="inputEmail3" class="col-sm-5 control-label">Form Type</label>
+                        <div class="col-sm-7">
+                            @Html.DropDownListFor(model => model.ArchiveOption, Model.OptionList, new { id = "ddlOption", @class = "form-control input-sm" })
+
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-3 big-3">
+                    <button class="btn btn-primary btn-sm" id="btnSearchPatient"><i class="fa fa-search"></i></button>
+                    <button class="btn btn-primary btn-sm" id="btnReset" ><i class="fa fa-refresh"></i></button>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="jqGrid">
+                    <table id="divPatientSearch" class="scroll"></table>
+                    <div id="pager" class="scroll" style="text-align: center;"></div>
+                </div>
+            </div>
+        </div>
+
+        <div id="dialog" title="Confirmation Required" style="display: none">
+            Are you sure you want to delete the patient record?
+        </div>
+        <div id="dialog1" title="Confirmation Required" style="display: none">
+            Are you sure you want to archive the patient record?
+        </div>
+        <div id="dialog2" title="Confirmation Required" style="display: none">
+            Are you sure you want to un-archive the patient record?
+        </div>
+    </form>
+
+</div>
+
+
+@section Scripts{
+    <script src="~/Scripts/partialviewJS.js"></script>
+    <script src="/Scripts/jquery-ui.min.js"></script>
+    <script lang="javascript">
+        var gridUrl = '@Url.Action("DynamicGridData1", "Search")';
+        var rowCount = 10;
+        var filters = new Array();
+        var pageNumber = 1;
+
+        $(document).ready(function () {
+            isLoggedIn();
+            $('#btnSearchPatient').click(function (e) {
+                SearchData();
+                return false;
+            });
+            $('#btnReset').click(function (e) {
+                $("#OfficeName").val('');
+                $("#PatientName").val('');
+                $("#SubFrom").val('');
+                $("#SubTo").val('');
+                $("#FormId").val('');
+                $("#SSN").val('');
+                $("#PolicyID").val('');                
+                $("#ddlOption").val(0);
+                SearchData();
+                return false;
+            });
+
+            $("#divPatientSearch").jqGrid({
+                url: gridUrl,
+                datatype: 'json',
+                mtype: 'POST',
+                postData: { page: "pageIndex", rows: "pageSize", sidx: "sortIndex", sord: "sortDirection", "filters": filters, "firstLoading": false },
+                //success: function (gridData) { alert(gridData); },
+                colNames: ['ID', 'Pdf', 'Edit', 'IsArchived', 'Action', 'SSN', 'Patient Name', 'Office Name', 'Submit Date', 'ID# - Claim#', 'Group Number', 'Insurance Company', 'Delete'],
+                colModel: [
+                       { name: "PatientID", index: "PatientID", width: 60 },
+                       {
+                           name: "PatientID", index: "PatientID", width: 40, align: 'center', formatter: function (data) {
+                               return '<a href="/Patient/PDFForPatient?patientID=' + data + '" target="_blank"><img src="/images/pdf.gif"></a>'
+                           }
+                       },
+                       {
+                           name: "PatientID", index: "PatientID", width: 40, align: 'center', formatter: function (data) {
+                               return '<a href="/Patient/AddPatient?patientID=' + data + '&callFrom=PatientSearchForAdmin"><img src="/images/edit.png"></a>'
+                           }
+                       },
+                       {
+                           name: "IsArchived", index: "IsArchived", hidden: true
+                       },
+                       {
+                           name: "Action", index: "Action", width: 40, align: 'center'
+                       },
+                       { name: "SSN", index: "SSN", width: 90 },
+                       { name: "PatientName", index: "PatientName", width: 160 },
+                       { name: "OfficeName", index: "OfficeName", width: 130 },
+                       { name: "CreatedDate", index: "CreatedDate", width: 80 },
+                       { name: "PolicyID", index: "PolicyID", width: 140 },
+                       { name: "GroupNumber", index: "GroupNumber", width: 105 },
+                       { name: "InsuranceCompanyName", index: "InsuranceCompanyName", width: 165 },
+                       {
+                           name: "PatientID", index: "PatientID", width: 45, align: 'center', formatter: function (data) {
+                               return '<a class="confirmDelete" href="/Search/DeletePatient?patientID=' + data + '"><img src="/images/delete.png" /></a>'
+                           }
+                       }
+
+                ],
+                gridComplete: function () {
+                    var rowIDs = jQuery("#divPatientSearch").jqGrid('getDataIDs');
+                    for (var i = 0; i < rowIDs.length ; i++) {
+                        var rowID = rowIDs[i];
+                        var row = jQuery('#theGrid').jqGrid('getRowData', rowID);
+
+                        var imgTag;
+                        if ($(this).getCell(rowID, "IsArchived") == "true") {
+                            imgTag = '<a class="confirmUnArchive" href="/Search/UnarchivePatientRecord?patientID=' + $(this).getCell(rowID, "PatientID") + '"><img src="/images/unarchive.png" title="Click here to un-archive"></a>'
+                        }
+                        else {
+                            imgTag = '<a class="confirmArchive" href="/Search/ArchivePatientRecord?patientID=' + $(this).getCell(rowID, "PatientID") + '"><img src="/images/archive.png" title="Click here to archive"></a>'
+                        }
+                        $(this).setCell(rowID, "Action", imgTag);
+                    }
+                    $('.ui-jqgrid-titlebar-close', '#divPatientSearch').remove();
+                    rowCount = $('#divPatientSearch').jqGrid('getGridParam', 'rowNum');
+
+                    var totalRecords = parseInt($("#divPatientSearch").getGridParam("records"));
+                    var miniumValue = parseInt($('#pager_center select option:first-child').val());
+                    if (totalRecords <= miniumValue) {
+                        $('#pager_center input').attr("disabled", true);
+                        $('#pager_center select').attr("disabled", true);
+                    }
+                    else if (totalRecords <= rowCount) {
+                        $('#pager_center input').attr("disabled", true);
+                        $('#pager_center select').attr("disabled", false);
+                    }
+                    else {
+                        $('#pager_center input').attr("disabled", false);
+                        $('#pager_center select').attr("disabled", false);
+                    }
+                    pageNumber = $("#divPatientSearch").jqGrid('getGridParam', 'page');
+                    $('#pager_center select').val(rowCount);
+
+                },
+                //scrollOffset: 0,
+                //grouping: true,
+                pager: jQuery('#pager'),
+                rowNum: rowCount,
+                height: 'auto',
+                //autowidth: true,
+                rowList: [10, 20, 50, 100],
+                //sortname: 'PatientID',
+                //sortorder: "asc",
+                viewrecords: true,
+                resizable: false,
+                //shrinkToFit: true,
+                beforeRequest: function () {
+                    responsive_jqgrid($(".jqGrid"));
+                },
+                cmTemplate: { sortable: false }
+            });
+        });
+
+
+        $(document).on("click", ".confirmDelete", function (e) {
+            isLoggedIn();
+            e.preventDefault();
+            e.stopPropagation();
+            var targetUrl = $(this).attr("href");
+
+            $("#dialog").dialog({
+                buttons: {
+                    "Confirm": function () {
+                        var that = this;
+                        $.ajax({
+                            type: "GET",
+                            url: targetUrl,
+                            dataType: "json",
+                            success: function () {
+                                // window.location.href = 'BillingSearchForAdmin?editMessage=Billing details has been deleted successfully&IsBack=true';
+                                $(that).dialog("close");
+                                $(e.target).closest("tr.jqgrow>td").parent().hide();
+                                $(".message").html(buildMessage({ message: "Patient has been deleted successfully", className: "alert alert-success" })).fadeIn(100).fadeOut(2000);
+                            }
+                        });
+                    },
+                    "Cancel": function () {
+                        $(this).dialog("close");
+                    }
+                }
+            });
+
+            $("#dialog").dialog("open");
+        });
+
+        $(document).on("click", ".confirmArchive", function (e) {
+            isLoggedIn();
+            e.preventDefault();
+            e.stopPropagation();
+            var targetUrl = $(this).attr("href");
+
+            $("#dialog1").dialog({
+                buttons: {
+                    "Confirm": function () {
+                        var that = this;
+                        $.ajax({
+                            type: "GET",
+                            url: targetUrl,
+                            dataType: "json",
+                            success: function () {
+                                window.location.href = 'PatientSearchForAdmin?editMessage=Patient has been archived successfully&IsBack=true';
+                            }
+                        });
+                    },
+                    "Cancel": function () {
+                        $(this).dialog("close");
+                    }
+                }
+            });
+
+            $("#dialog1").dialog("open");
+        });
+
+        $(document).on("click", ".confirmUnArchive", function (e) {
+            isLoggedIn();
+            e.preventDefault();
+            e.stopPropagation();
+            var targetUrl = $(this).attr("href");
+
+            $("#dialog2").dialog({
+                buttons: {
+                    "Confirm": function () {
+                        var that = this;
+                        $.ajax({
+                            type: "GET",
+                            url: targetUrl,
+                            dataType: "json",
+                            success: function () {
+                                window.location.href = 'PatientSearchForAdmin?editMessage=Patient has been unarchived successfully&IsBack=true';
+                            }
+                        });
+                    },
+                    "Cancel": function () {
+                        $(this).dialog("close");
+                    }
+                }
+            });
+
+            $("#dialog2").dialog("open");
+        });
+
+        function SearchData() {
+            isLoggedIn();
+            var OfficeName = $("#OfficeName").val();
+            var PatientName = $("#PatientName").val();
+            var FormId = $("#FormId").val();
+            var SubFrom = $("#SubFrom").val();
+            var SubTo = $("#SubTo").val();
+            var SSN = $("#SSN").val();
+            var PolicyID = $("#PolicyID").val();
+            var ArchiveOption = $("#ddlOption").val();
+            var IsBack = false;
+            filters = {
+                OfficeName: OfficeName, PatientName: PatientName, FormId: FormId, SubFrom: SubFrom, SubTo: SubTo, SSN: SSN, PolicyID: PolicyID, ArchiveOption: ArchiveOption, IsBack: false
+            };
+            pageNumber = 1;
+            $("#divPatientSearch").jqGrid('setGridParam', { search: true, postData: { "filters": filters, "firstLoading": false } }).trigger("reloadGrid", [{ page: pageNumber }]);
+        }
+    </script>
+}

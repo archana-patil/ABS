@@ -1,0 +1,215 @@
+﻿@model  Mbpros.Models.UserModels
+@{
+    ViewBag.Title = "SearchUser";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="form_border">
+        <div class="message" >
+
+    </div>
+    <form class="form-horizontal customIzeFormELement normal_label" id="SearchUser">
+
+        <h2>Account Manager</h2>
+        @{
+            if (ViewBag.UserMessage != "" && ViewBag.UserMessage != null)
+            {
+            <div class="alert alert-success">
+                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                <strong>Success!</strong> @ViewBag.UserMessage.
+            </div>
+            }
+        }
+        <div class="form-group ">
+            <label class="col-md-4 control-label"><strong><a href="@Url.Action("AddUser", "User", new { userID = 0, message = "" })">Create New Account</a></strong></label>
+        </div>
+
+        @*<a class="btn btn-primary" role="button" data-toggle="collapse" href="#collapseExample" aria-expanded="true" aria-controls="collapseExample">
+            +</a> <div id="collapseExample" class="collapse in form-group" aria-expanded="true" style="">*@
+
+        @Html.HiddenFor(model => model.UserId, new { id = "hdnUID" })
+
+        <div class="custom-seach-wrap">
+            <div class="row">
+                <div class="col-sm-3 big-3">
+                    <div class="form-group">
+                        <label for="inputEmail3" class="col-sm-5 control-label">Username</label>
+                        <div class="col-sm-7">
+                            @Html.TextBoxFor(model => model.UserName, new { @class = "form-control input-sm", @maxlength = "50", id = "txtUsername" })
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-3 big-3">
+                    <div class="form-group">
+                        <label for="inputEmail3" class="col-sm-5 control-label">Office Name</label>
+                        <div class="col-sm-7">
+                            @Html.TextBoxFor(model => model.OfficeName, new { @class = "form-control input-sm", @maxlength = "100", id = "txtOffice" })
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-3 big-3">
+                    <div class="form-group">
+                        <label for="inputEmail3" class="col-sm-5 control-label">Email</label>
+                        <div class="col-sm-7">
+                            @Html.TextBoxFor(model => model.EmailID, new { @class = "form-control input-sm", @maxlength = "100", id = "txtEmail" })
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-1 inline-btn">
+                    <button class="btn btn-primary btn-sm" id="btnSearchUser" ><i class="fa fa-search"></i></button>    
+                    <button class="btn btn-primary btn-sm" id="btnReset"><i class="fa fa-refresh"></i></button>
+                </div>
+            </div>
+        </div>
+
+        <table id="divUser" class="scroll"></table>
+        <div id="pager" class="scroll" style="text-align: center;"></div>
+    </form>
+        <div id="dialog" title="Confirmation Required" style="display:none">
+      Are you sure you want to delete the user?
+    </div>
+</div>
+
+@section Scripts{
+    <script src="/Scripts/jquery-ui.min.js"></script>
+    <script lang="javascript">
+        var gridUrl = '@Url.Action("DynamicGridData5", "User")';
+        var rowCount = 10;
+        var filters = new Array();
+        var pageNumber = 1;
+
+        $(document).ready(function () {
+            $("#dialog").dialog({
+                autoOpen: false,
+                modal: true
+            });
+            $('#btnSearchUser').click(function (e) {
+                SearchData();
+                return false;
+            });
+
+
+            $('#btnReset').click(function (e) {
+                $("#txtUsername").val('');
+                $("#txtOffice").val('');
+                $("#txtEmail").val('');
+                SearchData();
+                return false;
+            });
+            $("#divUser").jqGrid({
+                url: gridUrl,
+                datatype: 'json',
+                mtype: 'POST',
+                postData: { page: "pageIndex", rows: "pageSize", sidx: "sortIndex", sord: "sortDirection", "filters": filters, "firstLoading": false },
+                //success: function (gridData) { alert(gridData); },
+                colNames: ['ID', 'Edit', 'Username', 'Password', 'Office Name', 'Email', 'Delete'],
+                colModel: [
+                        { name: "UserId", index: "UserId", width: 80, align: 'center' },
+                       {
+                           name: "UserId", index: "UserId", width: 70, align: 'center', formatter: function (data) {
+                               return '<a href="/User/AddUser?userID=' + data + '&message=""><img src="/images/edit.png" title="Click here to edit user"></a>'
+                           }
+                       },
+                       { name: "UserName", index: "UserName" },
+                       { name: "Password", index: "Password" },
+                       { name: "OfficeName", index: "OfficeName" },
+                       { name: "EmailID", index: "EmailID" },
+                       {
+                           name: "UserId", index: "UserId", width: 70, align: 'center', formatter: function (data) {
+                               if (data == "1")
+                                   return '';
+                               else
+                                   return '<a class="confirmDelete" href="/User/DeleteUser?userID=' + data + '"><img src="/images/delete.png"  title="Click here to delete user"/></a>'
+                           }
+                       }
+                ],
+                gridComplete: function () {
+                    $('.ui-jqgrid-titlebar-close', '#divUser').remove();
+                    rowCount = $('#divUser').jqGrid('getGridParam', 'rowNum');
+
+                    var totalRecords = parseInt($("#divUser").getGridParam("records"));
+                    var miniumValue = parseInt($('#pager_center select option:first-child').val());
+                    if (totalRecords <= miniumValue) {
+                        $('#pager_center input').attr("disabled", true);
+                        $('#pager_center select').attr("disabled", true);
+                    }
+                    else if (totalRecords <= rowCount) {
+                        $('#pager_center input').attr("disabled", true);
+                        $('#pager_center select').attr("disabled", false);
+                    }
+                    else {
+                        $('#pager_center input').attr("disabled", false);
+                        $('#pager_center select').attr("disabled", false);
+                    }
+                    pageNumber = $("#divUser").jqGrid('getGridParam', 'page');
+                    $('#pager_center select').val(rowCount);
+
+                },
+                scrollOffset: 0,
+                grouping: true,
+                pager: jQuery('#pager'),
+                rowNum: rowCount,
+                height: 'auto',
+                autowidth: true,
+                rowList: [10, 20, 50, 100],
+                sortname: 'UserId',
+                sortorder: "asc",
+                viewrecords: true,
+                shrinkToFit: true
+            });
+        });
+
+        $(document).on("click", ".confirmDelete", function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+            var targetUrl = $(this).attr("href");
+
+            $("#dialog").dialog({
+                buttons: {
+                    "Confirm": function () {
+                        var that = this;
+                        $.ajax({
+                            type: "GET",
+                            url: targetUrl,
+                            dataType: "json",
+                            success: function () {
+                                //window.location.href = 'SearchUser?message=User has been deleted successfully&IsBack=true';
+                                $(that).dialog("close");
+                                $(e.target).closest("tr.jqgrow>td").parent().hide();
+                                $(".message").html(buildMessage({ message: "User has been deleted successfully", className: "alert alert-success" })).fadeIn(100).fadeOut(2000);
+                            }
+                        });
+                    },
+                    "Cancel": function () {
+                        $(this).dialog("close");
+                    }
+                }
+            });
+
+            $("#dialog").dialog("open");
+        });
+
+        function SearchData() {
+            isLoggedIn();
+            var UserName = $("#txtUsername").val();
+            var OfficeName = $("#txtOffice").val();
+            var EmailID = $("#txtEmail").val();
+            var IsBack = false;
+            filters = {
+                UserName: UserName, OfficeName: OfficeName, EmailID: EmailID, IsBack: false
+            };
+            pageNumber = 1;
+            $("#divUser").jqGrid('setGridParam', { search: true, postData: { "filters": filters, "firstLoading": false } }).trigger("reloadGrid", [{ page: pageNumber }]);
+        }
+
+        function DeleteUser(userID) {
+            isLoggedIn();
+            $("#hdnUID").val(userID);
+        }
+    </script>
+}
+
+
+
+
+

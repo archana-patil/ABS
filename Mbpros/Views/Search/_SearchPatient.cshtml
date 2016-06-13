@@ -1,0 +1,54 @@
+﻿@model  Mbpros.Models.PatientModel
+
+<table id="divPatientSearch" class="table table-striped table-bordered" cellspacing="0" width="100%" style="overflow-x :auto;">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Pdf</th>
+            <th>Edit</th>
+            <th>SSN</th>
+            <th>Patient Name</th>
+            <th>Office Name</th>
+            <th>Date submit</th>
+            <th>ID# - Claim#</th>
+            <th>Group Number</th>
+            <th>Insurance Company</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model != null)
+        {
+            if (Model.PatientList != null)
+            {
+                foreach (var item in Model.PatientList)
+                {
+                    var trId = "P" + item.PatientID;
+                    <tr id=@trId>
+
+                        <td>
+                            @item.PatientID
+                        </td>
+                        <td>
+                            <a href="@Url.Action("PDFForPatient", "Patient",new {patientID=item.PatientID})" target="_blank">
+                                <img src="~/images/pdf.gif">
+                            </a>
+                        </td>
+                        <td>
+                            <a href="@Url.Action("AddPatient", "Patient", new { patientID = item.PatientID, callFrom = "PatientSearch" })">
+                                <img src="~/images/edit.png">
+                            </a>
+                        </td>
+                        <td>@item.SSN</td>
+                        <td>@item.PatientName</td>
+                        <td>@item.OfficeName</td>
+                        <td>@Convert.ToDateTime(item.CreatedDate).ToString("MM/dd/yyyy")</td>
+                        <td>@item.PolicyID</td>
+                        <td>@item.GroupNumber</td>
+                        <td>@item.InsuranceCompanyName</td>
+                    </tr>
+                }
+            }
+        }
+    </tbody>
+</table>
+

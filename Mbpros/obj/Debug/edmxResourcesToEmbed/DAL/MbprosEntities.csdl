@@ -1,0 +1,191 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="MbprosModel" Alias="Self" p1:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:p1="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityContainer Name="MbprosEntities" p1:LazyLoadingEnabled="true">
+    <EntitySet Name="Configs" EntityType="MbprosModel.Config" />
+    <EntitySet Name="Feature_User" EntityType="MbprosModel.Feature_User" />
+    <EntitySet Name="FeatureMasters" EntityType="MbprosModel.FeatureMaster" />
+    <EntitySet Name="PatientBillings" EntityType="MbprosModel.PatientBilling" />
+    <EntitySet Name="PatientMasters" EntityType="MbprosModel.PatientMaster" />
+    <EntitySet Name="States" EntityType="MbprosModel.State" />
+    <EntitySet Name="UserProfiles" EntityType="MbprosModel.UserProfile" />
+    <EntitySet Name="Users" EntityType="MbprosModel.User" />
+    <EntitySet Name="webpages_Membership" EntityType="MbprosModel.webpages_Membership" />
+    <EntitySet Name="webpages_OAuthMembership" EntityType="MbprosModel.webpages_OAuthMembership" />
+    <EntitySet Name="webpages_Roles" EntityType="MbprosModel.webpages_Roles" />
+    <AssociationSet Name="webpages_UsersInRoles" Association="MbprosModel.webpages_UsersInRoles">
+      <End Role="webpages_Roles" EntitySet="webpages_Roles" />
+      <End Role="UserProfile" EntitySet="UserProfiles" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="Config">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+    <Property Name="key" Type="String" MaxLength="50" Unicode="false" FixedLength="false" />
+    <Property Name="value" Type="String" MaxLength="50" Unicode="false" FixedLength="false" />
+    <Property Name="shortDesc" Type="String" MaxLength="50" Unicode="false" FixedLength="false" />
+    <Property Name="longDesc" Type="String" MaxLength="50" Unicode="false" FixedLength="false" />
+    <Property Name="ExtraLongDEsc" Type="String" MaxLength="50" Unicode="false" FixedLength="false" />
+  </EntityType>
+  <EntityType Name="Feature_User">
+    <Key>
+      <PropertyRef Name="FeatureUserID" />
+    </Key>
+    <Property Name="FeatureUserID" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+    <Property Name="FeatureID" Type="Int32" Nullable="false" />
+    <Property Name="UserID" Type="Int32" Nullable="false" />
+    <Property Name="CanView" Type="Boolean" Nullable="false" />
+  </EntityType>
+  <EntityType Name="FeatureMaster">
+    <Key>
+      <PropertyRef Name="FeatureID" />
+    </Key>
+    <Property Name="FeatureID" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+    <Property Name="FeatureName" Type="String" Nullable="false" MaxLength="25" Unicode="false" FixedLength="false" />
+    <Property Name="IsAdminForm" Type="Boolean" Nullable="false" />
+  </EntityType>
+  <EntityType Name="PatientBilling">
+    <Key>
+      <PropertyRef Name="BillingFormID" />
+    </Key>
+    <Property Name="BillingFormID" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+    <Property Name="PatientBillingID" Type="Int32" Nullable="false" />
+    <Property Name="OfficeName" Type="String" Nullable="false" MaxLength="100" Unicode="false" FixedLength="false" />
+    <Property Name="PatientName" Type="String" Nullable="false" MaxLength="100" Unicode="false" FixedLength="false" />
+    <Property Name="ServiceDate" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="CoPayType" Type="String" MaxLength="10" Unicode="false" FixedLength="false" />
+    <Property Name="ChequeNo" Type="String" MaxLength="15" Unicode="false" FixedLength="false" />
+    <Property Name="CopayPaid" Type="Decimal" Precision="18" Scale="2" />
+    <Property Name="ProcedureCodes" Type="String" Nullable="false" MaxLength="50" Unicode="false" FixedLength="false" />
+    <Property Name="DXCode" Type="String" Nullable="false" MaxLength="50" Unicode="false" FixedLength="false" />
+    <Property Name="Note" Type="String" MaxLength="1000" Unicode="false" FixedLength="false" />
+    <Property Name="SrNo" Type="Int32" Nullable="false" />
+    <Property Name="Active" Type="Boolean" Nullable="false" />
+    <Property Name="IsArchived" Type="Boolean" Nullable="false" />
+    <Property Name="CreatedBy" Type="Int32" Nullable="false" />
+    <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="UpdatedBy" Type="Int32" />
+    <Property Name="UpdatedDate" Type="DateTime" Precision="3" />
+  </EntityType>
+  <EntityType Name="PatientMaster">
+    <Key>
+      <PropertyRef Name="PatientID" />
+    </Key>
+    <Property Name="PatientID" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+    <Property Name="OfficeName" Type="String" Nullable="false" MaxLength="50" Unicode="false" FixedLength="false" />
+    <Property Name="PatientName" Type="String" Nullable="false" MaxLength="50" Unicode="false" FixedLength="false" />
+    <Property Name="StreetAddress" Type="String" Nullable="false" MaxLength="200" Unicode="false" FixedLength="false" />
+    <Property Name="City" Type="String" Nullable="false" MaxLength="200" Unicode="false" FixedLength="false" />
+    <Property Name="StateCode" Type="String" Nullable="false" MaxLength="2" Unicode="false" FixedLength="true" />
+    <Property Name="ZipCode" Type="String" Nullable="false" MaxLength="10" Unicode="false" FixedLength="false" />
+    <Property Name="DateofBirth" Type="DateTime" Precision="3" />
+    <Property Name="SSN" Type="String" MaxLength="11" Unicode="false" FixedLength="false" />
+    <Property Name="Sex" Type="String" Nullable="false" MaxLength="1" Unicode="false" FixedLength="true" />
+    <Property Name="InsuranceCompanyName" Type="String" Nullable="false" MaxLength="50" Unicode="false" FixedLength="false" />
+    <Property Name="InsuranceCompanyAddress" Type="String" MaxLength="200" Unicode="false" FixedLength="false" />
+    <Property Name="InsuranceCompanyPhone" Type="String" MaxLength="12" Unicode="false" FixedLength="false" />
+    <Property Name="EDIPayerNumber" Type="String" MaxLength="20" Unicode="false" FixedLength="false" />
+    <Property Name="PolicyID" Type="String" Nullable="false" MaxLength="20" Unicode="false" FixedLength="false" />
+    <Property Name="GroupNumber" Type="String" MaxLength="20" Unicode="false" FixedLength="false" />
+    <Property Name="IsInsured" Type="Boolean" />
+    <Property Name="PrimaryInsuredName" Type="String" MaxLength="50" Unicode="false" FixedLength="false" />
+    <Property Name="PrimaryInsuredDOB" Type="DateTime" Precision="3" />
+    <Property Name="ConditionRelatedTo" Type="String" MaxLength="1" Unicode="false" FixedLength="true" />
+    <Property Name="DateofAccident" Type="DateTime" Precision="3" />
+    <Property Name="InsuranceFax" Type="String" MaxLength="12" Unicode="false" FixedLength="false" />
+    <Property Name="AdjusterName" Type="String" MaxLength="50" Unicode="false" FixedLength="false" />
+    <Property Name="IsSecondaryInsurance" Type="Boolean" />
+    <Property Name="SecondaryInsuranceCompanyName" Type="String" MaxLength="50" Unicode="false" FixedLength="false" />
+    <Property Name="SecondaryInsuranceCompanyAddr" Type="String" MaxLength="200" Unicode="false" FixedLength="false" />
+    <Property Name="SecondaryInsuranceCompanyPhone" Type="String" MaxLength="12" Unicode="false" FixedLength="false" />
+    <Property Name="SecondaryInsuranceID" Type="String" MaxLength="20" Unicode="false" FixedLength="false" />
+    <Property Name="SecondaryInsuranceGroupID" Type="String" MaxLength="20" Unicode="false" FixedLength="false" />
+    <Property Name="SecondaryInsuredName" Type="String" MaxLength="50" Unicode="false" FixedLength="false" />
+    <Property Name="SecondaryInsuredDOB" Type="DateTime" Precision="3" />
+    <Property Name="FacilityName" Type="String" MaxLength="50" Unicode="false" FixedLength="false" />
+    <Property Name="AdmissionDate" Type="DateTime" Precision="3" />
+    <Property Name="LastSeenByRefProvider" Type="DateTime" Precision="3" />
+    <Property Name="ReferringProviderName" Type="String" MaxLength="50" Unicode="false" FixedLength="false" />
+    <Property Name="ReferringProviderNPI" Type="String" MaxLength="20" Unicode="false" FixedLength="false" />
+    <Property Name="InitialTreatmentDate" Type="DateTime" Precision="3" />
+    <Property Name="LastXRayDateORPARTCodes" Type="String" MaxLength="100" Unicode="false" FixedLength="false" />
+    <Property Name="DiagnosisCodes" Type="String" MaxLength="100" Unicode="false" FixedLength="false" />
+    <Property Name="AdditionalInfo" Type="String" MaxLength="200" Unicode="false" FixedLength="false" />
+    <Property Name="Active" Type="Boolean" Nullable="false" />
+    <Property Name="IsArchived" Type="Boolean" Nullable="false" />
+    <Property Name="CreatedBy" Type="Int32" Nullable="false" />
+    <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="UpdatedBy" Type="Int32" />
+    <Property Name="UpdatedDate" Type="DateTime" Precision="3" />
+  </EntityType>
+  <EntityType Name="State">
+    <Key>
+      <PropertyRef Name="StateID" />
+    </Key>
+    <Property Name="StateID" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+    <Property Name="StateName" Type="String" Nullable="false" MaxLength="50" Unicode="false" FixedLength="false" />
+    <Property Name="StateCode" Type="String" Nullable="false" MaxLength="2" Unicode="false" FixedLength="true" />
+  </EntityType>
+  <EntityType Name="UserProfile">
+    <Key>
+      <PropertyRef Name="UserId" />
+    </Key>
+    <Property Name="UserId" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+    <Property Name="UserName" Type="String" Nullable="false" MaxLength="56" Unicode="true" FixedLength="false" />
+    <NavigationProperty Name="webpages_Roles" Relationship="MbprosModel.webpages_UsersInRoles" FromRole="UserProfile" ToRole="webpages_Roles" />
+  </EntityType>
+  <EntityType Name="User">
+    <Key>
+      <PropertyRef Name="UserId" />
+    </Key>
+    <Property Name="UserId" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+    <Property Name="UserName" Type="String" Nullable="false" MaxLength="50" Unicode="false" FixedLength="false" />
+    <Property Name="Password" Type="String" Nullable="false" MaxLength="50" Unicode="false" FixedLength="false" />
+    <Property Name="OfficeName" Type="String" Nullable="false" MaxLength="100" Unicode="false" FixedLength="false" />
+    <Property Name="EmailID" Type="String" Nullable="false" MaxLength="100" Unicode="false" FixedLength="false" />
+    <Property Name="Status" Type="Boolean" Nullable="false" />
+    <Property Name="IsAdmin" Type="Boolean" Nullable="false" />
+    <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="CreatedBy" Type="Int32" Nullable="false" />
+    <Property Name="UpdatedDate" Type="DateTime" Precision="3" />
+    <Property Name="UpdatedBy" Type="Int32" />
+  </EntityType>
+  <EntityType Name="webpages_Membership">
+    <Key>
+      <PropertyRef Name="UserId" />
+    </Key>
+    <Property Name="UserId" Type="Int32" Nullable="false" />
+    <Property Name="CreateDate" Type="DateTime" Precision="3" />
+    <Property Name="ConfirmationToken" Type="String" MaxLength="128" Unicode="true" FixedLength="false" />
+    <Property Name="IsConfirmed" Type="Boolean" />
+    <Property Name="LastPasswordFailureDate" Type="DateTime" Precision="3" />
+    <Property Name="PasswordFailuresSinceLastSuccess" Type="Int32" Nullable="false" />
+    <Property Name="Password" Type="String" Nullable="false" MaxLength="128" Unicode="true" FixedLength="false" />
+    <Property Name="PasswordChangedDate" Type="DateTime" Precision="3" />
+    <Property Name="PasswordSalt" Type="String" Nullable="false" MaxLength="128" Unicode="true" FixedLength="false" />
+    <Property Name="PasswordVerificationToken" Type="String" MaxLength="128" Unicode="true" FixedLength="false" />
+    <Property Name="PasswordVerificationTokenExpirationDate" Type="DateTime" Precision="3" />
+  </EntityType>
+  <EntityType Name="webpages_OAuthMembership">
+    <Key>
+      <PropertyRef Name="Provider" />
+      <PropertyRef Name="ProviderUserId" />
+    </Key>
+    <Property Name="Provider" Type="String" Nullable="false" MaxLength="30" Unicode="true" FixedLength="false" />
+    <Property Name="ProviderUserId" Type="String" Nullable="false" MaxLength="100" Unicode="true" FixedLength="false" />
+    <Property Name="UserId" Type="Int32" Nullable="false" />
+  </EntityType>
+  <EntityType Name="webpages_Roles">
+    <Key>
+      <PropertyRef Name="RoleId" />
+    </Key>
+    <Property Name="RoleId" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+    <Property Name="RoleName" Type="String" Nullable="false" MaxLength="256" Unicode="true" FixedLength="false" />
+    <NavigationProperty Name="UserProfiles" Relationship="MbprosModel.webpages_UsersInRoles" FromRole="webpages_Roles" ToRole="UserProfile" />
+  </EntityType>
+  <Association Name="webpages_UsersInRoles">
+    <End Role="webpages_Roles" Type="MbprosModel.webpages_Roles" Multiplicity="*" />
+    <End Role="UserProfile" Type="MbprosModel.UserProfile" Multiplicity="*" />
+  </Association>
+</Schema>

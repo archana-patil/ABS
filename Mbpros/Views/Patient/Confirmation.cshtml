@@ -1,0 +1,27 @@
+﻿@{
+    ViewBag.Title = "CongratsPage";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<div class="ContentArea customIzeFormELement">
+
+<h3>Thank you!</h3>
+<p>Thank you! The Patient's information has been sent.</p>
+        <p>Click <a href="@Url.Action("AddPatient","Patient")">here</a> if you would like to submit another patient form.</p>
+    <p></p>
+    <p></p>
+    <p><a style="font-size: 10pt;" href="@Url.Action("PDFForPatient", "Patient",new {patientID=@ViewBag.PatientID})" target="_blank">View and Print PDF Form</a></p>
+	<br><br><br><br><br><br><br><br><br><br>
+</div>
+
+@section Scripts{
+    <script lang="javascript">
+        //$(document).ready(function () {
+        //    noBack();
+        //    window.onload = noBack;
+        //    window.onpageshow = function (evt) { if (evt.persisted) noBack() }
+        //    window.onunload = function () { void (0) }
+        //});
+    </script>
+}

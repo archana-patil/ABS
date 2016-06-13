@@ -1,0 +1,1188 @@
+﻿@model Mbpros.Models.BillingModel
+@{
+    ViewBag.Title = "BillingLog";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="form_desc">
+    @if (Model.BillingID != 0)
+    {
+        <h1>Edit Billing Log Form</h1>
+    }
+    else
+    {
+        <h1>Billing Log Form</h1>
+    }
+    <div class="head_subtitle">Complete the below secure form to provide billing information to MBP.</div>
+    <ul class="form_rule">
+        <li>Do NOT use special characters like & or ' or :.</li>
+        <li>For providers using MBP's complete Accounts Receivable Posting Service, report patient co-payments and deductibles paid at the time of visit by entering the dollar amount in - parentheses next to the date of service.</li>
+        <li>To see an example of how to report patient co-payments paid, <a href="https://www.mbpros.com/billinglogform.png">click here</a></li>
+        <li>To report all other patient payments received, use our form at <a href="http://www.mbpros.com/patient_payments.html">http://www.mbpros.com/patient_payments.htm </a></li>
+    </ul>
+    <p>(<i class="red">*</i> Indicates required field)</p>
+</div>
+
+
+<div class="form_border">
+
+    @using (Html.BeginForm("BillingLog", "Billing", FormMethod.Post, new { enctype = "multipart/form-data", name = "BillingLog", id = "BillingLog", @class = "form-horizontal customIzeFormELement normal_label" }))
+    {
+        if (ViewBag.ReCaptchaMessage != "" && ViewBag.ReCaptchaMessage != null)
+        {
+            <div class="alert alert-danger">
+                <strong>Warning! </strong>@ViewBag.ReCaptchaMessage.
+            </div>
+        }
+        @* <form class="form-horizontal customIzeFormELement normal_label" name = "BillingLog" id = "BillingLog">*@
+        @Html.ValidationSummary(true)
+        @Html.HiddenFor(model => model.BillingID)
+        @Html.HiddenFor(model => model.CallFrom, new { @id = "hdnCallFrom" })
+
+        @Html.Hidden("CaptchaSitekeychallenge")
+        @Html.Hidden("CaptchaSitekeynoscript")
+        @Html.Hidden("CaptchaSecretkey")
+
+        if (Model.BillingID != 0)
+        {
+            <div class="form-group">
+                <label for="inputEmail3" class="col-sm-3 col-md-2 control-label">Billing Form Id:</label>
+                <div class="col-sm-6 col-md-4">
+                    @Html.TextBoxFor(model => model.BillingID, new { @maxlength = "100", @class = "form-control", @readonly = "readonly" })
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="inputEmail3" class="col-sm-3 col-md-2 control-label">Submit Date:</label>
+                <div class="col-sm-6 col-md-4">
+                    @Html.TextBoxFor(model => model.CreatedDate, new { @maxlength = "100", @class = "form-control", @readonly = "readonly" })
+                </div>
+            </div>
+        }
+        <div class="form-group  required">
+            <label for="inputEmail3" class="col-sm-3 col-md-2 control-label">Office Name:</label>
+            <div class="col-sm-6 col-md-4">
+                @Html.TextBoxFor(model => model.OfficeName, new { @id = "txtBOfficeName", @maxlength = "100", @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.OfficeName)
+            </div>
+        </div>
+
+        <!--PATIENT 1 -->
+        <h3>Patient Number 1</h3>
+        <div class="form-group required">
+            <label for="inputPassword3" class="col-sm-3 col-md-2 control-label">Patient Name:</label>
+            <div class="col-sm-6 col-md-4">
+                @Html.TextBoxFor(model => model.PatientName1, new { @id = "txtBPatientName1", @maxlength = "100", @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.PatientName1)
+            </div>
+        </div>
+        <div class="form-group required">
+            <label for="inputPassword3" class="col-sm-3 col-md-2 control-label">Date of Service:</label>
+            <div class="  col-sm-5 col-md-2">
+                @*<div class="input-group date" id='ServiceDate1'>*@
+                    @Html.TextBoxFor(model => model.ServiceDate1, new { @id = "txtServiceDate1", @name = "txtServiceDate1", @class = "form-control txtdatetimepicker", @maxlength = "10" })
+                    @*<span class="input-group-addon">
+                        <span class="glyphicon glyphicon-calendar"></span>
+                    </span>*@
+                @*</div>*@
+                @Html.ValidationMessageFor(model => model.ServiceDate1)
+            </div>
+        </div>
+        <div class="form-group required">
+            <label for="inputPassword3" class="col-sm-3 col-md-2 control-label">Procedure Codes:</label>
+            <div class="col-sm-6 col-md-4">
+                @Html.TextBoxFor(model => model.ProcedureCodes1, new { @id = "txtProcCodes1", @maxlength = "50", @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.ProcedureCodes1)
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 col-md-2 control-label textRight">Copay Type:</label>
+            <div class="col-sm-6 col-md-4 inline-radio">
+                <input type="radio" name="radio_copay1" id="cash1" class="css-checkbox" />
+                <label for="cash1" class="css-label-radio radGroup1">Cash</label>
+                <input type="radio" name="radio_copay1" id="cheque1" class="css-checkbox" />
+                <label for="cheque1" class="css-label-radio radGroup1">Check</label>
+                <input type="radio" name="radio_copay1" id="creditcard1" class="css-checkbox" />
+                <label for="creditcard1" class="css-label-radio radGroup1">Credit Card</label>
+                @Html.HiddenFor(m => m.CopayType1, new { @id = "hdnCopayType1" })
+                @*@Html.Hidden("hdnCopayType1", Model.CopayType1)*@
+            </div>
+        </div>
+        <!--SHOW HIDE DIV STARTS-->
+        <div id="divCheque1">
+            <div class="form-group required">
+                <label for="inputPassword3" class="col-sm-3 col-md-2 control-label">Check Number:</label>
+                <div class="col-sm-6 col-md-4">
+                    @Html.TextBoxFor(model => model.ChequeNo1, new { @id = "txtChequeNo1", @maxlength = "15", @class = "form-control hiddendiv" })
+                </div>
+            </div>
+        </div>
+        <!--SHOW HIDE DIV ENDS-->
+        <div class="form-group required" id="divCopay1">
+            <label for="inputPassword3" class="col-sm-3 col-md-2 control-label">Copay Paid($):</label>
+            <div class="col-sm-6 col-md-4">
+                @Html.TextBoxFor(model => model.CopayPaid1, new { @id = "txtCopayPaid1", @maxlength = "10", @class = "form-control hiddendiv" })
+                @Html.ValidationMessageFor(model => model.CopayPaid1)
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="inputPassword3" class="col-sm-3 col-md-2 control-label">New DX Codes:</label>
+            <div class="col-sm-6 col-md-4">
+                @Html.TextBoxFor(model => model.NewDXCodes1, new { @id = "txtNewDXCodes1", @maxlength = "50", @class = "form-control " })
+                @Html.ValidationMessageFor(model => model.NewDXCodes1)
+            </div>
+        </div>
+        @Html.HiddenFor(m => m.SrNo1)
+
+        <!--PATIENT 2 -->
+        <h3>Patient Number 2</h3>
+        <div class="form-group">
+            <label for="inputPassword3" class="col-sm-3 col-md-2 control-label">Patient Name:</label>
+            <div class="col-sm-6 col-md-4">
+                @Html.TextBoxFor(model => model.PatientName2, new { @id = "txtBPatientName2", @maxlength = "100", @class = "form-control" })
+            </div>
+        </div>
+        <div class="form-group" id="starDivDt2">
+            <label for="inputPassword3" class="col-sm-3 col-md-2 control-label">Date of Service:</label>
+            <div class="  col-sm-5 col-md-2">
+                @*<div class="input-group date" id='ServiceDate2'>*@
+                    @Html.TextBoxFor(model => model.ServiceDate2, new { @id = "txtServiceDate2", @name = "txtServiceDate2", @class = "form-control txtdatetimepicker hiddendiv", @maxlength = "10" })
+                    @*<span class="input-group-addon">
+                        <span class="glyphicon glyphicon-calendar"></span>
+                    </span>*@
+               @* </div>*@
+                @Html.ValidationMessageFor(model => model.ServiceDate2)
+            </div>
+        </div>
+        <div class="form-group" id="starDivProcCode2">
+            <label for="inputPassword3" class="col-sm-3 col-md-2 control-label">Procedure Codes:</label>
+            <div class="col-sm-6 col-md-4">
+                @Html.TextBoxFor(model => model.ProcedureCodes2, new { @id = "txtProcCodes2", @maxlength = "50", @class = "form-control hiddendiv" })
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 col-md-2 control-label textRight">Copay Type:</label>
+            <div class="col-sm-6 col-md-4 inline-radio">
+                <input type="radio" name="radio_copay2" id="cash2" class="css-checkbox" />
+                <label for="cash2" class="css-label-radio radGroup1">Cash</label>
+                <input type="radio" name="radio_copay2" id="cheque2" class="css-checkbox" />
+                <label for="cheque2" class="css-label-radio radGroup1">Check</label>
+                <input type="radio" name="radio_copay2" id="creditcard2" class="css-checkbox" />
+                <label for="creditcard2" class="css-label-radio radGroup1">Credit Card</label>
+                @Html.HiddenFor(m => m.CopayType2, new { @id = "hdnCopayType2" })
+                @*@Html.Hidden("hdnCopayType2", Model.CopayType2)*@
+            </div>
+        </div>
+        <!--SHOW HIDE DIV STARTS-->
+        <div id="divCheque2">
+            <div class="form-group required">
+                <label for="inputPassword3" class="col-sm-3 col-md-2 control-label">Check Number:</label>
+                <div class="col-sm-6 col-md-4">
+                    @Html.TextBoxFor(model => model.ChequeNo2, new { @id = "txtChequeNo2", @maxlength = "15", @class = "form-control hiddendiv" })
+                    @Html.ValidationMessageFor(model => model.ChequeNo2)
+                </div>
+            </div>
+        </div>
+        <!--SHOW HIDE DIV ENDS-->
+        <div class="form-group required" id="divCopay2">
+            <label for="inputPassword3" class="col-sm-3 col-md-2 control-label">Copay Paid($):</label>
+            <div class="col-sm-6 col-md-4">
+                @Html.TextBoxFor(model => model.CopayPaid2, new { @id = "txtCopayPaid2", @maxlength = "10", @class = "form-control hiddendiv" })
+                @Html.ValidationMessageFor(model => model.CopayPaid2)
+            </div>
+        </div>
+        <div class="form-group" id="starDivDXCode2">
+            <label for="inputPassword3" class="col-sm-3 col-md-2 control-label">New DX Codes:</label>
+            <div class="col-sm-6 col-md-4">
+                @Html.TextBoxFor(model => model.NewDXCodes2, new { @id = "txtNewDXCodes2", @maxlength = "50", @class = "form-control " })
+            </div>
+        </div>
+        @Html.HiddenFor(m => m.SrNo2)
+
+        <!--PATIENT 3 -->
+        <h3>Patient Number 3</h3>
+        <div class="form-group">
+            <label for="inputPassword3" class="col-sm-3 col-md-2 control-label">Patient Name:</label>
+            <div class="col-sm-6 col-md-4">
+                @Html.TextBoxFor(model => model.PatientName3, new { @id = "txtBPatientName3", @maxlength = "100", @class = "form-control" })
+            </div>
+        </div>
+        <div class="form-group" id="starDivDt3">
+            <label for="inputPassword3" class="col-sm-3 col-md-2 control-label">Date of Service:</label>
+            <div class="  col-sm-5 col-md-2">
+                @*<div class="input-group date" id='ServiceDate3'>*@
+                    @Html.TextBoxFor(model => model.ServiceDate3, new { @id = "txtServiceDate3", @name = "txtServiceDate3", @class = "form-control txtdatetimepicker hiddendiv", @maxlength = "10" })
+@*                    , onkeydown = "return false"
+                    <span class="input-group-addon">
+                        <span class="glyphicon glyphicon-calendar"></span>
+                    </span>*@
+                @*</div>*@
+                @Html.ValidationMessageFor(model => model.ServiceDate3)
+            </div>
+        </div>
+        <div class="form-group" id="starDivProcCode3">
+            <label for="inputPassword3" class="col-sm-3 col-md-2 control-label">Procedure Codes:</label>
+            <div class="col-sm-6 col-md-4">
+                @Html.TextBoxFor(model => model.ProcedureCodes3, new { @id = "txtProcCodes3", @maxlength = "50", @class = "form-control hiddendiv" })
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 col-md-2 control-label textRight">Copay Type:</label>
+            <div class="col-sm-6 col-md-4 inline-radio">
+                <input type="radio" name="radio_copay3" id="cash3" class="css-checkbox" />
+                <label for="cash3" class="css-label-radio radGroup1">Cash</label>
+                <input type="radio" name="radio_copay3" id="cheque3" class="css-checkbox" />
+                <label for="cheque3" class="css-label-radio radGroup1">Check</label>
+                <input type="radio" name="radio_copay3" id="creditcard3" class="css-checkbox" />
+                <label for="creditcard3" class="css-label-radio radGroup1">Credit Card</label>
+                @Html.HiddenFor(m => m.CopayType3, new { @id = "hdnCopayType3" })
+                @*@Html.Hidden("hdnCopayType3", Model.CopayType3)*@
+            </div>
+        </div>
+
+        <!--SHOW HIDE DIV STARTS-->
+        <div id="divCheque3">
+            <div class="form-group required">
+                <label for="inputPassword3" class="col-sm-3 col-md-2 control-label">Check Number:</label>
+                <div class="col-sm-6 col-md-4">
+                    @Html.TextBoxFor(model => model.ChequeNo3, new { @id = "txtChequeNo3", @maxlength = "15", @class = "form-control hiddendiv" })
+                    @Html.ValidationMessageFor(model => model.ChequeNo3)
+                </div>
+            </div>
+        </div>
+        <!--SHOW HIDE DIV ENDS-->
+
+        <div class="form-group required" id="divCopay3">
+            <label for="inputPassword3" class="col-sm-3 col-md-2 control-label">Copay Paid($):</label>
+            <div class="col-sm-6 col-md-4">
+                @Html.TextBoxFor(model => model.CopayPaid3, new { @id = "txtCopayPaid3", @maxlength = "10", @class = "form-control hiddendiv" })
+                @Html.ValidationMessageFor(model => model.CopayPaid3)
+            </div>
+        </div>
+
+
+
+        <div class="form-group" id="starDivDXCode3">
+            <label for="inputPassword3" class="col-sm-3 col-md-2 control-label">New DX Codes:</label>
+            <div class="col-sm-6 col-md-4">
+                @Html.TextBoxFor(model => model.NewDXCodes3, new { @id = "txtNewDXCodes3", @maxlength = "50", @class = "form-control " })
+            </div>
+        </div>
+        @Html.HiddenFor(m => m.SrNo3)
+
+        <!--PATIENT 4 -->
+        <h3>Patient Number 4</h3>
+        <div class="form-group">
+            <label for="inputPassword3" class="col-sm-3 col-md-2 control-label">Patient Name:</label>
+            <div class="col-sm-6 col-md-4">
+                @Html.TextBoxFor(model => model.PatientName4, new { @id = "txtBPatientName4", @maxlength = "100", @class = "form-control" })
+            </div>
+        </div>
+        <div class="form-group" id="starDivDt4">
+            <label for="inputPassword3" class="col-sm-3 col-md-2 control-label">Date of Service:</label>
+            <div class="  col-sm-5 col-md-2">
+                @*<div class="input-group date" id='ServiceDate4'>*@
+                    @Html.TextBoxFor(model => model.ServiceDate4, new { @id = "txtServiceDate4", @name = "txtServiceDate4", @class = "form-control txtdatetimepicker hiddendiv", @maxlength = "10" })
+                    @*<span class="input-group-addon">
+                        <span class="glyphicon glyphicon-calendar"></span>
+                    </span>*@
+                @*</div>*@
+                @Html.ValidationMessageFor(model => model.ServiceDate4)
+            </div>
+        </div>
+        <div class="form-group" id="starDivProcCode4">
+            <label for="inputPassword3" class="col-sm-3 col-md-2 control-label">Procedure Codes:</label>
+            <div class="col-sm-6 col-md-4">
+                @Html.TextBoxFor(model => model.ProcedureCodes4, new { @id = "txtProcCodes4", @maxlength = "50", @class = "form-control hiddendiv" })
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 col-md-2 control-label textRight">Copay Type:</label>
+            <div class="col-sm-6 col-md-4 inline-radio">
+                <input type="radio" name="radio_copay4" id="cash4" class="css-checkbox" />
+                <label for="cash4" class="css-label-radio radGroup1">Cash</label>
+                <input type="radio" name="radio_copay4" id="cheque4" class="css-checkbox" />
+                <label for="cheque4" class="css-label-radio radGroup1">Check</label>
+                <input type="radio" name="radio_copay4" id="creditcard4" class="css-checkbox" />
+                <label for="creditcard4" class="css-label-radio radGroup1">Credit Card</label>
+                @Html.HiddenFor(m => m.CopayType4, new { @id = "hdnCopayType4" })
+                @*@Html.Hidden("hdnCopayType4", Model.CopayType4)*@
+            </div>
+        </div>
+
+        <!--SHOW HIDE DIV STARTS-->
+        <div id="divCheque4">
+            <div class="form-group required">
+                <label for="inputPassword3" class="col-sm-3 col-md-2 control-label">Check Number:</label>
+                <div class="col-sm-6 col-md-4">
+                    @Html.TextBoxFor(model => model.ChequeNo4, new { @id = "txtChequeNo4", @maxlength = "15", @class = "form-control hiddendiv" })
+                    @Html.ValidationMessageFor(model => model.ChequeNo4)
+                </div>
+            </div>
+        </div>
+        <!--SHOW HIDE DIV ENDS-->
+
+        <div class="form-group required" id="divCopay4">
+            <label for="inputPassword3" class="col-sm-3 col-md-2 control-label">Copay Paid($):</label>
+            <div class="col-sm-6 col-md-4">
+                @Html.TextBoxFor(model => model.CopayPaid4, new { @id = "txtCopayPaid4", @maxlength = "10", @class = "form-control hiddendiv" })
+                @Html.ValidationMessageFor(model => model.CopayPaid4)
+            </div>
+        </div>
+
+
+
+        <div class="form-group" id="starDivDXCode4">
+            <label for="inputPassword3" class="col-sm-3 col-md-2 control-label">New DX Codes:</label>
+            <div class="col-sm-6 col-md-4">
+                @Html.TextBoxFor(model => model.NewDXCodes4, new { @id = "txtNewDXCodes4", @maxlength = "50", @class = "form-control " })
+            </div>
+        </div>
+        @Html.HiddenFor(m => m.SrNo4)
+
+        <!--PATIENT 5 -->
+        <h3>Patient Number 5</h3>
+        <div class="form-group">
+            <label for="inputPassword3" class="col-sm-3 col-md-2 control-label">Patient Name:</label>
+            <div class="col-sm-6 col-md-4">
+                @Html.TextBoxFor(model => model.PatientName5, new { @id = "txtBPatientName5", @maxlength = "100", @class = "form-control" })
+            </div>
+        </div>
+        <div class="form-group" id="starDivDt5">
+            <label for="inputPassword3" class="col-sm-3 col-md-2 control-label">Date of Service:</label>
+            <div class="  col-sm-5 col-md-2">
+                @*<div class="input-group date" id='ServiceDate5'>*@
+                    @Html.TextBoxFor(model => model.ServiceDate5, new { @id = "txtServiceDate5", @name = "txtServiceDate5", @class = "form-control txtdatetimepicker hiddendiv", @maxlength = "10" })
+                   @* <span class="input-group-addon">
+                        <span class="glyphicon glyphicon-calendar"></span>
+                    </span>*@
+                @*</div>*@
+                @Html.ValidationMessageFor(model => model.ServiceDate5)
+            </div>
+        </div>
+        <div class="form-group" id="starDivProcCode5">
+            <label for="inputPassword3" class="col-sm-3 col-md-2 control-label">Procedure Codes:</label>
+            <div class="col-sm-6 col-md-4">
+                @Html.TextBoxFor(model => model.ProcedureCodes5, new { @id = "txtProcCodes5", @maxlength = "50", @class = "form-control hiddendiv" })
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 col-md-2 control-label textRight">Copay Type:</label>
+            <div class="col-sm-6 col-md-4 inline-radio">
+                <input type="radio" name="radio_copay5" id="cash5" class="css-checkbox" />
+                <label for="cash5" class="css-label-radio radGroup1">Cash</label>
+                <input type="radio" name="radio_copay5" id="cheque5" class="css-checkbox" />
+                <label for="cheque5" class="css-label-radio radGroup1">Check</label>
+                <input type="radio" name="radio_copay5" id="creditcard5" class="css-checkbox" />
+                <label for="creditcard5" class="css-label-radio radGroup1">Credit Card</label>
+                @Html.HiddenFor(m => m.CopayType5, new { @id = "hdnCopayType5" })
+                @*  @Html.Hidden("hdnCopayType5", Model.CopayType5)*@
+
+            </div>
+        </div>
+
+        <!--SHOW HIDE DIV STARTS-->
+        <div id="divCheque5">
+            <div class="form-group required">
+                <label for="inputPassword3" class="col-sm-3 col-md-2 control-label">Check Number:</label>
+                <div class="col-sm-6 col-md-4">
+                    @Html.TextBoxFor(model => model.ChequeNo5, new { @id = "txtChequeNo5", @maxlength = "15", @class = "form-control hiddendiv" })
+                    @Html.ValidationMessageFor(model => model.ChequeNo5)
+                </div>
+            </div>
+        </div>
+        <!--SHOW HIDE DIV ENDS-->
+
+        <div class="form-group required" id="divCopay5">
+            <label for="inputPassword3" class="col-sm-3 col-md-2 control-label">Copay Paid($):</label>
+            <div class="col-sm-6 col-md-4">
+                @Html.TextBoxFor(model => model.CopayPaid5, new { @id = "txtCopayPaid5", @maxlength = "10", @class = "form-control hiddendiv" })
+                @Html.ValidationMessageFor(model => model.CopayPaid5)
+            </div>
+        </div>
+
+
+
+        <div class="form-group" id="starDivDXCode5">
+            <label for="inputPassword3" class="col-sm-3 col-md-2 control-label">New DX Codes:</label>
+            <div class="col-sm-6 col-md-4">
+                @Html.TextBoxFor(model => model.NewDXCodes5, new { @id = "txtNewDXCodes5", @maxlength = "50", @class = "form-control " })
+            </div>
+        </div>
+        @Html.HiddenFor(m => m.SrNo5)
+
+        <!--PATIENT 6 -->
+        <h3>Patient Number 6</h3>
+        <div class="form-group">
+            <label for="inputPassword3" class="col-sm-3 col-md-2 control-label">Patient Name:</label>
+            <div class="col-sm-6 col-md-4">
+                @Html.TextBoxFor(model => model.PatientName6, new { @id = "txtBPatientName6", @maxlength = "100", @class = "form-control" })
+            </div>
+        </div>
+        <div class="form-group" id="starDivDt6">
+            <label for="inputPassword3" class="col-sm-3 col-md-2 control-label">Date of Service:</label>
+            <div class="  col-sm-5 col-md-2">
+                @*<div class="input-group date" id='ServiceDate6'>*@
+                    @Html.TextBoxFor(model => model.ServiceDate6, new { @id = "txtServiceDate6", @name = "txtServiceDate6", @class = "form-control txtdatetimepicker hiddendiv", @maxlength = "10" })
+                    @*<span class="input-group-addon">
+                        <span class="glyphicon glyphicon-calendar"></span>
+                    </span>*@
+                @*</div>*@
+                @Html.ValidationMessageFor(model => model.ServiceDate6)
+            </div>
+        </div>
+        <div class="form-group" id="starDivProcCode6">
+            <label for="inputPassword3" class="col-sm-3 col-md-2 control-label">Procedure Codes:</label>
+            <div class="col-sm-6 col-md-4">
+                @Html.TextBoxFor(model => model.ProcedureCodes6, new { @id = "txtProcCodes6", @maxlength = "50", @class = "form-control hiddendiv" })
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 col-md-2 control-label textRight">Copay Type:</label>
+            <div class="col-sm-6 col-md-4 inline-radio">
+                <input type="radio" name="radio_copay6" id="cash6" class="css-checkbox" />
+                <label for="cash6" class="css-label-radio radGroup1">Cash</label>
+                <input type="radio" name="radio_copay6" id="cheque6" class="css-checkbox" />
+                <label for="cheque6" class="css-label-radio radGroup1">Check</label>
+                <input type="radio" name="radio_copay6" id="creditcard6" class="css-checkbox" />
+                <label for="creditcard6" class="css-label-radio radGroup1">Credit Card</label>
+                @Html.HiddenFor(m => m.CopayType6, new { @id = "hdnCopayType6" })
+                @*@Html.Hidden("hdnCopayType6", Model.CopayType6)*@
+            </div>
+        </div>
+        <!--SHOW HIDE DIV STARTS-->
+        <div id="divCheque6">
+            <div class="form-group required">
+                <label for="inputPassword3" class="col-sm-3 col-md-2 control-label">Check Number:</label>
+                <div class="col-sm-6 col-md-4">
+                    @Html.TextBoxFor(model => model.ChequeNo6, new { @id = "txtChequeNo6", @maxlength = "15", @class = "form-control hiddendiv" })
+                    @Html.ValidationMessageFor(model => model.ChequeNo6)
+                </div>
+            </div>
+        </div>
+        <!--SHOW HIDE DIV ENDS-->
+        <div class="form-group required" id="divCopay6">
+            <label for="inputPassword3" class="col-sm-3 col-md-2 control-label">Copay Paid($):</label>
+            <div class="col-sm-6 col-md-4">
+                @Html.TextBoxFor(model => model.CopayPaid6, new { @id = "txtCopayPaid6", @maxlength = "10", @class = "form-control hiddendiv" })
+                @Html.ValidationMessageFor(model => model.CopayPaid6)
+            </div>
+        </div>
+        <div class="form-group" id="starDivDXCode6">
+            <label for="inputPassword3" class="col-sm-3 col-md-2 control-label">New DX Codes:</label>
+            <div class="col-sm-6 col-md-4">
+                @Html.TextBoxFor(model => model.NewDXCodes6, new { @id = "txtNewDXCodes6", @maxlength = "50", @class = "form-control " })
+            </div>
+        </div>
+        @Html.HiddenFor(m => m.SrNo6)
+
+        <!--PATIENT 7 -->
+        <h3>Patient Number 7</h3>
+        <div class="form-group">
+            <label for="inputPassword3" class="col-sm-3 col-md-2 control-label">Patient Name:</label>
+            <div class="col-sm-6 col-md-4">
+                @Html.TextBoxFor(model => model.PatientName7, new { @id = "txtBPatientName7", @maxlength = "100", @class = "form-control" })
+            </div>
+        </div>
+        <div class="form-group" id="starDivDt7">
+            <label for="inputPassword3" class="col-sm-3 col-md-2 control-label">Date of Service:</label>
+            <div class="  col-sm-5 col-md-2">
+                @*<div class="input-group date" id='ServiceDate7'>*@
+                    @Html.TextBoxFor(model => model.ServiceDate7, new { @id = "txtServiceDate7", @name = "txtServiceDate7", @class = "form-control txtdatetimepicker hiddendiv", @maxlength = "10" })
+                    @*<span class="input-group-addon">
+                        <span class="glyphicon glyphicon-calendar"></span>
+                    </span>*@
+                @*</div>*@
+                @Html.ValidationMessageFor(model => model.ServiceDate7)
+            </div>
+        </div>
+        <div class="form-group" id="starDivProcCode7">
+            <label for="inputPassword3" class="col-sm-3 col-md-2 control-label">Procedure Codes:</label>
+            <div class="col-sm-6 col-md-4">
+                @Html.TextBoxFor(model => model.ProcedureCodes7, new { @id = "txtProcCodes7", @maxlength = "50", @class = "form-control hiddendiv" })
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 col-md-2 control-label textRight">Copay Type:</label>
+            <div class="col-sm-6 col-md-4 inline-radio">
+                <input type="radio" name="radio_copay7" id="cash7" class="css-checkbox" />
+                <label for="cash7" class="css-label-radio radGroup1">Cash</label>
+                <input type="radio" name="radio_copay7" id="cheque7" class="css-checkbox" />
+                <label for="cheque7" class="css-label-radio radGroup1">Check</label>
+                <input type="radio" name="radio_copay7" id="creditcard7" class="css-checkbox" />
+                <label for="creditcard7" class="css-label-radio radGroup1">Credit Card</label>
+                @Html.HiddenFor(m => m.CopayType7, new { @id = "hdnCopayType7" })
+                @*@Html.Hidden("hdnCopayType7", Model.CopayType7)*@
+            </div>
+        </div>
+        <!--SHOW HIDE DIV STARTS-->
+        <div id="divCheque7">
+            <div class="form-group required">
+                <label for="inputPassword3" class="col-sm-3 col-md-2 control-label">Check Number:</label>
+                <div class="col-sm-6 col-md-4">
+                    @Html.TextBoxFor(model => model.ChequeNo7, new { @id = "txtChequeNo7", @maxlength = "15", @class = "form-control hiddendiv" })
+                    @Html.ValidationMessageFor(model => model.ChequeNo7)
+                </div>
+            </div>
+        </div>
+        <!--SHOW HIDE DIV ENDS-->
+
+        <div class="form-group required" id="divCopay7">
+            <label for="inputPassword3" class="col-sm-3 col-md-2 control-label">Copay Paid($):</label>
+            <div class="col-sm-6 col-md-4">
+                @Html.TextBoxFor(model => model.CopayPaid7, new { @id = "txtCopayPaid7", @maxlength = "10", @class = "form-control hiddendiv" })
+                @Html.ValidationMessageFor(model => model.CopayPaid7)
+            </div>
+        </div>
+        <div class="form-group" id="starDivDXCode7">
+            <label for="inputPassword3" class="col-sm-3 col-md-2 control-label">New DX Codes:</label>
+            <div class="col-sm-6 col-md-4">
+                @Html.TextBoxFor(model => model.NewDXCodes7, new { @id = "txtNewDXCodes7", @maxlength = "50", @class = "form-control " })
+            </div>
+        </div>
+        @Html.HiddenFor(m => m.SrNo7)
+
+        <!--PATIENT 8 -->
+        <h3>Patient Number 8</h3>
+        <div class="form-group">
+            <label for="inputPassword3" class="col-sm-3 col-md-2 control-label">Patient Name:</label>
+            <div class="col-sm-6 col-md-4">
+                @Html.TextBoxFor(model => model.PatientName8, new { @id = "txtBPatientName8", @maxlength = "100", @class = "form-control" })
+            </div>
+        </div>
+        <div class="form-group" id="starDivDt8">
+            <label for="inputPassword3" class="col-sm-3 col-md-2 control-label">Date of Service:</label>
+
+            <div class="  col-sm-5 col-md-2">
+                @*<div class="input-group date" id='ServiceDate8'>*@
+                    @Html.TextBoxFor(model => model.ServiceDate8, new { @id = "txtServiceDate8", @name = "txtServiceDate8", @class = "form-control txtdatetimepicker hiddendiv", @maxlength = "10" })
+                    @*<span class="input-group-addon">
+                        <span class="glyphicon glyphicon-calendar"></span>
+                    </span>*@
+               @* </div>*@
+                @Html.ValidationMessageFor(model => model.ServiceDate8)
+            </div>
+        </div>
+        <div class="form-group" id="starDivProcCode8">
+            <label for="inputPassword3" class="col-sm-3 col-md-2 control-label">Procedure Codes:</label>
+            <div class="col-sm-6 col-md-4">
+                @Html.TextBoxFor(model => model.ProcedureCodes8, new { @id = "txtProcCodes8", @maxlength = "50", @class = "form-control hiddendiv" })
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 col-md-2 control-label textRight">Copay Type:</label>
+            <div class="col-sm-6 col-md-4 inline-radio">
+                <input type="radio" name="radio_copay8" id="cash8" class="css-checkbox" />
+                <label for="cash8" class="css-label-radio radGroup1">Cash</label>
+                <input type="radio" name="radio_copay8" id="cheque8" class="css-checkbox" />
+                <label for="cheque8" class="css-label-radio radGroup1">Check</label>
+                <input type="radio" name="radio_copay8" id="creditcard8" class="css-checkbox" />
+                <label for="creditcard8" class="css-label-radio radGroup1">Credit Card</label>
+                @Html.HiddenFor(m => m.CopayType8, new { @id = "hdnCopayType8" })
+                @*@Html.Hidden("hdnCopayType8", Model.CopayType8)*@
+            </div>
+        </div>
+        <!--SHOW HIDE DIV STARTS-->
+        <div id="divCheque8">
+            <div class="form-group required">
+                <label for="inputPassword3" class="col-sm-3 col-md-2 control-label">Check Number:</label>
+                <div class="col-sm-6 col-md-4">
+                    @Html.TextBoxFor(model => model.ChequeNo8, new { @id = "txtChequeNo8", @maxlength = "15", @class = "form-control hiddendiv" })
+                    @Html.ValidationMessageFor(model => model.ChequeNo8)
+                </div>
+            </div>
+        </div>
+        <!--SHOW HIDE DIV ENDS-->
+        <div class="form-group required" id="divCopay8">
+            <label for="inputPassword3" class="col-sm-3 col-md-2 control-label">Copay Paid($):</label>
+            <div class="col-sm-6 col-md-4">
+                @Html.TextBoxFor(model => model.CopayPaid8, new { @id = "txtCopayPaid8", @maxlength = "10", @class = "form-control hiddendiv" })
+                @Html.ValidationMessageFor(model => model.CopayPaid8)
+            </div>
+        </div>
+        <div class="form-group" id="starDivDXCode8">
+            <label for="inputPassword3" class="col-sm-3 col-md-2 control-label">New DX Codes:</label>
+            <div class="col-sm-6 col-md-4">
+                @Html.TextBoxFor(model => model.NewDXCodes8, new { @id = "txtNewDXCodes8", @maxlength = "50", @class = "form-control " })
+            </div>
+        </div>
+        @Html.HiddenFor(m => m.SrNo8)
+
+        <!--PATIENT 9 -->
+        <h3>Patient Number 9</h3>
+        <div class="form-group">
+            <label for="inputPassword3" class="col-sm-3 col-md-2 control-label">Patient Name:</label>
+            <div class="col-sm-6 col-md-4">
+                @Html.TextBoxFor(model => model.PatientName9, new { @id = "txtBPatientName9", @maxlength = "100", @class = "form-control" })
+            </div>
+        </div>
+        <div class="form-group" id="starDivDt9">
+            <label for="inputPassword3" class="col-sm-3 col-md-2 control-label">Date of Service:</label>
+            <div class="  col-sm-5 col-md-2">
+               @* <div class="input-group date" id='ServiceDate9'>*@
+                    @Html.TextBoxFor(model => model.ServiceDate9, new { @id = "txtServiceDate9", @name = "txtServiceDate9", @class = "form-control txtdatetimepicker hiddendiv", @maxlength = "10" })
+                    @*<span class="input-group-addon">
+                        <span class="glyphicon glyphicon-calendar"></span>
+                    </span>*@
+                @*</div>*@
+                @Html.ValidationMessageFor(model => model.ServiceDate9)
+            </div>
+        </div>
+        <div class="form-group" id="starDivProcCode9">
+            <label for="inputPassword3" class="col-sm-3 col-md-2 control-label">Procedure Codes:</label>
+            <div class="col-sm-6 col-md-4">
+                @Html.TextBoxFor(model => model.ProcedureCodes9, new { @id = "txtProcCodes9", @maxlength = "50", @class = "form-control hiddendiv" })
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 col-md-2 control-label textRight">Copay Type:</label>
+            <div class="col-sm-6 col-md-4 inline-radio">
+                <input type="radio" name="radio_copay9" id="cash9" class="css-checkbox" />
+                <label for="cash9" class="css-label-radio radGroup1">Cash</label>
+                <input type="radio" name="radio_copay9" id="cheque9" class="css-checkbox" />
+                <label for="cheque9" class="css-label-radio radGroup1">Check</label>
+                <input type="radio" name="radio_copay9" id="creditcard9" class="css-checkbox" />
+                <label for="creditcard9" class="css-label-radio radGroup1">Credit Card</label>
+                @Html.HiddenFor(m => m.CopayType9, new { @id = "hdnCopayType9" })
+                @*@Html.Hidden("hdnCopayType9", Model.CopayType9)*@
+            </div>
+        </div>
+
+        <!--SHOW HIDE DIV STARTS-->
+        <div id="divCheque9">
+            <div class="form-group required">
+                <label for="inputPassword3" class="col-sm-3 col-md-2 control-label">Check Number:</label>
+                <div class="col-sm-6 col-md-4">
+                    @Html.TextBoxFor(model => model.ChequeNo9, new { @id = "txtChequeNo9", @maxlength = "15", @class = "form-control hiddendiv" })
+                    @Html.ValidationMessageFor(model => model.ChequeNo9)
+                </div>
+            </div>
+        </div>
+        <!--SHOW HIDE DIV ENDS-->
+
+        <div class="form-group required" id="divCopay9">
+            <label for="inputPassword3" class="col-sm-3 col-md-2 control-label">Copay Paid($):</label>
+            <div class="col-sm-6 col-md-4">
+                @Html.TextBoxFor(model => model.CopayPaid9, new { @id = "txtCopayPaid9", @maxlength = "10", @class = "form-control hiddendiv" })
+                @Html.ValidationMessageFor(model => model.CopayPaid9)
+            </div>
+        </div>
+        <div class="form-group" id="starDivDXCode9">
+            <label for="inputPassword3" class="col-sm-3 col-md-2 control-label">New DX Codes:</label>
+            <div class="col-sm-6 col-md-4">
+                @Html.TextBoxFor(model => model.NewDXCodes9, new { @id = "txtNewDXCodes9", @maxlength = "50", @class = "form-control " })
+            </div>
+        </div>
+        @Html.HiddenFor(m => m.SrNo9)
+
+        <!--PATIENT 10 -->
+        <h3>Patient Number 10</h3>
+        <div class="form-group">
+            <label for="inputPassword3" class="col-sm-3 col-md-2 control-label">Patient Name:</label>
+            <div class="col-sm-6 col-md-4">
+                @Html.TextBoxFor(model => model.PatientName10, new { @id = "txtBPatientName10", @maxlength = "100", @class = "form-control" })
+            </div>
+        </div>
+        <div class="form-group" id="starDivDt10">
+            <label for="inputPassword3" class="col-sm-3 col-md-2 control-label">Date of Service:</label>
+            <div class="  col-sm-5 col-md-2">
+               @* <div class="input-group date" id='ServiceDate10'>*@
+                    @Html.TextBoxFor(model => model.ServiceDate10, new { @id = "txtServiceDate10", @name = "txtServiceDate10", @class = "form-control txtdatetimepicker hiddendiv", @maxlength = "10" })
+                    @*<span class="input-group-addon">
+                        <span class="glyphicon glyphicon-calendar"></span>
+                    </span>*@
+                @*</div>*@
+                @Html.ValidationMessageFor(model => model.ServiceDate10)
+            </div>
+        </div>
+        <div class="form-group" id="starDivProcCode10">
+            <label for="inputPassword3" class="col-sm-3 col-md-2 control-label">Procedure Codes:</label>
+            <div class="col-sm-6 col-md-4">
+                @Html.TextBoxFor(model => model.ProcedureCodes10, new { @id = "txtProcCodes10", @maxlength = "50", @class = "form-control hiddendiv" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-sm-3 col-md-2 control-label textRight">Copay Type:</label>
+            <div class="col-sm-6 col-md-4 inline-radio">
+                <input type="radio" name="radio_copay10" id="cash10" class="css-checkbox" />
+                <label for="cash10" class="css-label-radio radGroup1">Cash</label>
+                <input type="radio" name="radio_copay10" id="cheque10" class="css-checkbox" />
+                <label for="cheque10" class="css-label-radio radGroup1">Check</label>
+                <input type="radio" name="radio_copay10" id="creditcard10" class="css-checkbox" />
+                <label for="creditcard10" class="css-label-radio radGroup1">Credit Card</label>
+                @Html.HiddenFor(m => m.CopayType10, new { @id = "hdnCopayType10" })
+                @*@Html.Hidden("hdnCopayType10", Model.CopayType10)*@
+            </div>
+        </div>
+
+        <!--SHOW HIDE DIV STARTS-->
+        <div id="divCheque10">
+            <div class="form-group required">
+                <label for="inputPassword3" class="col-sm-3 col-md-2 control-label">Check Number:</label>
+                <div class="col-sm-6 col-md-4">
+                    @Html.TextBoxFor(model => model.ChequeNo10, new { @id = "txtChequeNo10", @maxlength = "15", @class = "form-control hiddendiv" })
+                    @Html.ValidationMessageFor(model => model.ChequeNo10)
+                </div>
+            </div>
+        </div>
+        <!--SHOW HIDE DIV ENDS-->
+
+        <div class="form-group required" id="divCopay10">
+            <label for="inputPassword3" class="col-sm-3 col-md-2 control-label">Copay Paid($):</label>
+            <div class="col-sm-6 col-md-4">
+                @Html.TextBoxFor(model => model.CopayPaid10, new { @id = "txtCopayPaid10", @maxlength = "10", @class = "form-control hiddendiv" })
+                @Html.ValidationMessageFor(model => model.CopayPaid10)
+            </div>
+        </div>
+
+
+        <div class="form-group" id="starDivDXCode10">
+            <label for="inputPassword3" class="col-sm-3 col-md-2 control-label">New DX Codes:</label>
+            <div class="col-sm-6 col-md-4">
+                @Html.TextBoxFor(model => model.NewDXCodes10, new { @id = "txtNewDXCodes10", @maxlength = "50", @class = "form-control " })
+            </div>
+        </div>
+        @Html.HiddenFor(m => m.SrNo10)
+
+        <!--PATIENT 11 -->
+        <h3>Patient Number 11</h3>
+        <div class="form-group">
+            <label for="inputPassword3" class="col-sm-3 col-md-2 control-label">Patient Name:</label>
+            <div class="col-sm-6 col-md-4">
+                @Html.TextBoxFor(model => model.PatientName11, new { @id = "txtBPatientName11", @maxlength = "100", @class = "form-control" })
+            </div>
+        </div>
+        <div class="form-group" id="starDivDt11">
+            <label for="inputPassword3" class="col-sm-3 col-md-2 control-label">Date of Service:</label>
+            <div class="  col-sm-5 col-md-2">
+                @*<div class="input-group date" id='ServiceDate11'>*@
+                    @Html.TextBoxFor(model => model.ServiceDate11, new { @id = "txtServiceDate11", @name = "txtServiceDate11", @class = "form-control txtdatetimepicker hiddendiv", @maxlength = "10" })
+                    @*<span class="input-group-addon">
+                        <span class="glyphicon glyphicon-calendar"></span>
+                    </span>*@
+                @*</div>*@
+                @Html.ValidationMessageFor(model => model.ServiceDate11)
+            </div>
+        </div>
+        <div class="form-group" id="starDivProcCode11">
+            <label for="inputPassword3" class="col-sm-3 col-md-2 control-label">Procedure Codes:</label>
+            <div class="col-sm-6 col-md-4">
+                @Html.TextBoxFor(model => model.ProcedureCodes11, new { @id = "txtProcCodes11", @maxlength = "50", @class = "form-control hiddendiv" })
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 col-md-2 control-label textRight">Copay Type:</label>
+            <div class="col-sm-6 col-md-4 inline-radio">
+                <input type="radio" name="radio_copay11" id="cash11" class="css-checkbox" />
+                <label for="cash11" class="css-label-radio radGroup1">Cash</label>
+                <input type="radio" name="radio_copay11" id="cheque11" class="css-checkbox" />
+                <label for="cheque11" class="css-label-radio radGroup1">Check</label>
+                <input type="radio" name="radio_copay11" id="creditcard11" class="css-checkbox" />
+                <label for="creditcard11" class="css-label-radio radGroup1">Credit Card</label>
+                @Html.HiddenFor(m => m.CopayType11, new { @id = "hdnCopayType11" })
+                @*@Html.Hidden("hdnCopayType11", Model.CopayType11)*@
+            </div>
+        </div>
+
+        <!--SHOW HIDE DIV STARTS-->
+        <div id="divCheque11">
+            <div class="form-group required">
+                <label for="inputPassword3" class="col-sm-3 col-md-2 control-label">Check Number:</label>
+                <div class="col-sm-6 col-md-4">
+                    @Html.TextBoxFor(model => model.ChequeNo11, new { @id = "txtChequeNo11", @maxlength = "15", @class = "form-control hiddendiv" })
+                    @Html.ValidationMessageFor(model => model.ChequeNo11)
+                </div>
+            </div>
+        </div>
+        <!--SHOW HIDE DIV ENDS-->
+
+        <div class="form-group required" id="divCopay11">
+            <label for="inputPassword3" class="col-sm-3 col-md-2 control-label">Copay Paid($):</label>
+            <div class="col-sm-6 col-md-4">
+                @Html.TextBoxFor(model => model.CopayPaid11, new { @id = "txtCopayPaid11", @maxlength = "10", @class = "form-control hiddendiv" })
+                @Html.ValidationMessageFor(model => model.CopayPaid11)
+            </div>
+        </div>
+
+
+
+        <div class="form-group" id="starDivDXCode11">
+            <label for="inputPassword3" class="col-sm-3 col-md-2 control-label">New DX Codes:</label>
+            <div class="col-sm-6 col-md-4">
+                @Html.TextBoxFor(model => model.NewDXCodes11, new { @id = "txtNewDXCodes11", @maxlength = "50", @class = "form-control " })
+            </div>
+        </div>
+        @Html.HiddenFor(m => m.SrNo11)
+
+        <!--PATIENT 12 -->
+        <h3>Patient Number 12</h3>
+        <div class="form-group">
+            <label for="inputPassword3" class="col-sm-3 col-md-2 control-label">Patient Name:</label>
+            <div class="col-sm-6 col-md-4">
+                @Html.TextBoxFor(model => model.PatientName12, new { @id = "txtBPatientName12", @maxlength = "100", @class = "form-control" })
+            </div>
+        </div>
+        <div class="form-group" id="starDivDt12">
+            <label for="inputPassword3" class="col-sm-3 col-md-2 control-label">Date of Service:</label>
+            <div class="  col-sm-5 col-md-2">
+               @* <div class="input-group date" id='ServiceDate12'>*@
+                    @Html.TextBoxFor(model => model.ServiceDate12, new { @id = "txtServiceDate12", @name = "txtServiceDate12", @class = "form-control txtdatetimepicker hiddendiv", @maxlength = "10" })
+                    @*<span class="input-group-addon">
+                        <span class="glyphicon glyphicon-calendar"></span>
+                    </span>*@
+               @* </div>*@
+                @Html.ValidationMessageFor(model => model.ServiceDate12)
+            </div>
+        </div>
+        <div class="form-group" id="starDivProcCode12">
+            <label for="inputPassword3" class="col-sm-3 col-md-2 control-label">Procedure Codes:</label>
+            <div class="col-sm-6 col-md-4">
+                @Html.TextBoxFor(model => model.ProcedureCodes12, new { @id = "txtProcCodes12", @maxlength = "50", @class = "form-control hiddendiv" })
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 col-md-2 control-label textRight">Copay Type:</label>
+            <div class="col-sm-6 col-md-4 inline-radio">
+                <input type="radio" name="radio_copay12" id="cash12" class="css-checkbox" />
+                <label for="cash12" class="css-label-radio radGroup1">Cash</label>
+                <input type="radio" name="radio_copay12" id="cheque12" class="css-checkbox" />
+                <label for="cheque12" class="css-label-radio radGroup1">Check</label>
+                <input type="radio" name="radio_copay12" id="creditcard12" class="css-checkbox" />
+                <label for="creditcard12" class="css-label-radio radGroup1">Credit Card</label>
+                @Html.HiddenFor(m => m.CopayType12, new { @id = "hdnCopayType12" })
+                @*@Html.Hidden("hdnCopayType12", Model.CopayType12)*@
+            </div>
+        </div>
+
+        <!--SHOW HIDE DIV STARTS-->
+        <div id="divCheque12">
+            <div class="form-group required">
+                <label for="inputPassword3" class="col-sm-3 col-md-2 control-label">Check Number:</label>
+                <div class="col-sm-6 col-md-4">
+                    @Html.TextBoxFor(model => model.ChequeNo12, new { @id = "txtChequeNo12", @maxlength = "15", @class = "form-control hiddendiv" })
+                    @Html.ValidationMessageFor(model => model.ChequeNo12)
+                </div>
+            </div>
+        </div>
+        <!--SHOW HIDE DIV ENDS-->
+
+        <div class="form-group required" id="divCopay12">
+            <label for="inputPassword3" class="col-sm-3 col-md-2 control-label">Copay Paid($):</label>
+            <div class="col-sm-6 col-md-4">
+                @Html.TextBoxFor(model => model.CopayPaid12, new { @id = "txtCopayPaid12", @maxlength = "10", @class = "form-control hiddendiv" })
+                @Html.ValidationMessageFor(model => model.CopayPaid12)
+            </div>
+        </div>
+
+
+
+        <div class="form-group" id="starDivDXCode12">
+            <label for="inputPassword3" class="col-sm-3 col-md-2 control-label">New DX Codes:</label>
+            <div class="col-sm-6 col-md-4">
+                @Html.TextBoxFor(model => model.NewDXCodes12, new { @id = "txtNewDXCodes12", @maxlength = "50", @class = "form-control " })
+            </div>
+        </div>
+        @Html.HiddenFor(m => m.SrNo12)
+
+        <!--PATIENT 13 -->
+        <h3>Patient Number 13</h3>
+        <div class="form-group">
+            <label for="inputPassword3" class="col-sm-3 col-md-2 control-label">Patient Name:</label>
+            <div class="col-sm-6 col-md-4">
+                @Html.TextBoxFor(model => model.PatientName13, new { @id = "txtBPatientName13", @maxlength = "100", @class = "form-control" })
+            </div>
+        </div>
+        <div class="form-group" id="starDivDt13">
+            <label for="inputPassword3" class="col-sm-3 col-md-2 control-label">Date of Service:</label>
+            <div class="  col-sm-5 col-md-2">
+                @*<div class="input-group date" id='ServiceDate13'>*@
+                    @Html.TextBoxFor(model => model.ServiceDate13, new { @id = "txtServiceDate13", @name = "txtServiceDate13", @class = "form-control txtdatetimepicker hiddendiv", @maxlength = "10" })
+                   @* <span class="input-group-addon">
+                        <span class="glyphicon glyphicon-calendar"></span>
+                    </span>*@
+                @*</div>*@
+                @Html.ValidationMessageFor(model => model.ServiceDate13)
+            </div>
+        </div>
+        <div class="form-group" id="starDivProcCode13">
+            <label for="inputPassword3" class="col-sm-3 col-md-2 control-label">Procedure Codes:</label>
+            <div class="col-sm-6 col-md-4">
+                @Html.TextBoxFor(model => model.ProcedureCodes13, new { @id = "txtProcCodes13", @maxlength = "50", @class = "form-control hiddendiv" })
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 col-md-2 control-label textRight">Copay Type:</label>
+            <div class="col-sm-6 col-md-4 inline-radio">
+                <input type="radio" name="radio_copay13" id="cash13" class="css-checkbox" />
+                <label for="cash13" class="css-label-radio radGroup1">Cash</label>
+                <input type="radio" name="radio_copay13" id="cheque13" class="css-checkbox" />
+                <label for="cheque13" class="css-label-radio radGroup1">Check</label>
+                <input type="radio" name="radio_copay13" id="creditcard13" class="css-checkbox" />
+                <label for="creditcard13" class="css-label-radio radGroup1">Credit Card</label>
+                @Html.HiddenFor(m => m.CopayType13, new { @id = "hdnCopayType13" })
+                @*  @Html.Hidden("hdnCopayType13", Model.CopayType13)*@
+            </div>
+        </div>
+
+        <!--SHOW HIDE DIV STARTS-->
+        <div id="divCheque13">
+            <div class="form-group required">
+                <label for="inputPassword3" class="col-sm-3 col-md-2 control-label">Check Number:</label>
+                <div class="col-sm-6 col-md-4">
+                    @Html.TextBoxFor(model => model.ChequeNo13, new { @id = "txtChequeNo13", @maxlength = "15", @class = "form-control hiddendiv" })
+                    @Html.ValidationMessageFor(model => model.ChequeNo13)
+                </div>
+            </div>
+        </div>
+        <!--SHOW HIDE DIV ENDS-->
+
+        <div class="form-group required" id="divCopay13">
+            <label for="inputPassword3" class="col-sm-3 col-md-2 control-label">Copay Paid($):</label>
+            <div class="col-sm-6 col-md-4">
+                @Html.TextBoxFor(model => model.CopayPaid13, new { @id = "txtCopayPaid13", @maxlength = "10", @class = "form-control hiddendiv" })
+                @Html.ValidationMessageFor(model => model.CopayPaid13)
+            </div>
+        </div>
+        <div class="form-group" id="starDivDXCode13">
+            <label for="inputPassword3" class="col-sm-3 col-md-2 control-label">New DX Codes:</label>
+            <div class="col-sm-6 col-md-4">
+                @Html.TextBoxFor(model => model.NewDXCodes13, new { @id = "txtNewDXCodes13", @maxlength = "50", @class = "form-control " })
+            </div>
+        </div>
+        @Html.HiddenFor(m => m.SrNo13)
+
+        <!--PATIENT 14 -->
+        <h3>Patient Number 14</h3>
+        <div class="form-group">
+            <label for="inputPassword3" class="col-sm-3 col-md-2 control-label">Patient Name:</label>
+            <div class="col-sm-6 col-md-4">
+                @Html.TextBoxFor(model => model.PatientName14, new { @id = "txtBPatientName14", @maxlength = "100", @class = "form-control" })
+            </div>
+        </div>
+        <div class="form-group" id="starDivDt14">
+            <label for="inputPassword3" class="col-sm-3 col-md-2 control-label">Date of Service:</label>
+            <div class="  col-sm-5 col-md-2">
+                @*<div class="input-group date" id='ServiceDate14'>*@
+                    @Html.TextBoxFor(model => model.ServiceDate14, new { @id = "txtServiceDate14", @name = "txtServiceDate14", @class = "form-control txtdatetimepicker hiddendiv", @maxlength = "10" })
+                   @* <span class="input-group-addon">
+                        <span class="glyphicon glyphicon-calendar"></span>
+                    </span>*@
+                @*</div>*@
+                @Html.ValidationMessageFor(model => model.ServiceDate14)
+            </div>
+        </div>
+        <div class="form-group" id="starDivProcCode14">
+            <label for="inputPassword3" class="col-sm-3 col-md-2 control-label">Procedure Codes:</label>
+            <div class="col-sm-6 col-md-4">
+                @Html.TextBoxFor(model => model.ProcedureCodes14, new { @id = "txtProcCodes14", @maxlength = "50", @class = "form-control hiddendiv" })
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 col-md-2 control-label textRight">Copay Type:</label>
+            <div class="col-sm-6 col-md-4 inline-radio">
+                <input type="radio" name="radio_copay14" id="cash14" class="css-checkbox" />
+                <label for="cash14" class="css-label-radio radGroup1">Cash</label>
+                <input type="radio" name="radio_copay14" id="cheque14" class="css-checkbox" />
+                <label for="cheque14" class="css-label-radio radGroup1">Check</label>
+                <input type="radio" name="radio_copay14" id="creditcard14" class="css-checkbox" />
+                <label for="creditcard14" class="css-label-radio radGroup1">Credit Card</label>
+                @Html.HiddenFor(m => m.CopayType14, new { @id = "hdnCopayType14" })
+                @*   @Html.Hidden("hdnCopayType14", Model.CopayType14)*@
+            </div>
+        </div>
+
+        <!--SHOW HIDE DIV STARTS-->
+        <div id="divCheque14">
+            <div class="form-group required">
+                <label for="inputPassword3" class="col-sm-3 col-md-2 control-label">Check Number:</label>
+                <div class="col-sm-6 col-md-4">
+                    @Html.TextBoxFor(model => model.ChequeNo14, new { @id = "txtChequeNo14", @maxlength = "15", @class = "form-control hiddendiv" })
+                </div>
+            </div>
+        </div>
+        <!--SHOW HIDE DIV ENDS-->
+
+        <div class="form-group required" id="divCopay14">
+            <label for="inputPassword3" class="col-sm-3 col-md-2 control-label">Copay Paid($):</label>
+            <div class="col-sm-6 col-md-4">
+                @Html.TextBoxFor(model => model.CopayPaid14, new { @id = "txtCopayPaid14", @maxlength = "10", @class = "form-control hiddendiv" })
+                @Html.ValidationMessageFor(model => model.CopayPaid14)
+            </div>
+        </div>
+        <div class="form-group" id="starDivDXCode14">
+            <label for="inputPassword3" class="col-sm-3 col-md-2 control-label">New DX Codes:</label>
+            <div class="col-sm-6 col-md-4">
+                @Html.TextBoxFor(model => model.NewDXCodes14, new { @id = "txtNewDXCodes14", @maxlength = "50", @class = "form-control " })
+            </div>
+        </div>
+        @Html.HiddenFor(m => m.SrNo14)
+
+        <!--PATIENT 15 -->
+        <h3>Patient Number 15</h3>
+        <div class="form-group">
+            <label for="inputPassword3" class="col-sm-3 col-md-2 control-label">Patient Name:</label>
+            <div class="col-sm-6 col-md-4">
+                @Html.TextBoxFor(model => model.PatientName15, new { @id = "txtBPatientName15", @maxlength = "100", @class = "form-control" })
+            </div>
+        </div>
+        <div class="form-group" id="starDivDt15">
+            <label for="inputPassword3" class="col-sm-3 col-md-2 control-label">Date of Service:</label>
+            <div class="  col-sm-5 col-md-2">
+                @*<div class="input-group date" id='ServiceDate15'>*@
+                    @Html.TextBoxFor(model => model.ServiceDate15, new { @id = "txtServiceDate15", @name = "txtServiceDate15", @class = "form-control txtdatetimepicker hiddendiv", @maxlength = "10" })
+                   @* <span class="input-group-addon">
+                        <span class="glyphicon glyphicon-calendar"></span>
+                    </span>*@
+                @*</div>*@
+                @Html.ValidationMessageFor(model => model.ServiceDate15)
+            </div>
+        </div>
+        <div class="form-group" id="starDivProcCode15">
+            <label for="inputPassword3" class="col-sm-3 col-md-2 control-label">Procedure Codes:</label>
+            <div class="col-sm-6 col-md-4">
+                @Html.TextBoxFor(model => model.ProcedureCodes15, new { @id = "txtProcCodes15", @maxlength = "50", @class = "form-control hiddendiv" })
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 col-md-2 control-label textRight">Copay Type:</label>
+            <div class="col-sm-6 col-md-4 inline-radio">
+                <input type="radio" name="radio_copay15" id="cash15" class="css-checkbox" />
+                <label for="cash15" class="css-label-radio radGroup1">Cash</label>
+                <input type="radio" name="radio_copay15" id="cheque15" class="css-checkbox" />
+                <label for="cheque15" class="css-label-radio radGroup1">Check</label>
+                <input type="radio" name="radio_copay15" id="creditcard15" class="css-checkbox" />
+                <label for="creditcard15" class="css-label-radio radGroup1">Credit Card</label>
+                @Html.HiddenFor(m => m.CopayType15, new { @id = "hdnCopayType15" })
+                @*  @Html.Hidden("hdnCopayType15", Model.CopayType15)*@
+            </div>
+        </div>
+
+        <!--SHOW HIDE DIV STARTS-->
+        <div id="divCheque15">
+            <div class="form-group required">
+                <label for="inputPassword3" class="col-sm-3 col-md-2 control-label">Check Number:</label>
+                <div class="col-sm-6 col-md-4">
+                    @Html.TextBoxFor(model => model.ChequeNo15, new { @id = "txtChequeNo15", @maxlength = "15", @class = "form-control hiddendiv" })
+                </div>
+            </div>
+        </div>
+        <!--SHOW HIDE DIV ENDS-->
+
+        <div class="form-group required" id="divCopay15">
+            <label for="inputPassword3" class="col-sm-3 col-md-2 control-label">Copay Paid($):</label>
+            <div class="col-sm-6 col-md-4">
+                @Html.TextBoxFor(model => model.CopayPaid15, new { @id = "txtCopayPaid15", @maxlength = "10", @class = "form-control hiddendiv" })
+                @Html.ValidationMessageFor(model => model.CopayPaid15)
+            </div>
+        </div>
+
+
+
+        <div class="form-group" id="starDivDXCode15">
+            <label for="inputPassword3" class="col-sm-3 col-md-2 control-label">New DX Codes:</label>
+            <div class="col-sm-6 col-md-4">
+                @Html.TextBoxFor(model => model.NewDXCodes15, new { @id = "txtNewDXCodes15", @maxlength = "50", @class = "form-control " })
+            </div>
+        </div>
+        <div style="margin-top: 40px;">
+            <div class="form-group limitChar ">
+                <label for="inputPassword3" class="col-sm-3 col-md-2 control-label">Additional Comments:</label>
+                <div class="col-sm-6 col-md-4">
+                    @Html.TextAreaFor(model => model.AdditionalComments, new { @id = "txtAdditionalComments",  @maxlength = "200", cols = 10, rows = 4, @class = "form-control", @onkeyup = "update();", onkeydown = "onkd(event);" })
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="inputEmail3" class="col-sm-3 col-md-2 control-label"></label>
+                <div class="col-sm-6 col-md-4 charcterCount">
+                    <script type="text/javascript">
+                        var limit = 200;
+                        function check() {
+
+                        }
+                        if (document.BillingLog.AdditionalComments.value.length > limit) {
+                            alert('Too much data!');
+                            document.BillingLog.AdditionalComments.focus();
+                            //return false;
+                        }
+                        else
+                            //return true;
+                            //}
+                            function update() {
+                                var old = document.BillingLog.counter.value;
+                                document.BillingLog.counter.value = document.BillingLog.AdditionalComments.value.length;
+                                if (document.BillingLog.counter.value > limit && old <= limit) {
+                                    alert('Too much data in the text box! Maximum number of characters is 200');
+                                    if (document.styleSheets) {
+                                        document.BillingLog.counter.style.fontWeight = 'bold';
+                                        document.BillingLog.counter.style.color = '#ff0000';
+                                    }
+                                }
+                                else if (document.BillingLog.counter.value <= limit && old > limit
+                                    && document.styleSheets) {
+                                    document.BillingLog.counter.style.fontWeight = 'normal';
+                                    document.BillingLog.counter.style.color = '#000000';
+                                }
+                            }
+                    </script>
+                    <script type="text/javascript">
+                        document.write('Characters typed: <input ' + 'type="text" size="3" name="counter" value=""' + 'readonly onfocus="this.form.AdditionalComments.focus()" class="lmtchr"> (limit: ' + limit + ')');
+                    </script>
+                </div>
+
+            </div>
+        </div>
+        @Html.HiddenFor(m => m.SrNo15)
+
+        <div class="form-group">
+            <label class="col-sm-3 col-md-2 control-label"></label>
+            @if (Session["USERNAME"] == "" || Session["USERNAME"] == null)
+            {
+                <div class="col-sm-6 col-md-4">
+                    <script type="text/javascript" src="@Model.CaptchaSitekeychallenge">
+                    </script>
+                    <noscript>
+                        <iframe src="@Model.CaptchaSitekeynoscript" height="300" width="500" frameborder="0"></iframe>
+                        <br>
+
+                        <textarea name="recaptcha_challenge_field1" rows="4" cols="40"></textarea>
+                        <input type="hidden" name="recaptcha_response_field1" value="manual_challenge">
+                    </noscript>
+                </div>
+            }
+        </div>
+        <div class="form-group">
+            <div class="col-sm-offset-3 col-md-offset-2 col-sm-6 col-md-4">
+                @if (Model.BillingID != 0)
+                {
+                    <button type="reset" class="btn btn-secondary btn-primary" id="btnResetPatient" onclick="location.href= '@Url.Action(Model.CallFrom, "Search", new { IsBack = true })'">Back</button>
+                    <button id="btnBillingSave" class="btn btn-primary">Update</button>
+                }
+                else
+                {
+                    <button type="reset" class="btn btn-secondary btn-primary" id="btnResetPatient" onclick="location.href= '@Url.Action("BillingLog", "Billing")'">Reset</button>
+                    <button id="btnBillingSave" class="btn btn-primary">Submit</button>
+
+                }
+            </div>
+        </div>
+        <hr>
+        <h1>
+            <font size="3" color="#154A84">Patient Payments</font>
+        </h1>
+        <p>
+            For Premium Service Providers using MBP's Accounts Receivable Posting Service and for Platinum Service Providers, go to
+            <a style="color: #0000FF; text-decoration: none" href="http://www.mbpros.com/patient_payments.html">
+                http://www.mbpros.com/patient_payments.html
+            </a>
+            to complete an easy form for reporting patient payments.
+        </p>
+        <p>The Patient Payment Form is NOT to be used for reporting patient co-payments and deductible payments made at the time of a visit.  Instead, these should be reported on the Billing Log Form in parentheses next to the date of service.</p>
+    }
+    @* </form>*@
+</div>
+
+
+@section Scripts{
+    <script src="~/Scripts/billing.js"></script>
+    @Scripts.Render("~/Bundle/Billing")
+}

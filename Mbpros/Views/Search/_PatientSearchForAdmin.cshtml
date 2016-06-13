@@ -1,0 +1,75 @@
+﻿  @model  Mbpros.Models.PatientModel
+
+
+<div  class="table-responsive">
+            <table id="divPatientSearch" class="table table-striped table-bordered" cellspacing="0" width="100%" >
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Pdf</th>
+                        <th>Edit</th>
+                        <th>Action</th>
+                        <th>Patient SSN</th>
+                        <th>Patient Name</th>
+                        <th>Office Name</th>
+                        <th>Date submit</th>
+                        <th>ID# - Claim#</th>
+                        <th>Group Number</th>
+                        <th>Insurance Company</th>
+                        <th>Delete</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model != null)
+                    {
+                        if (Model.PatientList != null)
+                        {
+                            foreach (var item in Model.PatientList)
+                            {
+                                var trId = "P" + item.PatientID;
+                        <tr id=@trId>
+                            <td>
+                                @item.PatientID
+                            </td>
+                            <td class="center-th">
+                                <a href="@Url.Action("PDFForPatient", "Patient",new {patientID=item.PatientID})" target="_blank">
+                                <img src="~/images/pdf.gif"></a>
+                            </td>
+                            <td class="center-th">
+                                <a href="@Url.Action("AddPatient", "Patient", new { patientID = item.PatientID, callFrom = "PatientSearchForAdmin" })">
+                                    <img src="~/images/edit.png">
+                                </a>
+                            </td>               
+                            <td class="center-th">
+                                @if(item.IsArchived)
+                                {
+                                <a href="javascript:void(0);"  class="confirmUnArchive" onclick="SetPatientID(@item.PatientID)">
+                                    <img src="~/images/unarchive.png" title ="Click here to un-archive">
+                                </a>
+                                }
+                                else
+                                {
+                                <a href="javascript:void(0);"  class="confirmArchive" onclick="SetPatientID(@item.PatientID)">
+                                    <img src="~/images/archive.png" title ="Click here to archive">
+                                </a>
+                                }
+                            </td>
+                            <td>@item.SSN</td>
+                            <td>@item.PatientName</td>
+                            <td>@item.OfficeName</td>
+                            <td>@Convert.ToDateTime(item.CreatedDate).ToString("MM/dd/yyyy")</td>
+                            <td>@item.PolicyID</td>
+                            <td>@item.GroupNumber</td>
+                            <td>@item.InsuranceCompanyName</td>   
+                            <td class="center-th">
+                                <a href="javascript:void(0);"  class="confirmDelete" onclick="SetPatientID(@item.PatientID)">
+                                    <img src="~/images/delete.png" />
+                                </a>
+                            </td>                                                
+                        </tr>
+                            }
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>

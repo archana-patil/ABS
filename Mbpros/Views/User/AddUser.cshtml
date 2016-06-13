@@ -1,0 +1,158 @@
+﻿@model  Mbpros.Models.UserModels
+@{
+    ViewBag.Title = "AddUser";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+
+<div class="form_border">
+    
+    @using (Html.BeginForm("AddUser", "User", FormMethod.Post, new { enctype = "multipart/form-data", id = "frmAddUser", @class = "form-horizontal customIzeFormELement normal_label" }))
+    {
+    
+        @Html.ValidationSummary(true) 
+        @Html.HiddenFor(model => model.UserId, new { @id = "hdnUserId" })
+        <div class="form-group">
+            @if (Model.UserId > 0)
+            {
+                <h2>Edit Client Account</h2>
+            }
+            else
+            {
+                <h2>Create New Client Account</h2>
+            }
+        </div>
+        <p>(<i class="red">*</i> Indicates required field)</p>
+     
+            if (ViewBag.UserMessage != "" && ViewBag.UserMessage != null)
+            {
+        <div class="alert alert-success">
+            <strong>Success!</strong> @ViewBag.UserMessage.
+        </div>
+            }
+
+        if (ViewBag.IsUserExist == "YES")
+            {
+            <div class="alert alert-danger">
+               <strong>Warning! </strong> User is already exist, Please enter other name.
+            </div>
+            }
+
+        <div class="form-group required">
+            <label class="col-sm-3 control-label textRight">User Name</label>
+            <div class="col-sm-5">
+                @Html.TextBoxFor(model => model.UserName, new { @id = "txtUsername", @maxlength = "50", @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.UserName)
+            </div>
+        </div>
+        <div class="form-group required">
+            <label class="col-sm-3 control-label textRight">Password</label>
+            <div class="col-sm-5">
+                @Html.PasswordFor(model => model.Password, new { @id = "txtPassword", @maxlength = "50", @class = "form-control", @value = Model.Password })
+                @Html.ValidationMessageFor(model => model.Password)
+            </div>
+        </div>
+         
+        <div class="form-group required">
+            <label class="col-sm-3 control-label textRight">Office Name</label>
+            <div class="col-sm-5">
+                @Html.TextBoxFor(model => model.OfficeName, new { @id = "txtOfficeName", @maxlength = "100", @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.OfficeName)
+            </div>
+        </div>
+         
+        <div class="form-group required" id="divUsereMailid">
+            <label class="col-sm-3 control-label textRight">Email</label>
+            <div class="col-sm-5">
+                @Html.TextBoxFor(model => model.EmailID, new { @id = "txtEmailID", @maxlength = "100", @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.EmailID)
+            </div>
+        </div>
+                      
+        <div class="form-group" style="display: none;">
+            <label for="checkboxG3" class="col-md-3 control-label textRight">Admin User</label>
+            <div class="col-sm-5">
+                @Html.CheckBoxFor(model => model.IsAdmin, new { @id = "chkIsAdmin" })
+
+                <label>(Note: Only check if you want to create Admin user)</label>
+            </div>
+        </div>          
+        
+        <div class="form-group row">
+            <div class="col-sm-offset-3 col-sm-5">
+                @if (Model.UserId > 0)
+                {
+                    <button type="submit" class="btn btn-secondary btn-primary" id="btnSaveUser">Update</button>                     
+                }
+                else
+                {
+                    <button type="submit" class="btn btn-secondary btn-primary" id="btnSaveUser">Save</button>
+                }
+                <button class="btn btn-secondary btn-primary" type="reset" id="btnBackUserSrch"  onclick="location.href= '@Url.Action("SearchUser", "User", new { IsBack = true })'">Back</button>
+
+            </div>
+        </div>
+     
+    }
+
+</div>
+
+@section Scripts{
+    <script lang="javascript">
+        $(document).ready(function () {
+
+            $(window).keydown(function (event) {
+                if ((event.keyCode == 13 || event.keyCode == 169) && event.target.type != "textarea" && event.target.type != "submit" && event.target.type != "reset") {
+                    event.preventDefault();
+                    return false;
+                }
+            });
+
+            @*if ('@ViewBag.IsUserExist' == "YES") {
+                alert("User is already exist, Please enter other name.");
+                $("#txtUsername").focus();
+
+            }*@
+
+     @*   if ('@ViewBag.UserMessage' != "" && '@ViewBag.UserMessage' != null) {
+            alert('@ViewBag.UserMessage');
+        }*@
+
+            $(".form-group .input-validation-error").blur(function (e) {
+                var nm = $(this).attr("name");
+                if ($(this).val() == "") {
+                    $("span[data-valmsg-for='" + nm + "']").show();
+                    $(this).removeClass("input-validation-errorfree");
+                }
+                else {
+                    $("span[data-valmsg-for='" + nm + "']").hide();
+                    $(this).addClass("input-validation-errorfree");
+                }
+            });
+
+
+            $(document).on('keypress', function (e) {
+                var valid = true;
+
+                if (e.target.id == 'txtUsername')
+                    valid = (e.which >= 48 && e.which <= 57) || (e.which >= 65 && e.which <= 90) || (e.which >= 97 && e.which <= 122) || (e.which == 32) || (e.which == 8) || (e.which == 0) || (e.which == 46);
+                else if (e.target.id == 'txtOfficeName')
+                    valid = (e.which >= 48 && e.which <= 57) || (e.which >= 65 && e.which <= 90) || (e.which >= 97 && e.which <= 122) || (e.which == 32) || (e.which == 8) || (e.which == 0);
+
+                if (!valid) {
+                    e.preventDefault();
+                }
+
+            });
+
+            if ($("#hdnUserId").val() > 0) {
+                document.getElementById("txtUsername").readOnly = true;
+                document.getElementById("txtUsername").style.color = "#c0c0c0";
+            }
+
+        });
+
+
+    </script>
+}
