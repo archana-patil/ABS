@@ -16,6 +16,11 @@ namespace Mbpros.Controllers
     public class BillingController : Controller
     {
         log4net.ILog logger = log4net.LogManager.GetLogger(typeof(BillingController));  //Declaring Log4Net
+        //////////////////////this is my change
+        public ActionResult sdfdsf()
+        {
+
+        }
 
         public ActionResult BillingLog(int billingID = 0, string callFrom = "")
         {
