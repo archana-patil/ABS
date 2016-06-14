@@ -14,7 +14,7 @@ using System.Configuration;
 
 namespace Mbpros.Controllers
 {
-    [SessionExpire]
+    [SessionExpire]//dfffffffffsdfdsfsdf
     public class CTLCategory : Controller
     {  
         public ActionResult AddPatient(int patientID = 0, string callFrom = "")
