@@ -17,6 +17,9 @@ namespace Mbpros.Controllers
     public class AccountController : Controller
     {
         //comment hete to add jsakdjkasd 
+        /// <summary>
+        /// /dsfds fbsdb fbsdnbfsndbfbd
+        /// </summary>
         MbprosEntities mbprosEntities = new MbprosEntities();
         log4net.ILog logger = log4net.LogManager.GetLogger(typeof(AccountController));  //Declaring Log4Net
         public ActionResult Login()
