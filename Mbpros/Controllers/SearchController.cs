@@ -14,7 +14,7 @@ namespace Mbpros.Controllers
     public class SearchController : Controller
     {
         MbprosEntities mbprosEntities = new MbprosEntities();
-        //Patient search for admin
+        //Patient search for admin dgfdgdfgdfg
         public ActionResult PatientSearchForAdmin(string editMessage, bool IsBack = false)
         {
             PatientModel patientModel = new PatientModel();
