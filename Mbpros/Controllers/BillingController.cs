@@ -11,17 +11,11 @@ using System.Web;
 using System.Web.Mvc;
 
 namespace Mbpros.Controllers
-{ //////////////////////this is my change //////////////////////this is my change
-    //////////////////////this is my change //////////////////////this is my change
+{
     [SessionExpire]
     public class BillingController : Controller
     {
         log4net.ILog logger = log4net.LogManager.GetLogger(typeof(BillingController));  //Declaring Log4Net
-        //////////////////////this is my change
-        public ActionResult sdfdsf()
-        {
-            return dsh;
-        }
 
         public ActionResult BillingLog(int billingID = 0, string callFrom = "")
         {
